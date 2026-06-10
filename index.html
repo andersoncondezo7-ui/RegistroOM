@@ -1898,6 +1898,9 @@ const firebaseConfig = {
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
+
+// URL del flujo de Power Automate para notificaciones de OM
+const PA_OM_CREADA_URL = "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/b13ee4889e784876b4f1f490caa9d78b/triggers/manual/paths/invoke?api-version=1";
 // ============================================================
 //  SESIÓN / LOGIN
 // ============================================================
@@ -2855,6 +2858,66 @@ function genCodigo() {
 }
 
 // ============================================================
+//  NOTIFICACIONES POWER AUTOMATE
+// ============================================================
+async function notificarOMCreadaPowerAutomate(orden) {
+  try {
+    if (!PA_OM_CREADA_URL || PA_OM_CREADA_URL.includes("PEGAR_AQUI") || !PA_OM_CREADA_URL.startsWith("https://")) {
+      console.warn("URL de Power Automate no configurada. No se envía correo de OM.");
+      return;
+    }
+
+    const omsValidas = Array.isArray(orden.ordenesMant)
+      ? orden.ordenesMant.filter(x => (x.om && String(x.om).trim()) || (x.proyecto && String(x.proyecto).trim()))
+      : [];
+
+    if (omsValidas.length === 0) return;
+
+    const payload = {
+      evento:                "om_creada",
+      ordenId:               orden.id               || "",
+      fecha:                 new Date().toISOString(),
+      usuario:               orden.usuarioRegistro  || "",
+      cr:                    orden.crRegistro       || "",
+      set:                   orden.set              || "",
+      alimentador:           orden.alimentador      || "",
+      zona:                  orden.zona             || "",
+      circuito:              orden.circuito         || "",
+      descripcion:           orden.descripcion      || "",
+      atencionDRE:           orden.atencionDRE      || "",
+      nSpor:                 orden.nSpor            || "",
+      tiempo:                orden.tiempo           || "",
+      turno:                 orden.turno            || "",
+      traslado:              orden.traslado         || "",
+      tipoCorte:             orden.tipoCorte        || "",
+      corteAlta:             orden.corteAlta        || "",
+      compensacion:          orden.compensacion     || "",
+      documentosSolicitados: orden.documentosSolicitados || "",
+      oms:                   omsValidas
+    };
+
+    const resp = await fetch(PA_OM_CREADA_URL, {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify(payload)
+    });
+
+    if (!resp.ok) {
+      const txt = await resp.text().catch(() => "");
+      console.error("Power Automate respondió con error:", resp.status, txt);
+      if (typeof toast === "function") toast("Orden guardada, pero no se pudo enviar el correo de OM", "error");
+      return;
+    }
+
+    console.log("Correo de OM enviado a Power Automate correctamente:", payload);
+
+  } catch (err) {
+    console.error("Error enviando notificación de OM a Power Automate:", err);
+    if (typeof toast === "function") toast("Orden guardada, pero falló la notificación de OM", "error");
+  }
+}
+
+// ============================================================
 //  CREAR ORDEN
 // ============================================================
 async function crearOrden(e) {
@@ -2897,6 +2960,7 @@ async function crearOrden(e) {
   DB.ordenes.push(orden);
   try {
     await db.collection('ordenes').doc(id).set(orden);
+    await notificarOMCreadaPowerAutomate(orden);
   } catch(e) {
     console.error('Error al crear orden:', e);
     toast('Error de conexión con la base de datos', 'error');
