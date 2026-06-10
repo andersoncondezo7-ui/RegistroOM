@@ -2862,16 +2862,26 @@ function genCodigo() {
 // ============================================================
 async function notificarOMCreadaPowerAutomate(orden) {
   try {
-    if (!PA_OM_CREADA_URL || PA_OM_CREADA_URL.includes("PEGAR_AQUI") || !PA_OM_CREADA_URL.startsWith("https://")) {
+    if (
+      !PA_OM_CREADA_URL ||
+      PA_OM_CREADA_URL.includes("PEGAR_AQUI") ||
+      !PA_OM_CREADA_URL.startsWith("https://")
+    ) {
       console.warn("URL de Power Automate no configurada. No se envía correo de OM.");
       return;
     }
 
     const omsValidas = Array.isArray(orden.ordenesMant)
-      ? orden.ordenesMant.filter(x => (x.om && String(x.om).trim()) || (x.proyecto && String(x.proyecto).trim()))
+      ? orden.ordenesMant.filter(x =>
+          (x.om && String(x.om).trim()) ||
+          (x.proyecto && String(x.proyecto).trim())
+        )
       : [];
 
-    if (omsValidas.length === 0) return;
+    if (omsValidas.length === 0) {
+      console.log("La orden no tiene OM válidas. No se envía correo.");
+      return;
+    }
 
     const payload = {
       evento:                "om_creada",
@@ -2896,24 +2906,21 @@ async function notificarOMCreadaPowerAutomate(orden) {
       oms:                   omsValidas
     };
 
-    const resp = await fetch(PA_OM_CREADA_URL, {
-      method:  "POST",
-      headers: { "Content-Type": "application/json" },
-      body:    JSON.stringify(payload)
+    console.log("Enviando notificación OM a Power Automate:", payload);
+
+    await fetch(PA_OM_CREADA_URL, {
+      method: "POST",
+      mode:   "no-cors",
+      body:   JSON.stringify(payload)
     });
 
-    if (!resp.ok) {
-      const txt = await resp.text().catch(() => "");
-      console.error("Power Automate respondió con error:", resp.status, txt);
-      if (typeof toast === "function") toast("Orden guardada, pero no se pudo enviar el correo de OM", "error");
-      return;
-    }
-
-    console.log("Correo de OM enviado a Power Automate correctamente:", payload);
+    console.log("Solicitud enviada a Power Automate en modo no-cors. La respuesta no se puede leer desde el navegador.");
 
   } catch (err) {
     console.error("Error enviando notificación de OM a Power Automate:", err);
-    if (typeof toast === "function") toast("Orden guardada, pero falló la notificación de OM", "error");
+    if (typeof toast === "function") {
+      toast("Orden guardada, pero falló la notificación de OM", "error");
+    }
   }
 }
 
