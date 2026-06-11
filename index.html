@@ -1922,7 +1922,7 @@ const firebaseConfig = {
   const db = firebase.firestore();
 
 // URL de Power Automate — editable desde Configuración (se guarda en localStorage)
-const PA_OM_CREADA_URL_DEFAULT = "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/b13ee4889e784876b4f1f490caa9d78b/triggers/manual/paths/invoke?api-version=1";
+const PA_OM_CREADA_URL_DEFAULT = "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/b13ee4889e784876b4f1f490caa9d78b/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4za529pVFJBBxL66-xT2IhSXcmOVdmcVhETdTPJyaBA";
 function getPAUrl() { return localStorage.getItem('pa_om_url') || PA_OM_CREADA_URL_DEFAULT; }
 // ============================================================
 //  SESIÓN / LOGIN
