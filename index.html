@@ -1922,7 +1922,7 @@ const firebaseConfig = {
   const db = firebase.firestore();
 
 // URL de Power Automate — editable desde Configuración (se guarda en localStorage)
-const PA_OM_CREADA_URL = "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/b13ee4889e784876b4f1f490caa9d78b/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4za529pVFJBBxL66-xT2IhSXcmOVdmcVhETdTPJyaBA";
+const PA_OM_CREADA_URL_DEFAULT = "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/b13ee4889e784876b4f1f490caa9d78b/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4za529pVFJBBxL66-xT2IhSXcmOVdmcVhETdTPJyaBA";
 function getPAUrl() { return localStorage.getItem('pa_om_url') || PA_OM_CREADA_URL_DEFAULT; }
 // ============================================================
 //  SESIÓN / LOGIN
@@ -2941,9 +2941,9 @@ async function notificarOMCreadaPowerAutomate(orden) {
   };
 
   console.log("Enviando notificación OM a Power Automate:", payload);
-  toast("Enviando notificación a Power Automate...", "info");
 
   try {
+    toast("Enviando notificación a Power Automate...", "info");
     // mode: "no-cors" evita el preflight CORS. La respuesta es opaca (no se puede leer),
     // pero el servidor la recibe correctamente. Content-Type personalizado no se puede enviar
     // en este modo (limitación del navegador); Power Automate debe aceptar el body sin esa cabecera.
@@ -3001,16 +3001,16 @@ async function crearOrden(e) {
     }]
   };
   DB.ordenes.push(orden);
-  let paStatus = 'skipped';
   try {
     await db.collection('ordenes').doc(id).set(orden);
-    paStatus = await notificarOMCreadaPowerAutomate(orden);
   } catch(e) {
-    console.error('Error al crear orden:', e);
-    toast('Error de conexión con la base de datos', 'error');
+    console.error('Error al crear orden en Firestore:', e);
+    toast(`Error al guardar la orden (${e.code || e.message || 'sin conexión'})`, 'error');
     DB.ordenes.pop();
     return;
   }
+  // PA va separado — sus errores nunca afectan el resultado de Firestore
+  const paStatus = await notificarOMCreadaPowerAutomate(orden);
   updateBadges();
   toast(`Orden ${id} creada`, 'success');
   if (paStatus === 'sent')  toast('Notificación enviada a Power Automate', 'info');
