@@ -2944,16 +2944,18 @@ async function notificarOMCreadaPowerAutomate(orden) {
 
   try {
     toast("Enviando notificación a Power Automate...", "info");
-    // mode: "no-cors" evita el preflight CORS. La respuesta es opaca (no se puede leer),
-    // pero el servidor la recibe correctamente. Content-Type personalizado no se puede enviar
-    // en este modo (limitación del navegador); Power Automate debe aceptar el body sin esa cabecera.
-    await fetch(url, {
-      method: "POST",
-      mode:   "no-cors",
-      body:   JSON.stringify(payload)
+    const resp = await fetch(url, {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify(payload)
     });
-    console.log("Solicitud enviada a Power Automate (no-cors). Verifica el historial del flujo para confirmar recepción.");
-    return 'sent';
+    if (resp.ok) {
+      console.log(`Power Automate respondió ${resp.status}. Flujo ejecutado correctamente.`);
+      return 'sent';
+    } else {
+      console.error(`Power Automate respondió con error: ${resp.status} ${resp.statusText}`);
+      return 'error';
+    }
   } catch (err) {
     console.error("Error de red al notificar a Power Automate:", err);
     return 'error';
@@ -3783,9 +3785,18 @@ async function probarPAUrl() {
   }
   if (st) { st.textContent = 'Probando conexión...'; st.className = 'text-xs mt-2 text-blue-600'; st.classList.remove('hidden'); }
   try {
-    await fetch(url, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ evento: 'ping' }) });
-    if (st) { st.textContent = 'Conexión alcanzada (red OK). Verifica en Power Automate que el flujo recibió la solicitud.'; st.className = 'text-xs mt-2 text-green-600'; st.classList.remove('hidden'); }
-    toast('Prueba enviada — revisa el historial del flujo en Power Automate', 'info');
+    const resp = await fetch(url, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ evento: 'ping' })
+    });
+    if (resp.ok) {
+      if (st) { st.textContent = `Conexión OK — Power Automate respondió ${resp.status}. El flujo está activo.`; st.className = 'text-xs mt-2 text-green-600'; st.classList.remove('hidden'); }
+      toast('Conexión con Power Automate verificada correctamente', 'success');
+    } else {
+      if (st) { st.textContent = `Power Automate respondió ${resp.status}. Verifica que el flujo esté activo y que su esquema JSON acepte el payload.`; st.className = 'text-xs mt-2 text-red-600'; st.classList.remove('hidden'); }
+      toast(`Power Automate respondió ${resp.status} — revisa la configuración del flujo`, 'warning');
+    }
   } catch (err) {
     if (st) { st.textContent = `Error de red: ${err.message}`; st.className = 'text-xs mt-2 text-red-600'; st.classList.remove('hidden'); }
     toast('No se pudo alcanzar Power Automate — verifica la URL y la red', 'error');
