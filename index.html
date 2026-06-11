@@ -1468,6 +1468,28 @@ select.inp{cursor:pointer}
           <div id="cfg-resp-tags" class="min-h-10 flex flex-wrap"></div>
         </div>
 
+        <!-- Power Automate -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-blue-100">
+          <p class="font-semibold text-gray-800 mb-1"><i class="fas fa-bolt text-blue-500 mr-2"></i>Power Automate — URL de notificación</p>
+          <p class="text-sm text-gray-500 mb-4">URL del trigger HTTP de tu flujo. Cópiala desde el paso "Cuando se recibe una solicitud HTTP" en Power Automate (debe incluir <code class="bg-gray-100 px-1 rounded text-xs">&amp;sig=...</code>).</p>
+          <textarea id="cfg-pa-url" rows="3"
+            class="inp w-full font-mono text-xs resize-y mb-3"
+            placeholder="https://prod-XX.logic.azure.com/workflows/.../invoke?api-version=2016-06-01&sp=...&sig=..."
+          ></textarea>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="guardarPAUrl()" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+              <i class="fas fa-save mr-1.5"></i>Guardar URL
+            </button>
+            <button onclick="probarPAUrl()" class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100">
+              <i class="fas fa-wifi mr-1.5"></i>Probar conexión
+            </button>
+            <button onclick="resetPAUrl()" class="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100">
+              <i class="fas fa-undo mr-1.5"></i>Restaurar predeterminada
+            </button>
+          </div>
+          <p id="cfg-pa-status" class="text-xs mt-2 hidden"></p>
+        </div>
+
         <div class="bg-white rounded-xl shadow-sm p-6 border border-red-100">
           <p class="font-semibold text-red-600 mb-1"><i class="fas fa-exclamation-triangle mr-2"></i>Datos y Respaldo</p>
           <p class="text-sm text-gray-500 mb-4">Exportar o limpiar los datos del sistema</p>
@@ -1899,8 +1921,9 @@ const firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-// URL del flujo de Power Automate para notificaciones de OM
-const PA_OM_CREADA_URL = "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/b13ee4889e784876b4f1f490caa9d78b/triggers/manual/paths/invoke?api-version=1";
+// URL de Power Automate — editable desde Configuración (se guarda en localStorage)
+const PA_OM_CREADA_URL_DEFAULT = "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/b13ee4889e784876b4f1f490caa9d78b/triggers/manual/paths/invoke?api-version=1";
+function getPAUrl() { return localStorage.getItem('pa_om_url') || PA_OM_CREADA_URL_DEFAULT; }
 // ============================================================
 //  SESIÓN / LOGIN
 // ============================================================
@@ -1975,7 +1998,18 @@ function selectCR(cr) {
   document.getElementById('login-pin-err')?.classList.add('hidden');
 }
 
-function hacerLogin() {
+// Devuelve el hex SHA-256 del texto; usa caché para evitar recalcular
+const _pinHashCache = new Map();
+async function hashPin(pin) {
+  const key = String(pin);
+  if (_pinHashCache.has(key)) return _pinHashCache.get(key);
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(key));
+  const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  _pinHashCache.set(key, hex);
+  return hex;
+}
+
+async function hacerLogin() {
   const user = document.getElementById('login-user').value.trim();
   const pin  = (document.getElementById('login-pin')?.value || '').trim();
   let ok = true;
@@ -1983,10 +2017,8 @@ function hacerLogin() {
   if (!user)           { document.getElementById('login-user-err').classList.remove('hidden'); ok = false; }
   if (!ok) return;
 
-  // Validar PIN
   const crData = (DB.usuarios || DEFAULT_USUARIOS)[crSeleccionado] || {};
   const userData = crData[user];
-  const pinCorrecto = userData?.pin;
   const pinErrEl  = document.getElementById('login-pin-err');
   const pinErrMsg = document.getElementById('login-pin-err-msg');
   if (!pin) {
@@ -1995,7 +2027,12 @@ function hacerLogin() {
     document.getElementById('login-pin')?.focus();
     return;
   }
-  if (pin !== pinCorrecto) {
+
+  // Comparar hashes — nunca se compara texto plano directamente
+  const enteredHash = await hashPin(pin);
+  const storedHash  = userData?.pin ? await hashPin(userData.pin) : null;
+
+  if (!storedHash || enteredHash !== storedHash) {
     if (pinErrMsg) pinErrMsg.textContent = 'PIN incorrecto. Inténtelo de nuevo.';
     pinErrEl?.classList.remove('hidden');
     const pinInp = document.getElementById('login-pin');
@@ -2860,67 +2897,66 @@ function genCodigo() {
 // ============================================================
 //  NOTIFICACIONES POWER AUTOMATE
 // ============================================================
+// Retorna: 'sent' | 'skipped' | 'error'
 async function notificarOMCreadaPowerAutomate(orden) {
+  const url = getPAUrl();
+  if (!url || !url.startsWith("https://")) {
+    console.warn("URL de Power Automate no configurada. Configúrala en la pantalla de Configuración.");
+    return 'skipped';
+  }
+
+  const omsValidas = Array.isArray(orden.ordenesMant)
+    ? orden.ordenesMant.filter(x =>
+        (x.om && String(x.om).trim()) ||
+        (x.proyecto && String(x.proyecto).trim())
+      )
+    : [];
+
+  if (omsValidas.length === 0) {
+    console.log("La orden no tiene OM válidas. No se envía notificación.");
+    return 'skipped';
+  }
+
+  const payload = {
+    evento:                "om_creada",
+    ordenId:               orden.id               || "",
+    fecha:                 new Date().toISOString(),
+    usuario:               orden.usuarioRegistro  || "",
+    cr:                    orden.crRegistro       || "",
+    set:                   orden.set              || "",
+    alimentador:           orden.alimentador      || "",
+    zona:                  orden.zona             || "",
+    circuito:              orden.circuito         || "",
+    descripcion:           orden.descripcion      || "",
+    atencionDRE:           orden.atencionDRE      || "",
+    nSpor:                 orden.nSpor            || "",
+    tiempo:                orden.tiempo           || "",
+    turno:                 orden.turno            || "",
+    traslado:              orden.traslado         || "",
+    tipoCorte:             orden.tipoCorte        || "",
+    corteAlta:             orden.corteAlta        || "",
+    compensacion:          orden.compensacion     || "",
+    documentosSolicitados: orden.documentosSolicitados || "",
+    oms:                   omsValidas
+  };
+
+  console.log("Enviando notificación OM a Power Automate:", payload);
+  toast("Enviando notificación a Power Automate...", "info");
+
   try {
-    if (
-      !PA_OM_CREADA_URL ||
-      PA_OM_CREADA_URL.includes("PEGAR_AQUI") ||
-      !PA_OM_CREADA_URL.startsWith("https://")
-    ) {
-      console.warn("URL de Power Automate no configurada. No se envía correo de OM.");
-      return;
-    }
-
-    const omsValidas = Array.isArray(orden.ordenesMant)
-      ? orden.ordenesMant.filter(x =>
-          (x.om && String(x.om).trim()) ||
-          (x.proyecto && String(x.proyecto).trim())
-        )
-      : [];
-
-    if (omsValidas.length === 0) {
-      console.log("La orden no tiene OM válidas. No se envía correo.");
-      return;
-    }
-
-    const payload = {
-      evento:                "om_creada",
-      ordenId:               orden.id               || "",
-      fecha:                 new Date().toISOString(),
-      usuario:               orden.usuarioRegistro  || "",
-      cr:                    orden.crRegistro       || "",
-      set:                   orden.set              || "",
-      alimentador:           orden.alimentador      || "",
-      zona:                  orden.zona             || "",
-      circuito:              orden.circuito         || "",
-      descripcion:           orden.descripcion      || "",
-      atencionDRE:           orden.atencionDRE      || "",
-      nSpor:                 orden.nSpor            || "",
-      tiempo:                orden.tiempo           || "",
-      turno:                 orden.turno            || "",
-      traslado:              orden.traslado         || "",
-      tipoCorte:             orden.tipoCorte        || "",
-      corteAlta:             orden.corteAlta        || "",
-      compensacion:          orden.compensacion     || "",
-      documentosSolicitados: orden.documentosSolicitados || "",
-      oms:                   omsValidas
-    };
-
-    console.log("Enviando notificación OM a Power Automate:", payload);
-
-    await fetch(PA_OM_CREADA_URL, {
+    // mode: "no-cors" evita el preflight CORS. La respuesta es opaca (no se puede leer),
+    // pero el servidor la recibe correctamente. Content-Type personalizado no se puede enviar
+    // en este modo (limitación del navegador); Power Automate debe aceptar el body sin esa cabecera.
+    await fetch(url, {
       method: "POST",
       mode:   "no-cors",
       body:   JSON.stringify(payload)
     });
-
-    console.log("Solicitud enviada a Power Automate en modo no-cors. La respuesta no se puede leer desde el navegador.");
-
+    console.log("Solicitud enviada a Power Automate (no-cors). Verifica el historial del flujo para confirmar recepción.");
+    return 'sent';
   } catch (err) {
-    console.error("Error enviando notificación de OM a Power Automate:", err);
-    if (typeof toast === "function") {
-      toast("Orden guardada, pero falló la notificación de OM", "error");
-    }
+    console.error("Error de red al notificar a Power Automate:", err);
+    return 'error';
   }
 }
 
@@ -2965,9 +3001,10 @@ async function crearOrden(e) {
     }]
   };
   DB.ordenes.push(orden);
+  let paStatus = 'skipped';
   try {
     await db.collection('ordenes').doc(id).set(orden);
-    await notificarOMCreadaPowerAutomate(orden);
+    paStatus = await notificarOMCreadaPowerAutomate(orden);
   } catch(e) {
     console.error('Error al crear orden:', e);
     toast('Error de conexión con la base de datos', 'error');
@@ -2976,6 +3013,8 @@ async function crearOrden(e) {
   }
   updateBadges();
   toast(`Orden ${id} creada`, 'success');
+  if (paStatus === 'sent')  toast('Notificación enviada a Power Automate', 'info');
+  if (paStatus === 'error') toast('Orden guardada, pero no se pudo notificar a Power Automate', 'warning');
   ir('lista');
 }
 
@@ -3714,6 +3753,52 @@ function renderConfig() {
   renderTags('tipos',        'cfg-tipo-tags',  'cfg-tipo-input');
   renderTags('responsables', 'cfg-resp-tags',  'cfg-resp-input');
   if (sesionActual?.rol === 'soporte') renderUsuarios();
+  const paEl = document.getElementById('cfg-pa-url');
+  if (paEl) paEl.value = getPAUrl();
+  const st = document.getElementById('cfg-pa-status');
+  if (st) st.classList.add('hidden');
+}
+
+// ============================================================
+//  POWER AUTOMATE — GESTIÓN DE URL DESDE CONFIG
+// ============================================================
+function guardarPAUrl() {
+  const val = (document.getElementById('cfg-pa-url')?.value || '').trim();
+  const st  = document.getElementById('cfg-pa-status');
+  if (!val || !val.startsWith('https://')) {
+    if (st) { st.textContent = 'La URL debe comenzar con https://'; st.className = 'text-xs mt-2 text-red-600'; st.classList.remove('hidden'); }
+    return;
+  }
+  localStorage.setItem('pa_om_url', val);
+  if (st) { st.textContent = 'URL guardada correctamente.'; st.className = 'text-xs mt-2 text-green-600'; st.classList.remove('hidden'); }
+  toast('URL de Power Automate guardada', 'success');
+}
+
+async function probarPAUrl() {
+  const url = getPAUrl();
+  const st  = document.getElementById('cfg-pa-status');
+  if (!url || !url.startsWith('https://')) {
+    if (st) { st.textContent = 'Primero guarda una URL válida.'; st.className = 'text-xs mt-2 text-red-600'; st.classList.remove('hidden'); }
+    return;
+  }
+  if (st) { st.textContent = 'Probando conexión...'; st.className = 'text-xs mt-2 text-blue-600'; st.classList.remove('hidden'); }
+  try {
+    await fetch(url, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ evento: 'ping' }) });
+    if (st) { st.textContent = 'Conexión alcanzada (red OK). Verifica en Power Automate que el flujo recibió la solicitud.'; st.className = 'text-xs mt-2 text-green-600'; st.classList.remove('hidden'); }
+    toast('Prueba enviada — revisa el historial del flujo en Power Automate', 'info');
+  } catch (err) {
+    if (st) { st.textContent = `Error de red: ${err.message}`; st.className = 'text-xs mt-2 text-red-600'; st.classList.remove('hidden'); }
+    toast('No se pudo alcanzar Power Automate — verifica la URL y la red', 'error');
+  }
+}
+
+function resetPAUrl() {
+  localStorage.removeItem('pa_om_url');
+  const paEl = document.getElementById('cfg-pa-url');
+  if (paEl) paEl.value = PA_OM_CREADA_URL_DEFAULT;
+  const st = document.getElementById('cfg-pa-status');
+  if (st) { st.textContent = 'URL restaurada a la predeterminada.'; st.className = 'text-xs mt-2 text-amber-600'; st.classList.remove('hidden'); }
+  toast('URL restaurada a la predeterminada', 'warning');
 }
 
 // ============================================================
