@@ -30,11 +30,9 @@ select.inp{cursor:pointer}
 
 /* Badges estado */
 .s-creada{background:#e0f2fe;color:#0369a1}
-.s-pendiente{background:#fef9c3;color:#854d0e}
-.s-proceso{background:#dbeafe;color:#1e40af}
-.s-completada{background:#dcfce7;color:#166534}
-.s-cancelada{background:#f3f4f6;color:#6b7280}
 .s-programada{background:#ede9fe;color:#5b21b6}
+.s-reprogramada{background:#fef3c7;color:#b45309}
+.s-ejecutada{background:#dcfce7;color:#166534}
 
 /* Planes de Mantenimiento */
 .plan-card-extra{display:none}
@@ -65,6 +63,10 @@ select.inp{cursor:pointer}
 
 /* Modal */
 .modal-bg{background:rgba(0,0,0,.45);backdrop-filter:blur(2px)}
+
+/* Gantt slide-over panel */
+#gantt-panel{transition:transform .3s ease;will-change:transform}
+#gantt-panel.panel-hidden{transform:translateX(100%)}
 
 /* Section header */
 .sec-title{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1rem;padding-left:.75rem;border-left:3px solid}
@@ -126,6 +128,9 @@ select.inp{cursor:pointer}
 }
 .login-inp:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
 .login-inp:disabled{background:#f1f5f9;color:#94a3b8;cursor:not-allowed}
+
+/* Toggle error state */
+.btn-toggle-error { border-color: #f87171 !important; color: #f87171 !important; }
 </style>
 </head>
 <body class="text-gray-800 h-screen flex overflow-hidden">
@@ -243,6 +248,10 @@ select.inp{cursor:pointer}
         <span id="sb-step-ic-5" class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 border border-slate-600 text-slate-500">5</span>
         <span class="nav-label text-slate-500" id="sb-step-lbl-5">Equipos</span>
       </button>
+      <button type="button" onclick="irPasoN(6)" id="sb-step-6" class="nav-sub-item">
+        <span id="sb-step-ic-6" class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 border border-slate-600 text-slate-500">6</span>
+        <span class="nav-label text-slate-500" id="sb-step-lbl-6">Archivos</span>
+      </button>
       <div class="pl-2 pt-1 pb-1 pr-3">
         <div class="h-0.5 bg-slate-700 rounded-full overflow-hidden">
           <div id="n-sb-progress-bar" class="h-full bg-blue-500 rounded-full transition-all duration-300" style="width:20%"></div>
@@ -342,12 +351,12 @@ select.inp{cursor:pointer}
           <p class="text-xs text-gray-400 mt-1">sin programar</p>
         </div>
         <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-blue-400">
-          <p class="text-xs text-gray-500 font-medium">En Proceso</p>
+          <p class="text-xs text-gray-500 font-medium">Programadas</p>
           <p class="text-3xl font-bold text-blue-600 mt-1" id="kpi-proceso">0</p>
-          <p class="text-xs text-gray-400 mt-1">en ejecución</p>
+          <p class="text-xs text-gray-400 mt-1">prog. + reprog.</p>
         </div>
         <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-green-500">
-          <p class="text-xs text-gray-500 font-medium">Completadas</p>
+          <p class="text-xs text-gray-500 font-medium">Ejecutadas</p>
           <p class="text-3xl font-bold text-green-600 mt-1" id="kpi-completadas">0</p>
           <p class="text-xs text-gray-400 mt-1">finalizadas</p>
         </div>
@@ -428,6 +437,11 @@ select.inp{cursor:pointer}
                 <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 border-gray-300 bg-gray-50 text-gray-400" id="n-sc-5">5</div>
                 <span class="text-[10px] text-gray-500 mt-1 hidden sm:block text-center leading-tight">Equipos</span>
               </div>
+              <div class="flex-1 h-0.5 mx-1 bg-gray-200" id="n-sl-5"></div>
+              <div class="flex flex-col items-center flex-shrink-0">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 border-gray-300 bg-gray-50 text-gray-400" id="n-sc-6">6</div>
+                <span class="text-[10px] text-gray-500 mt-1 hidden sm:block text-center leading-tight">Archivos</span>
+              </div>
             </div>
 
             <!-- ===== PASO 1: Detalles Técnicos ===== -->
@@ -437,32 +451,28 @@ select.inp{cursor:pointer}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">SET</label>
-                    <select id="n-set" class="inp" onchange="onSetChange('n')">
+                    <select id="n-set" class="inp" onchange="onSetChange('n');_clrErr('n-set','nerr-set')">
                       <option value="">Seleccione SET...</option>
                     </select>
+                    <p class="text-xs text-red-500 hidden mt-1" id="nerr-set"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione el SET</p>
                   </div>
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Alimentador</label>
-                    <select id="n-alimentador" class="inp" disabled onchange="onAlimentadorChange('n')">
+                    <select id="n-alimentador" class="inp" disabled onchange="onAlimentadorChange('n');_clrErr('n-alimentador','nerr-alimentador')">
                       <option value="">— Seleccione SET primero —</option>
                     </select>
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                      Zona <span class="text-xs font-normal text-gray-400">(asignada automáticamente)</span>
-                    </label>
-                    <input type="text" id="n-zona" class="inp bg-gray-50 text-gray-600 cursor-default" readonly placeholder="Se asignará desde el bloque de trabajo...">
+                    <p class="text-xs text-red-500 hidden mt-1" id="nerr-alimentador"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione el Alimentador</p>
                   </div>
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Circuito a solicitar</label>
-                    <input type="text" id="n-circuito" class="inp" placeholder="Ej: C01, L23...">
+                    <input type="text" id="n-circuito" class="inp" placeholder="Ej: C01, L23..." oninput="_clrErr('n-circuito','nerr-circuito')">
+                    <p class="text-xs text-red-500 hidden mt-1" id="nerr-circuito"><i class="fas fa-exclamation-circle mr-1"></i>Ingrese el circuito</p>
                   </div>
-                  <div></div>
                   <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Descripción del trabajo *</label>
                     <textarea id="n-descripcion" class="inp resize-none" rows="3" required minlength="5"
                       placeholder="Describa el trabajo a realizar..."
-                      oninput="document.getElementById('n-chars').textContent=this.value.length+' chars'"></textarea>
+                      oninput="document.getElementById('n-chars').textContent=this.value.length+' chars'; if(this.value.trim().length>=5) _clrErr('n-descripcion','nerr-descripcion')"></textarea>
                     <div class="flex justify-between mt-1">
                       <p class="text-xs text-red-500 hidden" id="nerr-descripcion">Mínimo 5 caracteres</p>
                       <span class="text-xs text-gray-400 ml-auto" id="n-chars">0 chars</span>
@@ -498,10 +508,12 @@ select.inp{cursor:pointer}
                       </button>
                     </div>
                     <input type="hidden" id="n-atencion-dre" value="">
+                    <p class="text-xs text-red-500 hidden mt-1.5" id="nerr-dre"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione si requiere Atención DRE</p>
                   </div>
                   <div id="n-spor-wrap" class="hidden">
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">N° de SPOR</label>
-                    <input type="text" id="n-spor" class="inp" placeholder="Ingrese N° de SPOR">
+                    <input type="text" id="n-spor" class="inp" placeholder="Ingrese N° de SPOR" oninput="_clrErr('n-spor','nerr-spor')">
+                    <p class="text-xs text-red-500 hidden mt-1" id="nerr-spor"><i class="fas fa-exclamation-circle mr-1"></i>Ingrese el N° de SPOR</p>
                   </div>
                 </div>
               </div>
@@ -522,13 +534,14 @@ select.inp{cursor:pointer}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Tiempo estimado (horas)</label>
-                    <select id="n-tiempo" class="inp">
+                    <select id="n-tiempo" class="inp" onchange="_clrErr('n-tiempo','nerr-tiempo')">
                       <option value="">Seleccione duración...</option>
                       <option>01:00</option><option>02:00</option><option>03:00</option>
                       <option>04:00</option><option>05:00</option><option>06:00</option>
                       <option>07:00</option><option>08:00</option><option>09:00</option>
                       <option>10:00</option>
                     </select>
+                    <p class="text-xs text-red-500 hidden mt-1" id="nerr-tiempo"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione el tiempo estimado</p>
                   </div>
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Turno</label>
@@ -541,6 +554,7 @@ select.inp{cursor:pointer}
                         class="flex-1 py-2.5 text-sm font-semibold rounded-lg border-2 border-gray-400 bg-white text-gray-600 transition-all">🌙 Nocturno</button>
                     </div>
                     <input type="hidden" id="n-turno" value="">
+                    <p class="text-xs text-red-500 hidden mt-1.5" id="nerr-turno"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione el turno</p>
                   </div>
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Requiere traslado</label>
@@ -555,13 +569,15 @@ select.inp{cursor:pointer}
                         <i class="fas fa-times mr-1"></i> No</button>
                     </div>
                     <input type="hidden" id="n-traslado" value="">
+                    <p class="text-xs text-red-500 hidden mt-1.5" id="nerr-traslado"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione si requiere traslado</p>
                   </div>
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Tipo de corte</label>
-                    <select id="n-tipo-corte" class="inp">
+                    <select id="n-tipo-corte" class="inp" onchange="_clrErr('n-tipo-corte','nerr-tipo-corte')">
                       <option value="">Seleccione tipo...</option>
                       <option>Mantenimiento</option><option>Expansión</option><option>Exonerado</option>
                     </select>
+                    <p class="text-xs text-red-500 hidden mt-1" id="nerr-tipo-corte"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione el tipo de corte</p>
                   </div>
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Corte en alta</label>
@@ -576,10 +592,12 @@ select.inp{cursor:pointer}
                         <i class="fas fa-times mr-1"></i> No</button>
                     </div>
                     <input type="hidden" id="n-cortealta" value="">
+                    <p class="text-xs text-red-500 hidden mt-1.5" id="nerr-cortealta"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione si el corte es en alta</p>
                   </div>
                   <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Compensación actual</label>
-                    <input type="text" id="n-compensacion" class="inp" placeholder="Indique la compensación actual...">
+                    <input type="text" id="n-compensacion" class="inp" placeholder="Indique la compensación actual..." oninput="_clrErr('n-compensacion','nerr-compensacion')">
+                    <p class="text-xs text-red-500 hidden mt-1" id="nerr-compensacion"><i class="fas fa-exclamation-circle mr-1"></i>Ingrese la compensación actual</p>
                   </div>
                 </div>
               </div>
@@ -597,6 +615,7 @@ select.inp{cursor:pointer}
             <div class="form-step space-y-6 hidden" id="n-step-4">
               <div>
                 <p class="sec-title text-slate-700" style="border-color:#475569">Órdenes de Mantenimiento</p>
+                <p class="text-xs text-red-500 hidden mb-2" id="nerr-oms"><i class="fas fa-exclamation-circle mr-1"></i>Debes ingresar al menos una OM con N° de OM</p>
                 <div id="n-om-list" class="space-y-3 mb-3"></div>
                 <button type="button" id="n-om-add" onclick="addOM('n')"
                   class="w-full py-2.5 text-sm font-medium text-slate-600 bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg hover:border-slate-500 hover:bg-slate-100 transition-all">
@@ -644,24 +663,6 @@ select.inp{cursor:pointer}
                 </div>
               </div>
 
-              <div>
-                <p class="sec-title text-teal-700" style="border-color:#0d9488">Documentos solicitados</p>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Seleccione los documentos requeridos</label>
-                  <div class="flex flex-wrap gap-2">
-                    <button type="button" id="n-doc-btn-carta" onclick="docToggle('n','carta')"
-                      class="py-2.5 px-4 text-sm font-semibold rounded-lg border-2 border-gray-400 bg-white text-gray-600 transition-all">
-                      <i class="fas fa-envelope mr-1.5"></i>Carta cliente</button>
-                    <button type="button" id="n-doc-btn-gtu" onclick="docToggle('n','gtu')"
-                      class="py-2.5 px-4 text-sm font-semibold rounded-lg border-2 border-gray-400 bg-white text-gray-600 transition-all">
-                      <i class="fas fa-file-alt mr-1.5"></i>GTU</button>
-                    <button type="button" id="n-doc-btn-mantenimiento" onclick="docToggle('n','mantenimiento')"
-                      class="py-2.5 px-4 text-sm font-semibold rounded-lg border-2 border-gray-400 bg-white text-gray-600 transition-all">
-                      <i class="fas fa-tools mr-1.5"></i>Mant. conexión</button>
-                    <input type="hidden" id="n-docs" value="">
-                  </div>
-                </div>
-              </div>
               <div class="flex justify-between pt-4 border-t border-gray-100">
                 <button type="button" onclick="irPasoN(3)" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
                   <i class="fas fa-arrow-left mr-1.5"></i>Anterior
@@ -675,6 +676,26 @@ select.inp{cursor:pointer}
             <!-- ===== PASO 5: Equipos ===== -->
             <div class="form-step space-y-5 hidden" id="n-step-5">
               <p class="sec-title text-cyan-700" style="border-color:#0891b2">Equipos</p>
+
+              <!-- ¿Se intervienen equipos? -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">¿Se intervienen equipos?</label>
+                <div class="flex gap-3">
+                  <button type="button" id="n-equipos-respuesta-btn-si" onclick="selEquiposRespuesta('n','si')"
+                    data-active="border-emerald-500 bg-emerald-600 text-white"
+                    class="flex-1 py-2.5 text-sm font-semibold rounded-lg border-2 border-gray-400 bg-white text-gray-600 transition-all">
+                    <i class="fas fa-check mr-1"></i> Sí</button>
+                  <button type="button" id="n-equipos-respuesta-btn-no" onclick="selEquiposRespuesta('n','no')"
+                    data-active="border-red-400 bg-red-500 text-white"
+                    class="flex-1 py-2.5 text-sm font-semibold rounded-lg border-2 border-gray-400 bg-white text-gray-600 transition-all">
+                    <i class="fas fa-times mr-1"></i> No</button>
+                </div>
+                <input type="hidden" id="n-equipos-respuesta" value="">
+                <p class="text-xs text-red-500 hidden mt-1.5" id="nerr-equipos-respuesta"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione si se intervienen equipos</p>
+              </div>
+
+              <!-- Detalle equipos (visible solo si Sí) -->
+              <div id="n-equipos-detalle" class="hidden space-y-5">
 
               <!-- Seccionador -->
               <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
@@ -747,6 +768,7 @@ select.inp{cursor:pointer}
                   </button>
                 </div>
               </div>
+              </div><!-- /n-equipos-detalle -->
 
               <div class="flex flex-col sm:flex-row justify-between gap-3 pt-4 border-t border-gray-100">
                 <button type="button" onclick="irPasoN(4)" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
@@ -756,8 +778,148 @@ select.inp{cursor:pointer}
                   <button type="button" onclick="resetNueva()" class="px-5 py-2.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">
                     <i class="fas fa-redo mr-1.5"></i>Limpiar
                   </button>
+                  <button type="button" onclick="irPasoN(6)" class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                    Siguiente <i class="fas fa-arrow-right ml-1.5"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== PASO 6: Carga de Archivos ===== -->
+            <div class="form-step space-y-6 hidden" id="n-step-6">
+              <div>
+                <p class="sec-title text-blue-700" style="border-color:#2563eb">Documentos y Archivos</p>
+                <p class="text-sm text-gray-500 mb-5">Selecciona los documentos requeridos y adjunta los archivos de esta orden. Ambos pasos son opcionales.</p>
+
+                <!-- Documentos solicitados -->
+                <div class="mb-6 pb-5 border-b border-gray-100">
+                  <p class="text-sm font-semibold text-teal-700 mb-2.5"><i class="fas fa-file-contract text-teal-500 mr-1.5"></i>Documentos solicitados</p>
+                  <div class="flex flex-wrap gap-2">
+                    <button type="button" id="n-doc-btn-carta" onclick="docToggle('n','carta')"
+                      class="py-2.5 px-4 text-sm font-semibold rounded-lg border-2 border-gray-400 bg-white text-gray-600 transition-all">
+                      <i class="fas fa-envelope mr-1.5"></i>Carta cliente</button>
+                    <button type="button" id="n-doc-btn-gtu" onclick="docToggle('n','gtu')"
+                      class="py-2.5 px-4 text-sm font-semibold rounded-lg border-2 border-gray-400 bg-white text-gray-600 transition-all">
+                      <i class="fas fa-file-alt mr-1.5"></i>GTU</button>
+                    <button type="button" id="n-doc-btn-mantenimiento" onclick="docToggle('n','mantenimiento')"
+                      class="py-2.5 px-4 text-sm font-semibold rounded-lg border-2 border-gray-400 bg-white text-gray-600 transition-all">
+                      <i class="fas fa-tools mr-1.5"></i>Mant. conexión</button>
+                    <input type="hidden" id="n-docs" value="">
+                  </div>
+                </div>
+
+                <!-- Archivos adjuntos -->
+                <p class="text-sm font-semibold text-blue-700 mb-3"><i class="fas fa-paperclip text-blue-500 mr-1.5"></i>Archivos adjuntos</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                  <!-- Card: Plano -->
+                  <div id="n-card-plano" onclick="_toggleArchivoCard('plano')" class="flex flex-col gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all border-gray-200 bg-white hover:border-gray-300">
+                    <div class="flex items-center gap-3">
+                      <input type="checkbox" id="n-chk-plano" onclick="event.stopPropagation()" onchange="_updateArchivoCard('plano')" class="w-4 h-4 accent-blue-600 flex-shrink-0">
+                      <div class="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-drafting-compass text-blue-600 text-sm"></i>
+                      </div>
+                      <span class="text-sm font-semibold text-gray-700">Plano</span>
+                    </div>
+                    <div id="n-file-wrap-plano" class="hidden">
+                      <input type="file" id="n-file-plano" onclick="event.stopPropagation()" onchange="_mostrarArchivoSeleccionado('plano')" class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept=".pdf,.jpg,.jpeg,.png,.dwg">
+                      <p class="text-xs text-red-500 hidden mt-1" id="nerr-plano"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione un archivo para Plano</p>
+                      <div id="n-file-preview-plano" class="hidden flex items-center gap-2 mt-2 px-2.5 py-1.5 bg-white rounded-lg border border-blue-200">
+                        <i class="fas fa-file-alt text-blue-400 text-xs flex-shrink-0"></i>
+                        <span id="n-file-name-plano" class="text-xs text-gray-700 truncate flex-1"></span>
+                        <button type="button" onclick="_limpiarArchivo('plano',event)" class="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full bg-red-100 hover:bg-red-200 text-red-500 transition-colors" title="Quitar archivo">
+                          <i class="fas fa-times text-[10px]"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Card: IRE -->
+                  <div id="n-card-ire" onclick="_toggleArchivoCard('ire')" class="flex flex-col gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all border-gray-200 bg-white hover:border-gray-300">
+                    <div class="flex items-center gap-3">
+                      <input type="checkbox" id="n-chk-ire" onclick="event.stopPropagation()" onchange="_updateArchivoCard('ire')" class="w-4 h-4 accent-blue-600 flex-shrink-0">
+                      <div class="w-9 h-9 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-file-alt text-violet-600 text-sm"></i>
+                      </div>
+                      <span class="text-sm font-semibold text-gray-700">IRE</span>
+                    </div>
+                    <div id="n-file-wrap-ire" class="hidden">
+                      <input type="file" id="n-file-ire" onclick="event.stopPropagation()" onchange="_mostrarArchivoSeleccionado('ire')" class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100" accept=".pdf,.jpg,.jpeg,.png,.docx">
+                      <p class="text-xs text-red-500 hidden mt-1" id="nerr-ire"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione un archivo para IRE</p>
+                      <div id="n-file-preview-ire" class="hidden flex items-center gap-2 mt-2 px-2.5 py-1.5 bg-white rounded-lg border border-violet-200">
+                        <i class="fas fa-file-alt text-violet-400 text-xs flex-shrink-0"></i>
+                        <span id="n-file-name-ire" class="text-xs text-gray-700 truncate flex-1"></span>
+                        <button type="button" onclick="_limpiarArchivo('ire',event)" class="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full bg-red-100 hover:bg-red-200 text-red-500 transition-colors" title="Quitar archivo">
+                          <i class="fas fa-times text-[10px]"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Card: Carta de Exoneración -->
+                  <div id="n-card-carta" onclick="_toggleArchivoCard('carta')" class="flex flex-col gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all border-gray-200 bg-white hover:border-gray-300">
+                    <div class="flex items-center gap-3">
+                      <input type="checkbox" id="n-chk-carta" onclick="event.stopPropagation()" onchange="_updateArchivoCard('carta')" class="w-4 h-4 accent-blue-600 flex-shrink-0">
+                      <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-envelope-open-text text-amber-600 text-sm"></i>
+                      </div>
+                      <span class="text-sm font-semibold text-gray-700">Carta de Exoneración</span>
+                    </div>
+                    <div id="n-file-wrap-carta" class="hidden">
+                      <input type="file" id="n-file-carta" onclick="event.stopPropagation()" onchange="_mostrarArchivoSeleccionado('carta')" class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100" accept=".pdf,.jpg,.jpeg,.png,.docx">
+                      <p class="text-xs text-red-500 hidden mt-1" id="nerr-carta"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione un archivo para Carta de Exoneración</p>
+                      <div id="n-file-preview-carta" class="hidden flex items-center gap-2 mt-2 px-2.5 py-1.5 bg-white rounded-lg border border-amber-200">
+                        <i class="fas fa-file-alt text-amber-400 text-xs flex-shrink-0"></i>
+                        <span id="n-file-name-carta" class="text-xs text-gray-700 truncate flex-1"></span>
+                        <button type="button" onclick="_limpiarArchivo('carta',event)" class="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full bg-red-100 hover:bg-red-200 text-red-500 transition-colors" title="Quitar archivo">
+                          <i class="fas fa-times text-[10px]"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Card: Hoja de Equipo -->
+                  <div id="n-card-hoja" onclick="_toggleArchivoCard('hoja')" class="flex flex-col gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all border-gray-200 bg-white hover:border-gray-300">
+                    <div class="flex items-center gap-3">
+                      <input type="checkbox" id="n-chk-hoja" onclick="event.stopPropagation()" onchange="_updateArchivoCard('hoja')" class="w-4 h-4 accent-blue-600 flex-shrink-0">
+                      <div class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-clipboard-list text-emerald-600 text-sm"></i>
+                      </div>
+                      <span class="text-sm font-semibold text-gray-700">Hoja de Equipo</span>
+                    </div>
+                    <div id="n-file-wrap-hoja" class="hidden">
+                      <input type="file" id="n-file-hoja" onclick="event.stopPropagation()" onchange="_mostrarArchivoSeleccionado('hoja')" class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" accept=".pdf,.jpg,.jpeg,.png,.docx">
+                      <p class="text-xs text-red-500 hidden mt-1" id="nerr-hoja"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione un archivo para Hoja de Equipo</p>
+                      <div id="n-file-preview-hoja" class="hidden flex items-center gap-2 mt-2 px-2.5 py-1.5 bg-white rounded-lg border border-emerald-200">
+                        <i class="fas fa-file-alt text-emerald-400 text-xs flex-shrink-0"></i>
+                        <span id="n-file-name-hoja" class="text-xs text-gray-700 truncate flex-1"></span>
+                        <button type="button" onclick="_limpiarArchivo('hoja',event)" class="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full bg-red-100 hover:bg-red-200 text-red-500 transition-colors" title="Quitar archivo">
+                          <i class="fas fa-times text-[10px]"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Nota informativa (sin botón de carga separado) -->
+                <div class="mt-5">
+                  <div class="flex items-start gap-2.5 p-3.5 bg-blue-50 rounded-xl border border-blue-100">
+                    <i class="fas fa-info-circle text-blue-400 text-sm mt-0.5 flex-shrink-0"></i>
+                    <p class="text-xs text-blue-700 leading-relaxed">Los archivos seleccionados se adjuntarán automáticamente a la orden al hacer clic en <strong>Crear Orden y Finalizar</strong>. Se enviarán a Power Automate junto con los datos de la orden.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-col sm:flex-row justify-between gap-3 pt-4 border-t border-gray-100">
+                <button type="button" onclick="irPasoN(5)" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                  <i class="fas fa-arrow-left mr-1.5"></i>Anterior
+                </button>
+                <div class="flex gap-3">
+                  <button type="button" onclick="resetNueva()" class="px-5 py-2.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">
+                    <i class="fas fa-redo mr-1.5"></i>Limpiar
+                  </button>
                   <button type="submit" class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
-                    <i class="fas fa-save mr-1.5"></i>Guardar Orden
+                    <i class="fas fa-save mr-1.5"></i>Crear Orden y Finalizar
                   </button>
                 </div>
               </div>
@@ -772,25 +934,19 @@ select.inp{cursor:pointer}
 
       <!-- Filtros -->
       <div class="bg-white rounded-xl shadow-sm p-4 mb-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          <div class="relative lg:col-span-2">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="relative sm:col-span-2">
             <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-            <input type="text" id="f-buscar" class="inp pl-9" placeholder="Buscar por código, circuito, SET, zona..." oninput="renderLista()">
+            <input type="text" id="f-buscar" class="inp pl-9" placeholder="Buscar por Alimentador y SET..." oninput="renderLista()">
           </div>
-          <select id="f-estado" class="inp" onchange="renderLista()">
-            <option value="">Todos los estados</option>
-            <option>Creada</option>
-            <option>Programada</option>
-            <option>Pendiente</option><option>En Proceso</option>
-            <option>Completada</option><option>Cancelada</option>
-          </select>
-          <select id="f-dre" class="inp" onchange="renderLista()">
-            <option value="">Atención DRE: todas</option>
-            <option value="si">Con DRE</option>
-            <option value="no">Sin DRE</option>
-          </select>
           <div class="flex gap-2">
-            <input type="date" id="f-fecha" class="inp flex-1" onchange="renderLista()" title="Filtrar por fecha">
+            <select id="f-estado" class="inp flex-1" onchange="renderLista()">
+              <option value="">Todos los estados</option>
+              <option>Creada</option>
+              <option>Programada</option>
+              <option>Reprogramada</option>
+              <option>Ejecutada</option>
+            </select>
             <button onclick="limpiarFiltros()" class="px-3 py-2 bg-gray-100 text-gray-500 rounded-lg hover:bg-gray-200 flex-shrink-0" title="Limpiar filtros">
               <i class="fas fa-times text-sm"></i>
             </button>
@@ -888,10 +1044,6 @@ select.inp{cursor:pointer}
                   <dd class="font-semibold text-gray-800" id="det-alimentador">—</dd>
                 </div>
                 <div>
-                  <dt class="text-xs text-gray-400 mb-0.5">Zona</dt>
-                  <dd class="text-gray-700" id="det-zona">—</dd>
-                </div>
-                <div>
                   <dt class="text-xs text-gray-400 mb-0.5">Circuito a solicitar</dt>
                   <dd class="font-semibold text-gray-800" id="det-circuito">—</dd>
                 </div>
@@ -936,10 +1088,6 @@ select.inp{cursor:pointer}
               </dl>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-teal-400" id="det-docs-panel">
-              <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Documentos solicitados</p>
-              <div id="det-docs-list" class="flex flex-wrap gap-2"></div>
-            </div>
 
             <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-cyan-400 hidden" id="det-equipos-panel">
               <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">Equipos</p>
@@ -1013,6 +1161,24 @@ select.inp{cursor:pointer}
             <div class="bg-white rounded-xl shadow-sm p-5">
               <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">Historial</p>
               <div id="det-historial" class="space-y-4 max-h-80 overflow-y-auto"></div>
+            </div>
+
+            <!-- Documentos y Archivos (panel unificado) -->
+            <div id="det-archivos-panel" class="hidden bg-white rounded-xl shadow-sm p-5 border-l-4 border-teal-400">
+              <!-- Documentos solicitados -->
+              <div id="det-docs-wrap" class="hidden">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">
+                  <i class="fas fa-file-contract text-teal-400 mr-1.5"></i>Documentos solicitados
+                </p>
+                <div id="det-docs-list" class="flex flex-wrap gap-2 mb-4"></div>
+              </div>
+              <!-- Archivos adjuntos -->
+              <div id="det-archivos-wrap" class="hidden">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">
+                  <i class="fas fa-paperclip text-blue-400 mr-1.5"></i>Archivos adjuntos
+                </p>
+                <div id="det-archivos-list" class="flex flex-wrap gap-2"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1416,97 +1582,7 @@ select.inp{cursor:pointer}
 
     <!-- ========== CONFIGURACIÓN ========== -->
     <div id="pantalla-config" class="pantalla">
-      <div class="max-w-3xl mx-auto space-y-6">
-
-        <!-- Gestión de Usuarios (solo SOPORTE) -->
-        <div id="cfg-usuarios-section" class="hidden bg-white rounded-xl shadow-sm p-6 border border-purple-100">
-          <div class="flex justify-between items-center mb-5">
-            <div>
-              <p class="font-semibold text-gray-800"><i class="fas fa-users-cog text-purple-500 mr-2"></i>Gestión de Usuarios</p>
-              <p class="text-sm text-gray-500 mt-0.5">Registrar y administrar cuentas del sistema</p>
-            </div>
-            <button onclick="abrirModalUsuario()" class="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-700">
-              <i class="fas fa-user-plus mr-1.5"></i>Nuevo Usuario
-            </button>
-          </div>
-          <div id="cfg-usuarios-lista" class="space-y-3"><!-- rendered by renderUsuarios() --></div>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-sm p-6">
-          <p class="font-semibold text-gray-800 mb-1"><i class="fas fa-building text-blue-500 mr-2"></i>Áreas / Departamentos</p>
-          <p class="text-sm text-gray-500 mb-4">Áreas disponibles en el sistema</p>
-          <div class="flex gap-2 mb-4">
-            <input type="text" id="cfg-area-input" class="inp flex-1" placeholder="Nombre del área..." onkeydown="if(event.key==='Enter'){addCfg('areas','cfg-area-input','cfg-area-tags');event.preventDefault()}">
-            <button onclick="addCfg('areas','cfg-area-input','cfg-area-tags')" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex-shrink-0">
-              <i class="fas fa-plus mr-1"></i>Agregar
-            </button>
-          </div>
-          <div id="cfg-area-tags" class="min-h-10 flex flex-wrap"></div>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-sm p-6">
-          <p class="font-semibold text-gray-800 mb-1"><i class="fas fa-tags text-green-500 mr-2"></i>Tipos de Orden</p>
-          <p class="text-sm text-gray-500 mb-4">Categorías de órdenes en el sistema</p>
-          <div class="flex gap-2 mb-4">
-            <input type="text" id="cfg-tipo-input" class="inp flex-1" placeholder="Nombre del tipo..." onkeydown="if(event.key==='Enter'){addCfg('tipos','cfg-tipo-input','cfg-tipo-tags');event.preventDefault()}">
-            <button onclick="addCfg('tipos','cfg-tipo-input','cfg-tipo-tags')" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 flex-shrink-0">
-              <i class="fas fa-plus mr-1"></i>Agregar
-            </button>
-          </div>
-          <div id="cfg-tipo-tags" class="min-h-10 flex flex-wrap"></div>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-sm p-6">
-          <p class="font-semibold text-gray-800 mb-1"><i class="fas fa-users text-purple-500 mr-2"></i>Responsables</p>
-          <p class="text-sm text-gray-500 mb-4">Personal asignable a las órdenes</p>
-          <div class="flex gap-2 mb-4">
-            <input type="text" id="cfg-resp-input" class="inp flex-1" placeholder="Nombre completo..." onkeydown="if(event.key==='Enter'){addCfg('responsables','cfg-resp-input','cfg-resp-tags');event.preventDefault()}">
-            <button onclick="addCfg('responsables','cfg-resp-input','cfg-resp-tags')" class="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-700 flex-shrink-0">
-              <i class="fas fa-plus mr-1"></i>Agregar
-            </button>
-          </div>
-          <div id="cfg-resp-tags" class="min-h-10 flex flex-wrap"></div>
-        </div>
-
-        <!-- Power Automate -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-blue-100">
-          <p class="font-semibold text-gray-800 mb-1"><i class="fas fa-bolt text-blue-500 mr-2"></i>Power Automate — URL de notificación</p>
-          <p class="text-sm text-gray-500 mb-4">URL del trigger HTTP de tu flujo. Cópiala desde el paso "Cuando se recibe una solicitud HTTP" en Power Automate (debe incluir <code class="bg-gray-100 px-1 rounded text-xs">&amp;sig=...</code>).</p>
-          <textarea id="cfg-pa-url" rows="3"
-            class="inp w-full font-mono text-xs resize-y mb-3"
-            placeholder="https://prod-XX.logic.azure.com/workflows/.../invoke?api-version=2016-06-01&sp=...&sig=..."
-          ></textarea>
-          <div class="flex flex-wrap gap-2">
-            <button onclick="guardarPAUrl()" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-              <i class="fas fa-save mr-1.5"></i>Guardar URL
-            </button>
-            <button onclick="probarPAUrl()" class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100">
-              <i class="fas fa-wifi mr-1.5"></i>Probar conexión
-            </button>
-            <button onclick="resetPAUrl()" class="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100">
-              <i class="fas fa-undo mr-1.5"></i>Restaurar predeterminada
-            </button>
-          </div>
-          <p id="cfg-pa-status" class="text-xs mt-2 hidden"></p>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-red-100">
-          <p class="font-semibold text-red-600 mb-1"><i class="fas fa-exclamation-triangle mr-2"></i>Datos y Respaldo</p>
-          <p class="text-sm text-gray-500 mb-4">Exportar o limpiar los datos del sistema</p>
-          <div class="flex flex-wrap gap-3">
-            <button onclick="exportBackup()" class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100">
-              <i class="fas fa-download mr-1.5"></i>Exportar Backup
-            </button>
-            <button onclick="document.getElementById('import-input').click()" class="px-4 py-2 text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100">
-              <i class="fas fa-upload mr-1.5"></i>Importar Backup
-            </button>
-            <button onclick="clearAll()" class="px-4 py-2 text-sm font-medium text-red-700 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100">
-              <i class="fas fa-trash-alt mr-1.5"></i>Borrar Todo
-            </button>
-          </div>
-          <input type="file" id="import-input" accept=".json" class="hidden" onchange="importBackup(event)">
-        </div>
-      </div>
+      <div id="cfg-content" class="max-w-3xl mx-auto space-y-6"><!-- construido dinámicamente por renderConfig() --></div>
     </div>
 
     <!-- ========== CONTROL DE PROGRAMAS ========== -->
@@ -1754,7 +1830,7 @@ select.inp{cursor:pointer}
   </div>
 </div>
 
-<!-- ===== MODAL GESTIONAR (Programada → Completada / Reprogramada) ===== -->
+<!-- ===== MODAL GESTIONAR (Programada → Ejecutada / Reprogramada) ===== -->
 <div id="modal-gestionar" class="fixed inset-0 z-50 hidden items-center justify-center">
   <div class="modal-bg absolute inset-0" onclick="_cerrarModalesFlujo()"></div>
   <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 z-10 overflow-hidden">
@@ -1780,7 +1856,7 @@ select.inp{cursor:pointer}
         </div>
         <div>
           <p class="font-semibold text-emerald-800 text-sm">Marcar como Ejecutado</p>
-          <p class="text-xs text-emerald-600 mt-0.5">El trabajo fue realizado. Cambia el estado a <strong>Completada</strong>.</p>
+          <p class="text-xs text-emerald-600 mt-0.5">El trabajo fue realizado. Cambia el estado a <strong>Ejecutada</strong>.</p>
         </div>
       </button>
 
@@ -1882,6 +1958,95 @@ select.inp{cursor:pointer}
   </div>
 </div>
 
+<!-- ===== MODAL CAMBIAR PIN DE OTRO USUARIO ===== -->
+<div id="modal-usr-pin" class="fixed inset-0 z-50 hidden items-center justify-center">
+  <div class="modal-bg absolute inset-0" onclick="cerrarModalUsrPin()"></div>
+  <div class="relative bg-white rounded-xl shadow-xl p-6 w-full max-w-sm mx-4 z-10">
+    <div class="flex items-center justify-between mb-5">
+      <p class="text-lg font-semibold text-gray-800">Cambiar PIN</p>
+      <button onclick="cerrarModalUsrPin()" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+    </div>
+    <input type="hidden" id="mup-cr">
+    <input type="hidden" id="mup-nombre">
+    <p class="text-sm text-gray-500 mb-4" id="mup-label"></p>
+    <div class="space-y-3">
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Nuevo PIN (4 dígitos)</label>
+        <input type="password" id="mup-pin" class="inp" maxlength="4" placeholder="••••" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+        <p class="text-xs text-red-500 hidden mt-1" id="mup-pin-err"><i class="fas fa-exclamation-circle mr-1"></i>Debe tener exactamente 4 dígitos</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Confirmar PIN</label>
+        <input type="password" id="mup-pin2" class="inp" maxlength="4" placeholder="••••" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+        <p class="text-xs text-red-500 hidden mt-1" id="mup-pin2-err"><i class="fas fa-exclamation-circle mr-1"></i>Los PINs no coinciden</p>
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 mt-5">
+      <button onclick="cerrarModalUsrPin()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
+      <button onclick="guardarPinModalUser()" class="px-4 py-2 text-sm font-medium text-white bg-amber-600 rounded-lg hover:bg-amber-700">
+        <i class="fas fa-save mr-1.5"></i>Guardar PIN
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL AGREGAR USUARIO (PROGRAMADOR/SOPORTE) ===== -->
+<div id="modal-usr-add" class="fixed inset-0 z-50 hidden items-center justify-center">
+  <div class="modal-bg absolute inset-0" onclick="cerrarModalUsrAdd()"></div>
+  <div class="relative bg-white rounded-xl shadow-xl p-6 w-full max-w-sm mx-4 z-10">
+    <div class="flex items-center justify-between mb-5">
+      <p class="text-lg font-semibold text-gray-800">Agregar Persona</p>
+      <button onclick="cerrarModalUsrAdd()" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+    </div>
+    <input type="hidden" id="mua-cr">
+    <div class="space-y-3">
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Nombre completo</label>
+        <input type="text" id="mua-nombre" class="inp" placeholder="APELLIDOS NOMBRES" oninput="this.value=this.value.toUpperCase()">
+        <p class="text-xs text-red-500 hidden mt-1" id="mua-nombre-err"><i class="fas fa-exclamation-circle mr-1"></i>Ingrese el nombre</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">PIN inicial (4 dígitos)</label>
+        <input type="text" id="mua-pin" class="inp" maxlength="4" placeholder="0000" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+        <p class="text-xs text-red-500 hidden mt-1" id="mua-pin-err"><i class="fas fa-exclamation-circle mr-1"></i>Debe tener exactamente 4 dígitos</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Rol</label>
+        <select id="mua-rol" class="inp">
+          <option value="tecnico">Técnico</option>
+          <option value="programador">Programador</option>
+        </select>
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 mt-5">
+      <button onclick="cerrarModalUsrAdd()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
+      <button onclick="guardarAgregarUser()" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+        <i class="fas fa-user-plus mr-1.5"></i>Agregar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL CONFIRMAR ELIMINAR USUARIO ===== -->
+<div id="modal-usr-elim" class="fixed inset-0 z-50 hidden items-center justify-center">
+  <div class="modal-bg absolute inset-0" onclick="cerrarModalUsrElim()"></div>
+  <div class="relative bg-white rounded-xl shadow-xl p-6 w-full max-w-xs mx-4 z-10">
+    <div class="flex items-center justify-between mb-4">
+      <p class="text-lg font-semibold text-gray-800">Confirmar eliminación</p>
+      <button onclick="cerrarModalUsrElim()" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+    </div>
+    <p class="text-sm text-gray-600 mb-6" id="mue-msg"></p>
+    <input type="hidden" id="mue-cr">
+    <input type="hidden" id="mue-nombre">
+    <div class="flex gap-3">
+      <button onclick="cerrarModalUsrElim()" class="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
+      <button onclick="confirmarElimUser()" class="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700">
+        <i class="fas fa-trash mr-1.5"></i>Eliminar
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== MODAL CAMBIAR ESTADO ===== -->
 <div id="modal-estado" class="fixed inset-0 z-50 hidden items-center justify-center">
   <div class="modal-bg absolute inset-0" onclick="closeModal()"></div>
@@ -1891,13 +2056,79 @@ select.inp{cursor:pointer}
     <div class="space-y-2">
       <button onclick="setEstado('Creada')" class="w-full text-left px-4 py-3 rounded-lg s-creada text-sm font-semibold hover:opacity-80">📋 Creada</button>
       <button onclick="setEstado('Programada')" class="w-full text-left px-4 py-3 rounded-lg s-programada text-sm font-semibold hover:opacity-80">📅 Programada</button>
-      <button onclick="setEstado('Pendiente')" class="w-full text-left px-4 py-3 rounded-lg s-pendiente text-sm font-semibold hover:opacity-80">⏳ Pendiente</button>
-      <button onclick="setEstado('En Proceso')" class="w-full text-left px-4 py-3 rounded-lg s-proceso text-sm font-semibold hover:opacity-80">🔄 En Proceso</button>
-      <button onclick="setEstado('Completada')" class="w-full text-left px-4 py-3 rounded-lg s-completada text-sm font-semibold hover:opacity-80">✅ Completada</button>
-      <button onclick="setEstado('Cancelada')" class="w-full text-left px-4 py-3 rounded-lg s-cancelada text-sm font-semibold hover:opacity-80">❌ Cancelada</button>
+      <button onclick="setEstado('Reprogramada')" class="w-full text-left px-4 py-3 rounded-lg s-reprogramada text-sm font-semibold hover:opacity-80">🔄 Reprogramada</button>
+      <button onclick="setEstado('Ejecutada')" class="w-full text-left px-4 py-3 rounded-lg s-ejecutada text-sm font-semibold hover:opacity-80">✅ Ejecutada</button>
     </div>
     <button onclick="closeModal()" class="mt-4 w-full text-center text-sm text-gray-400 hover:text-gray-600">Cerrar</button>
   </div>
+</div>
+
+<!-- ===== MODAL REASIGNAR OM ===== -->
+<div id="modal-reasignar" class="fixed inset-0 z-50 hidden items-center justify-center">
+  <div class="modal-bg absolute inset-0" onclick="cerrarReasignar()"></div>
+  <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 z-10 overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-5 text-white">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-user-edit text-lg"></i>
+        </div>
+        <div>
+          <p class="font-bold text-base">Reasignar Técnico</p>
+          <p class="text-indigo-200 text-xs mt-0.5" id="mr-subtitulo">Selecciona el nuevo técnico responsable</p>
+        </div>
+      </div>
+    </div>
+    <div class="p-6 space-y-4">
+      <input type="hidden" id="mr-orden-id">
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">
+          <i class="fas fa-user-tie text-indigo-500 mr-1"></i>Técnico anterior
+        </label>
+        <p class="text-sm font-semibold text-gray-700 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2" id="mr-tecnico-anterior">—</p>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">
+          Nuevo técnico asignado <span class="text-red-500">*</span>
+        </label>
+        <select id="mr-tecnico" class="inp">
+          <option value="">— Seleccione un técnico —</option>
+        </select>
+      </div>
+      <div id="mr-error" class="hidden flex items-center gap-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+        <i class="fas fa-exclamation-circle text-red-400"></i>Seleccione un técnico para reasignar.
+      </div>
+      <p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+        <i class="fas fa-info-circle mr-1 text-amber-500"></i>El estado de la OM cambiará automáticamente a <strong>Reprogramada</strong>.
+      </p>
+    </div>
+    <div class="flex gap-3 px-6 pb-6">
+      <button type="button" onclick="cerrarReasignar()"
+        class="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">
+        Cancelar
+      </button>
+      <button type="button" onclick="confirmarReasignar()"
+        class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 transition-colors">
+        <i class="fas fa-check mr-1.5"></i>Confirmar Reasignación
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GANTT SLIDE-OVER PANEL ===== -->
+<div id="gantt-panel-overlay" class="fixed inset-0 z-[55] bg-black/30 hidden" onclick="cerrarGanttPanel()"></div>
+<div id="gantt-panel" class="fixed top-0 right-0 h-full w-full sm:w-[440px] bg-white shadow-2xl z-[60] flex flex-col panel-hidden" style="border-left:1px solid #e5e7eb">
+  <!-- Header -->
+  <div class="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 flex-shrink-0">
+    <div class="min-w-0 pr-3">
+      <p class="text-white font-semibold text-sm leading-tight truncate" id="gp-titulo">Detalle de Asignación</p>
+      <p class="text-indigo-200 text-xs mt-0.5 truncate" id="gp-subtitulo"></p>
+    </div>
+    <button onclick="cerrarGanttPanel()" class="flex-shrink-0 text-white hover:text-indigo-200 transition-colors p-1">
+      <i class="fas fa-times text-lg"></i>
+    </button>
+  </div>
+  <!-- Body scrollable -->
+  <div id="gp-body" class="flex-1 overflow-y-auto p-5 space-y-5 text-sm"></div>
 </div>
 
 <!-- ===== TOAST ===== -->
@@ -1905,6 +2136,7 @@ select.inp{cursor:pointer}
 
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-storage-compat.js"></script>
 <script>
 // ============================================================
 //  FIREBASE — CONFIGURACIÓN Y BASE DE DATOS
@@ -1919,7 +2151,8 @@ const firebaseConfig = {
   };
 
   firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+  const db      = firebase.firestore();
+  const storage = firebase.storage();
 
 // URL de Power Automate — editable desde Configuración (se guarda en localStorage)
 const PA_OM_CREADA_URL_DEFAULT = "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/b13ee4889e784876b4f1f490caa9d78b/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4za529pVFJBBxL66-xT2IhSXcmOVdmcVhETdTPJyaBA";
@@ -2354,6 +2587,7 @@ function selToggle(prefix, field, val) {
       isActive ? activeClass : 'border-gray-400 bg-white text-gray-600'
     } transition-all`;
   });
+  document.getElementById(`nerr-${field}`)?.classList.add('hidden');
 }
 
 function resetToggles(prefix, fields) {
@@ -2410,6 +2644,8 @@ function setDocs(prefix, docsStr) {
 //  ATENCIÓN DRE
 // ============================================================
 function selDRE(val, prefix) {
+  document.getElementById('nerr-dre')?.classList.add('hidden');
+  ['n-dre-si','n-dre-no'].forEach(id => document.getElementById(id)?.classList.remove('btn-toggle-error'));
   document.getElementById(`${prefix}-atencion-dre`).value = val;
   const si      = document.getElementById(`${prefix}-dre-si`);
   const no      = document.getElementById(`${prefix}-dre-no`);
@@ -2599,11 +2835,18 @@ function closeSidebar() {
 // ============================================================
 //  STEP WIZARD (Nueva Orden)
 // ============================================================
-let nStepActual = 1;
-const N_STEPS = 5;
+let nStepActual     = 1;
+const N_STEPS       = 6;
+// (archivos se leen al crear la orden, no se pre-suben)
 
 function irPasoN(n) {
-  if (n > nStepActual && nStepActual === 1 && !_validarPaso1()) return;
+  if (n > nStepActual) {
+    if (nStepActual === 1 && !_validarPaso1()) return;
+    if (nStepActual === 2 && !_validarPaso2()) return;
+    if (nStepActual === 3 && !_validarPaso3()) return;
+    if (nStepActual === 4 && !_validarPaso4()) return;
+    if (nStepActual === 5 && !_validarPaso5()) return;
+  }
   document.getElementById(`n-step-${nStepActual}`)?.classList.add('hidden');
   nStepActual = n;
   document.getElementById(`n-step-${nStepActual}`)?.classList.remove('hidden');
@@ -2612,13 +2855,197 @@ function irPasoN(n) {
 }
 
 function _validarPaso1() {
-  const dEl  = document.getElementById('n-descripcion');
-  const dErr = document.getElementById('nerr-descripcion');
-  const valid = dEl && dEl.value.trim().length >= 5;
-  if (dEl)  dEl.classList.toggle('error', !valid);
-  if (dErr) dErr.classList.toggle('hidden', !!valid);
-  if (!valid) toast('Ingrese la descripción del trabajo (mínimo 5 caracteres)', 'error');
-  return valid;
+  let ok = true;
+  function chk(id, errId, test) {
+    const el = document.getElementById(id);
+    const err = document.getElementById(errId);
+    const valid = el ? test(el.value) : false;
+    if (el)  el.classList.toggle('error', !valid);
+    if (err) err.classList.toggle('hidden', valid);
+    if (!valid) ok = false;
+  }
+  chk('n-set',          'nerr-set',          v => v.trim() !== '');
+  chk('n-alimentador',  'nerr-alimentador',  v => v.trim() !== '');
+  chk('n-circuito',     'nerr-circuito',     v => v.trim() !== '');
+  chk('n-descripcion',  'nerr-descripcion',  v => v.trim().length >= 5);
+  if (!ok) toast('Complete todos los campos del Paso 1', 'error');
+  return ok;
+}
+
+function _clrErr(inputId, errId) {
+  document.getElementById(inputId)?.classList.remove('error');
+  document.getElementById(errId)?.classList.add('hidden');
+}
+
+function _validarPaso2() {
+  let ok = true;
+  const dreVal = document.getElementById('n-atencion-dre')?.value || '';
+  const dreErr = document.getElementById('nerr-dre');
+  if (!dreVal) {
+    ok = false;
+    ['n-dre-si','n-dre-no'].forEach(id => document.getElementById(id)?.classList.add('btn-toggle-error'));
+    if (dreErr) dreErr.classList.remove('hidden');
+  } else {
+    if (dreErr) dreErr.classList.add('hidden');
+  }
+  if (dreVal === 'si') {
+    const sporEl  = document.getElementById('n-spor');
+    const sporErr = document.getElementById('nerr-spor');
+    const sporOk  = sporEl && sporEl.value.trim() !== '';
+    if (sporEl)  sporEl.classList.toggle('error', !sporOk);
+    if (sporErr) sporErr.classList.toggle('hidden', sporOk);
+    if (!sporOk) ok = false;
+  }
+  if (!ok) toast('Complete los campos requeridos del Paso 2', 'error');
+  return ok;
+}
+
+function _validarPaso3() {
+  let ok = true;
+  function chkSel(id, errId) {
+    const el = document.getElementById(id);
+    const err = document.getElementById(errId);
+    const valid = el && el.value.trim() !== '';
+    if (el)  el.classList.toggle('error', !valid);
+    if (err) err.classList.toggle('hidden', valid);
+    if (!valid) ok = false;
+  }
+  function chkToggle(field, errId) {
+    const val = document.getElementById(`n-${field}`)?.value || '';
+    const err = document.getElementById(errId);
+    if (!val) {
+      ok = false;
+      document.querySelectorAll(`button[id^="n-${field}-btn-"]`).forEach(b => b.classList.add('btn-toggle-error'));
+      if (err) err.classList.remove('hidden');
+    } else {
+      if (err) err.classList.add('hidden');
+    }
+  }
+  chkSel('n-tiempo',       'nerr-tiempo');
+  chkToggle('turno',       'nerr-turno');
+  chkSel('n-tipo-corte',   'nerr-tipo-corte');
+  chkToggle('traslado',    'nerr-traslado');
+  chkToggle('cortealta',   'nerr-cortealta');
+  chkSel('n-compensacion', 'nerr-compensacion');
+  if (!ok) toast('Complete todos los campos del Paso 3', 'error');
+  return ok;
+}
+
+function _validarPaso4() {
+  let ok = true;
+  const omList    = document.getElementById('n-om-list');
+  const omRows    = omList ? [...omList.querySelectorAll('.om-row')] : [];
+  const omGlobErr = document.getElementById('nerr-oms');
+  let atLeastOne  = false;
+  omRows.forEach(row => {
+    const numInp  = row.querySelector('input[id$="-num"]');
+    const projSel = row.querySelector('select');
+    const numOk   = numInp && numInp.value.trim() !== '';
+    const projOk  = projSel && projSel.value !== '';
+    if (numInp)  numInp.classList.toggle('error', !numOk);
+    if (projSel) projSel.classList.toggle('error', !projOk);
+    if (!numOk || !projOk) ok = false;
+    if (numOk) atLeastOne = true;
+    // Inline error hint for OM row
+    let numErr = numInp?.parentElement?.querySelector('.om-num-err');
+    if (!numErr && numInp) {
+      numErr = document.createElement('p');
+      numErr.className = 'om-num-err text-xs text-red-500 hidden mt-0.5';
+      numErr.innerHTML = '<i class="fas fa-exclamation-circle mr-1"></i>Ingrese N° OM';
+      numInp.parentElement.appendChild(numErr);
+    }
+    if (numErr) numErr.classList.toggle('hidden', numOk);
+    let projErr = projSel?.parentElement?.querySelector('.om-proj-err');
+    if (!projErr && projSel) {
+      projErr = document.createElement('p');
+      projErr.className = 'om-proj-err text-xs text-red-500 hidden mt-0.5';
+      projErr.innerHTML = '<i class="fas fa-exclamation-circle mr-1"></i>Seleccione Proyecto';
+      projSel.parentElement.appendChild(projErr);
+    }
+    if (projErr) projErr.classList.toggle('hidden', projOk);
+    // Auto-clear on input
+    if (numInp && !numInp.dataset.errBound) {
+      numInp.dataset.errBound = '1';
+      numInp.addEventListener('input', () => {
+        numInp.classList.remove('error');
+        numInp.parentElement.querySelector('.om-num-err')?.classList.add('hidden');
+      });
+    }
+    if (projSel && !projSel.dataset.errBound) {
+      projSel.dataset.errBound = '1';
+      projSel.addEventListener('change', () => {
+        projSel.classList.remove('error');
+        projSel.parentElement.querySelector('.om-proj-err')?.classList.add('hidden');
+      });
+    }
+  });
+  if (!atLeastOne) {
+    if (omGlobErr) omGlobErr.classList.remove('hidden');
+    ok = false;
+  } else {
+    if (omGlobErr) omGlobErr.classList.add('hidden');
+  }
+  // Planes: checked must have N° OM and cantidad > 0
+  const container = document.getElementById('n-planes-container');
+  if (container) {
+    container.querySelectorAll('.plan-check:checked').forEach(chk => {
+      const uid    = chk.id.replace('chk-', '');
+      const omSel  = document.getElementById(`om-${uid}`);
+      const cantEl = document.getElementById(`cant-${uid}`);
+      if (omSel && !omSel.value) {
+        omSel.classList.add('error');
+        if (!omSel.dataset.errBound) {
+          omSel.dataset.errBound = '1';
+          omSel.addEventListener('change', () => omSel.classList.remove('error'));
+        }
+        ok = false;
+      }
+      if (cantEl) {
+        const v = parseFloat(cantEl.value);
+        const cantOk = cantEl.value !== '' && !isNaN(v) && v > 0;
+        cantEl.classList.toggle('error', !cantOk);
+        if (!cantEl.dataset.errBound) {
+          cantEl.dataset.errBound = '1';
+          cantEl.addEventListener('input', () => cantEl.classList.remove('error'));
+        }
+        if (!cantOk) ok = false;
+      }
+    });
+  }
+  if (!ok) toast('Complete los campos requeridos del Paso 4', 'error');
+  return ok;
+}
+
+function _validarPaso5() {
+  const respVal = document.getElementById('n-equipos-respuesta')?.value || '';
+  const respErr = document.getElementById('nerr-equipos-respuesta');
+  if (!respVal) {
+    ['n-equipos-respuesta-btn-si','n-equipos-respuesta-btn-no'].forEach(id =>
+      document.getElementById(id)?.classList.add('btn-toggle-error'));
+    if (respErr) respErr.classList.remove('hidden');
+    toast('Indique si se intervienen equipos (Paso 5)', 'error');
+    return false;
+  }
+  if (respErr) respErr.classList.add('hidden');
+  if (respVal === 'no') return true;
+  // Si Sí: al menos un equipo debe estar en 'si'
+  const sec   = document.getElementById('n-seccionador')?.value   || '';
+  const rec   = document.getElementById('n-recloser')?.value      || '';
+  const transf = document.getElementById('n-transformadores')?.value || '';
+  if (sec !== 'si' && rec !== 'si' && transf !== 'si') {
+    toast('Seleccione al menos un tipo de equipo (Paso 5)', 'error');
+    return false;
+  }
+  return true;
+}
+
+function selEquiposRespuesta(prefix, val) {
+  selToggle(prefix, 'equipos-respuesta', val);
+  const detalle = document.getElementById(`${prefix}-equipos-detalle`);
+  if (detalle) detalle.classList.toggle('hidden', val !== 'si');
+  document.getElementById('nerr-equipos-respuesta')?.classList.add('hidden');
+  ['n-equipos-respuesta-btn-si','n-equipos-respuesta-btn-no'].forEach(id =>
+    document.getElementById(id)?.classList.remove('btn-toggle-error'));
 }
 
 function _updateStepBar() {
@@ -2846,7 +3273,10 @@ function ir(pantalla, params) {
   if (pantalla === 'asignacion')          renderAsignacion();
   if (pantalla === 'proyectos-tecnicos') renderProyectosTecnicos();
   if (pantalla === 'reportes')           renderReportes();
-  if (pantalla === 'config')      renderConfig();
+  if (pantalla === 'config') {
+    if (!sesionActual) { toast('Inicia sesión para acceder a la configuración', 'error'); return; }
+    renderConfig();
+  }
   if (pantalla === 'nueva')      { resetNueva(); fillSelects(); }
   if (pantalla === 'detalle' && params && params.id) loadDetalle(params.id);
   if (pantalla === 'editar'  && params && params.id) loadEditar(params.id);
@@ -2898,7 +3328,7 @@ function genCodigo() {
 //  NOTIFICACIONES POWER AUTOMATE
 // ============================================================
 // Retorna: 'sent' | 'skipped' | 'error'
-async function notificarOMCreadaPowerAutomate(orden) {
+async function notificarOMCreadaPowerAutomate(orden, archivosBase64 = []) {
   const url = getPAUrl();
   if (!url || !url.startsWith("https://")) {
     console.warn("URL de Power Automate no configurada. Configúrala en la pantalla de Configuración.");
@@ -2937,7 +3367,8 @@ async function notificarOMCreadaPowerAutomate(orden) {
     corteAlta:             orden.corteAlta        || "",
     compensacion:          orden.compensacion     || "",
     documentosSolicitados: orden.documentosSolicitados || "",
-    oms:                   omsValidas
+    oms:                   omsValidas,
+    archivos:              archivosBase64
   };
 
   console.log("Enviando notificación OM a Power Automate:", payload);
@@ -2968,7 +3399,27 @@ async function notificarOMCreadaPowerAutomate(orden) {
 async function crearOrden(e) {
   e.preventDefault();
   if (!validarNueva()) return;
-  const id = genCodigo();
+
+  // Leer archivos seleccionados como base64 (para enviar a PA)
+  const _tiposArch = ['plano','ire','carta','hoja'];
+  const archivosBase64   = [];
+  const archivosAdjuntos = [];
+  for (const tipo of _tiposArch) {
+    const chk = document.getElementById(`n-chk-${tipo}`);
+    const fi  = document.getElementById(`n-file-${tipo}`);
+    if (chk?.checked && fi?.files?.length > 0) {
+      const file = fi.files[0];
+      try {
+        const { base64, contentType } = await _archivoABase64(file);
+        archivosBase64.push({ tipo, nombre: file.name, base64, contentType });
+        archivosAdjuntos.push({ tipo, nombre: file.name, contentType, fechaSubida: new Date().toISOString() });
+      } catch (readErr) {
+        console.warn(`No se pudo leer archivo ${tipo}:`, readErr);
+      }
+    }
+  }
+
+  const id    = genCodigo();
   const ahora = new Date().toISOString();
   const orden = {
     id,
@@ -2991,6 +3442,7 @@ async function crearOrden(e) {
     equipos:        getEquipos('n'),
     planesMantenimiento: getPlanesSeleccionados('n'),
     trabajosAdicionales: getTrabajosAdicionales('n'),
+    archivosAdjuntos,
     usuarioRegistro: sesionActual ? sesionActual.nombre : 'Sistema',
     crRegistro:     sesionActual ? sesionActual.cr     : '',
     estado:         'Creada',
@@ -3012,7 +3464,7 @@ async function crearOrden(e) {
     return;
   }
   // PA va separado — sus errores nunca afectan el resultado de Firestore
-  const paStatus = await notificarOMCreadaPowerAutomate(orden);
+  const paStatus = await notificarOMCreadaPowerAutomate(orden, archivosBase64);
   updateBadges();
   toast(`Orden ${id} creada`, 'success');
   if (paStatus === 'sent')  toast('Notificación enviada a Power Automate', 'info');
@@ -3023,10 +3475,19 @@ async function crearOrden(e) {
 function resetNueva() {
   document.getElementById('form-nueva').reset();
   document.getElementById('n-chars').textContent = '0 chars';
-  const dEl = document.getElementById('n-descripcion');
-  if (dEl) dEl.classList.remove('error');
-  const dErr = document.getElementById('nerr-descripcion');
-  if (dErr) dErr.classList.add('hidden');
+  // Limpiar todos los errores
+  document.querySelectorAll('#form-nueva .text-red-500').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('#form-nueva .inp.error').forEach(el => el.classList.remove('error'));
+  document.querySelectorAll('#form-nueva .btn-toggle-error').forEach(b => b.classList.remove('btn-toggle-error'));
+  // Reset equipos-respuesta
+  const eqDetalle = document.getElementById('n-equipos-detalle');
+  if (eqDetalle) eqDetalle.classList.add('hidden');
+  selToggle('n','equipos-respuesta',''); // limpia valor
+  const eqResEl = document.getElementById('n-equipos-respuesta');
+  if (eqResEl) eqResEl.value = '';
+  document.querySelectorAll('[id^="n-equipos-respuesta-btn-"]').forEach(b => {
+    b.className = 'flex-1 py-2.5 text-sm font-semibold rounded-lg border-2 border-gray-400 bg-white text-gray-600 transition-all';
+  });
   resetDREButtons('n');
   resetToggles('n', ['turno','traslado','cortealta']);
   resetDocs('n');
@@ -3042,6 +3503,17 @@ function resetNueva() {
   resetEquipos('n');
   resetPlanesSeleccionados('n');
   resetTrabajosAdicionales('n');
+  // Reset paso 6 — limpiar selección de archivos
+  ['plano','ire','carta','hoja'].forEach(t => {
+    const chk  = document.getElementById(`n-chk-${t}`);
+    const wrap = document.getElementById(`n-file-wrap-${t}`);
+    const card = document.getElementById(`n-card-${t}`);
+    const fi   = document.getElementById(`n-file-${t}`);
+    if (chk)  chk.checked = false;
+    if (wrap) wrap.classList.add('hidden');
+    if (fi)   fi.value = '';
+    if (card) { card.classList.remove('border-blue-500','bg-blue-50'); card.classList.add('border-gray-200','bg-white'); }
+  });
   // Reset wizard to step 1
   for (let i = 1; i <= N_STEPS; i++) {
     const s = document.getElementById(`n-step-${i}`);
@@ -3056,19 +3528,26 @@ function resetNueva() {
 // ============================================================
 function validarNueva() {
   let ok = true;
-  const campos = [
-    {id:'n-descripcion', errId:'nerr-descripcion', check: v => v.trim().length >= 5},
-  ];
-  campos.forEach(c => {
-    const el = document.getElementById(c.id);
-    const err = document.getElementById(c.errId);
-    const valid = el && c.check(el.value);
-    if (el) el.classList.toggle('error', !valid);
-    if (err) err.classList.toggle('hidden', !!valid);
-    if (!valid) ok = false;
+  // Paso 6: si checkbox activo, debe haber archivo seleccionado
+  ['plano','ire','carta','hoja'].forEach(tipo => {
+    const chk  = document.getElementById(`n-chk-${tipo}`);
+    const fi   = document.getElementById(`n-file-${tipo}`);
+    const err  = document.getElementById(`nerr-${tipo}`);
+    const card = document.getElementById(`n-card-${tipo}`);
+    if (chk?.checked) {
+      const hasFile = fi?.files && fi.files.length > 0;
+      if (!hasFile) {
+        ok = false;
+        if (err)  err.classList.remove('hidden');
+        if (card) { card.classList.add('border-red-400'); card.classList.remove('border-blue-500','bg-blue-50'); }
+      } else {
+        if (err)  err.classList.add('hidden');
+      }
+    } else {
+      if (err) err.classList.add('hidden');
+    }
   });
-
-  if (!ok) toast('Corrija los campos marcados', 'error');
+  if (!ok) toast('Selecciona los archivos marcados con checkbox antes de finalizar', 'error');
   return ok;
 }
 
@@ -3079,9 +3558,8 @@ function renderDashboard() {
   const o = DB.ordenes;
   const total       = o.length;
   const pendientes  = o.filter(x => x.estado === 'Creada').length;
-  const proceso     = o.filter(x => x.estado === 'En Proceso').length;
-  const completadas = o.filter(x => x.estado === 'Completada').length;
-  const canceladas  = o.filter(x => x.estado === 'Cancelada').length;
+  const proceso     = o.filter(x => x.estado === 'Programada' || x.estado === 'Reprogramada').length;
+  const completadas = o.filter(x => x.estado === 'Ejecutada').length;
   const urgentes    = o.filter(x => x.atencionDRE === 'si').length;
 
   setText('kpi-total',       total);
@@ -3105,10 +3583,12 @@ function renderDashboard() {
       </tr>`).join('');
 
   // Charts
+  const programadas  = o.filter(x => x.estado === 'Programada').length;
+  const reprogramadas = o.filter(x => x.estado === 'Reprogramada').length;
   mkChart('ch-estado','doughnut',
-    ['Pendiente','En Proceso','Completada','Cancelada'],
-    [pendientes, proceso, completadas, canceladas],
-    ['#fbbf24','#3b82f6','#22c55e','#9ca3af']);
+    ['Creada','Programada','Reprogramada','Ejecutada'],
+    [pendientes, programadas, reprogramadas, completadas],
+    ['#38bdf8','#8b5cf6','#f59e0b','#22c55e']);
 
   const zonas = ['Lima','Huarochirí','Cañete'];
   mkChart('ch-prioridad','bar',
@@ -3123,8 +3603,6 @@ function renderDashboard() {
 function renderLista() {
   const buscar    = (document.getElementById('f-buscar')?.value || '').toLowerCase();
   const filEstado = document.getElementById('f-estado')?.value || '';
-  const filDRE    = document.getElementById('f-dre')?.value || '';
-  const filFecha  = document.getElementById('f-fecha')?.value || '';
   const filSemana = document.getElementById('f-semana-export')?.value || '';
 
   const rol       = sesionActual?.rol || 'tecnico';
@@ -3144,6 +3622,7 @@ function renderLista() {
       <th class="px-5 py-3">Descripción del Trabajo</th>
       <th class="px-5 py-3 cursor-pointer hover:text-blue-600 whitespace-nowrap" onclick="sortBy('estado')">Estado <i class="fas fa-sort opacity-40 ml-1"></i></th>
       ${autorCol}
+      <th class="px-5 py-3 text-center whitespace-nowrap">Archivos</th>
       <th class="px-5 py-3 text-center">Acciones</th>`;
   }
 
@@ -3169,17 +3648,15 @@ function renderLista() {
   }
 
   let filtradas = DB.ordenes.filter(o => {
-    const b = !buscar || [o.id,o.circuito,o.set,o.alimentador,o.zona,o.distrito,o.descripcion,
+    const b = !buscar || [o.alimentador,o.set,o.id,o.circuito,o.descripcion,
       ...(o.ordenesMant||[]).map(m=>m.om||'')].some(f => (f||'').toLowerCase().includes(buscar));
     const e = !filEstado || o.estado === filEstado;
-    const d = !filDRE    || o.atencionDRE === filDRE;
-    const f = !filFecha  || (o.fechaRegistro||'').startsWith(filFecha);
     const s = !filSemana || o.semanaProgramada === filSemana;
     // Filtro por rol
     let u = true;
     if (rol === 'tecnico')     u = o.usuarioRegistro === miUsuario;
     if (rol === 'programador') u = !miCR || (o.crRegistro === miCR || usuariosCR.has(o.usuarioRegistro));
-    return b && e && d && f && s && u;
+    return b && e && s && u;
   });
 
   // Ordenar
@@ -3198,13 +3675,18 @@ function renderLista() {
   setText('pag-info', `${total===0?0:ini+1}–${Math.min(ini+POR_PAG,total)} de ${total}`);
 
   const hoy = new Date(); hoy.setHours(0,0,0,0);
-  const colCount = rol === 'programador' ? 7 : 6;
+  const colCount = rol === 'programador' ? 8 : 7;
   const tbody = document.getElementById('lista-tbody');
   tbody.innerHTML = pag.length === 0
     ? `<tr><td colspan="${colCount}" class="px-5 py-10 text-center text-gray-400"><i class="fas fa-search text-2xl mb-2 block"></i>Sin resultados</td></tr>`
     : pag.map(o => {
+        const archivos  = o.archivosAdjuntos || [];
+        const _oIco = { plano:'fa-drafting-compass', ire:'fa-file-alt', carta:'fa-envelope-open-text', hoja:'fa-clipboard-list' };
+        const archivosBadge = archivos.length > 0
+          ? `<div class="relative inline-block"><button onclick="_toggleArchivosDropdown('${o.id}',event)" class="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200 hover:bg-blue-100 transition-colors"><i class="fas fa-paperclip text-xs"></i> ${archivos.length}</button><div id="arc-drop-${o.id}" class="hidden absolute right-0 mt-1 w-64 bg-white rounded-xl shadow-lg border border-gray-100 z-50 py-1.5 text-xs overflow-hidden">${archivos.map(a=>`<div class="flex items-center gap-2 px-3 py-2 text-gray-600"><i class="fas ${_oIco[a.tipo]||'fa-file'} text-gray-400 w-3 text-center flex-shrink-0"></i><span class="flex-1 truncate">${esc(a.nombre)}</span><span class="text-[10px] text-blue-400 flex-shrink-0 font-medium">PA</span></div>`).join('')}</div></div>`
+          : `<span class="text-gray-300">—</span>`;
         const vencida = o.fechaEstimada && new Date(o.fechaEstimada+'T00:00:00') < hoy
-                        && o.estado!=='Completada' && o.estado!=='Cancelada';
+                        && o.estado!=='Ejecutada';
         const dreBadge = o.atencionDRE==='si'
           ? '<span class="ml-1 px-1.5 py-0.5 text-xs font-semibold rounded bg-violet-100 text-violet-700">DRE</span>'
           : '';
@@ -3213,6 +3695,8 @@ function renderLista() {
           : '';
         const btnEstado = rol !== 'tecnico'
           ? `<button onclick="abrirModal('${o.id}')" class="p-1.5 text-green-500 hover:bg-green-50 rounded" title="Estado"><i class="fas fa-exchange-alt text-xs"></i></button>` : '';
+        const btnReasignar = (rol === 'programador' || rol === 'soporte')
+          ? `<button onclick="abrirReasignar('${o.id}',event)" class="p-1.5 text-indigo-500 hover:bg-indigo-50 rounded" title="Reasignar técnico"><i class="fas fa-user-edit text-xs"></i></button>` : '';
         return `
         <tr class="fila-tabla${vencida?' vencida':''}" onclick="verDetalle('${o.id}')">
           <td class="px-5 py-3 text-gray-700">${esc(o.alimentador||'—')}</td>
@@ -3221,11 +3705,13 @@ function renderLista() {
           <td class="px-5 py-3 text-gray-500 max-w-xs"><span class="line-clamp-2" title="${esc(o.descripcion||'')}">${esc(o.descripcion||'—')}</span></td>
           <td class="px-5 py-3 whitespace-nowrap"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${clsEstado(o.estado)}">${esc(o.estado||'—')}</span></td>
           ${autorCol}
+          <td class="px-5 py-3 text-center" onclick="event.stopPropagation()">${archivosBadge}</td>
           <td class="px-5 py-3 text-center" onclick="event.stopPropagation()">
             <div class="flex justify-center gap-1">
               <button onclick="verDetalle('${o.id}')" class="p-1.5 text-blue-500 hover:bg-blue-50 rounded" title="Ver"><i class="fas fa-eye text-xs"></i></button>
               <button onclick="abrirEditar('${o.id}')" class="p-1.5 text-amber-500 hover:bg-amber-50 rounded" title="Editar"><i class="fas fa-edit text-xs"></i></button>
               ${btnEstado}
+              ${btnReasignar}
               <button onclick="eliminar('${o.id}',event)" class="p-1.5 text-red-400 hover:bg-red-50 rounded" title="Eliminar"><i class="fas fa-trash text-xs"></i></button>
             </div>
           </td>
@@ -3247,7 +3733,7 @@ function renderLista() {
 function irPag(p) { pagActual=p; renderLista(); }
 function sortBy(f) { sortDir = sortField===f ? (sortDir==='asc'?'desc':'asc') : 'asc'; sortField=f; renderLista(); }
 function limpiarFiltros() {
-  ['f-buscar','f-estado','f-dre','f-fecha'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['f-buscar','f-estado'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   pagActual=1; renderLista();
 }
 
@@ -3303,18 +3789,7 @@ function loadDetalle(id) {
   const ejPanel = document.getElementById('det-ejecucion-panel');
   if (ejPanel) ejPanel.classList.toggle('hidden', !o.tiempo && !o.turno && !o.traslado && !o.tipoCorte && !o.corteAlta && !o.compensacion);
 
-  // Documentos solicitados
-  const docsPanel = document.getElementById('det-docs-panel');
-  const docsList  = document.getElementById('det-docs-list');
-  if (docsList) {
-    const docs = o.documentosSolicitados ? o.documentosSolicitados.split(',').filter(Boolean) : [];
-    if (docs.length > 0) {
-      docsList.innerHTML = docs.map(d => `<span class="px-3 py-1 text-xs font-semibold rounded-full bg-teal-100 text-teal-700">${DOC_LABELS[d]||d}</span>`).join('');
-      if (docsPanel) docsPanel.classList.remove('hidden');
-    } else {
-      if (docsPanel) docsPanel.classList.add('hidden');
-    }
-  }
+  // Documentos solicitados (se procesa junto con archivos en el panel unificado abajo)
 
   // Equipos
   const eqPanel   = document.getElementById('det-equipos-panel');
@@ -3472,6 +3947,36 @@ function loadDetalle(id) {
         <p class="text-xs text-gray-400 mt-0.5">${fmtFecha(h.fecha)} · ${esc(h.usuario||'Sistema')}</p>
       </div>
     </div>`).join('') || '<p class="text-xs text-gray-400">Sin historial</p>';
+
+  // Panel unificado: Documentos solicitados + Archivos adjuntos
+  const archivosPanel = document.getElementById('det-archivos-panel');
+  const docsWrap      = document.getElementById('det-docs-wrap');
+  const docsList      = document.getElementById('det-docs-list');
+  const archivosWrap  = document.getElementById('det-archivos-wrap');
+  const archivosList  = document.getElementById('det-archivos-list');
+
+  const docs = o.documentosSolicitados ? o.documentosSolicitados.split(',').filter(Boolean) : [];
+  if (docsList) {
+    docsList.innerHTML = docs.map(d => `
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 text-teal-700 text-xs font-semibold rounded-full border border-teal-200">
+        ${d === 'carta' ? '<i class="fas fa-envelope text-xs"></i>' : d === 'gtu' ? '<i class="fas fa-file-alt text-xs"></i>' : '<i class="fas fa-tools text-xs"></i>'}
+        ${DOC_LABELS[d] || d}
+      </span>`).join('');
+  }
+  if (docsWrap) docsWrap.classList.toggle('hidden', docs.length === 0);
+
+  const archivos = o.archivosAdjuntos || [];
+  if (archivosList && archivos.length > 0) {
+    const _iconMap = { plano: 'fa-drafting-compass', ire: 'fa-file-alt', carta: 'fa-envelope-open-text', hoja: 'fa-clipboard-list' };
+    archivosList.innerHTML = archivos.map(a => `
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200">
+        <i class="fas ${_iconMap[a.tipo] || 'fa-file'} text-xs"></i>
+        <span>${esc(a.nombre)}</span>
+        <span class="text-[10px] text-blue-400 font-medium">· PA</span>
+      </span>`).join('');
+  }
+  if (archivosWrap) archivosWrap.classList.toggle('hidden', archivos.length === 0);
+  if (archivosPanel) archivosPanel.classList.toggle('hidden', docs.length === 0 && archivos.length === 0);
 }
 
 // ============================================================
@@ -3661,6 +4166,85 @@ function closeModal() {
   const m = document.getElementById('modal-estado');
   m.classList.add('hidden'); m.classList.remove('flex');
 }
+
+// ============================================================
+//  REASIGNAR OM
+// ============================================================
+function abrirReasignar(id, event) {
+  if (event) event.stopPropagation();
+  const o = DB.ordenes.find(x => x.id === id);
+  if (!o) return;
+
+  sv('mr-orden-id', id);
+
+  const tecAnterior = o.tecnicoAsignado || '—';
+  const el = document.getElementById('mr-tecnico-anterior');
+  if (el) el.textContent = tecAnterior;
+
+  const sub = document.getElementById('mr-subtitulo');
+  if (sub) sub.textContent = `Orden: ${id}`;
+
+  // Poblar selector con técnicos del mismo CR
+  const cr     = o.crRegistro || sesionActual?.cr || '';
+  const crData = (DB.usuarios || DEFAULT_USUARIOS)[cr] || {};
+  const sel    = document.getElementById('mr-tecnico');
+  if (sel) {
+    sel.innerHTML = '<option value="">— Seleccione un técnico —</option>' +
+      Object.keys(crData).map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+  }
+
+  document.getElementById('mr-error')?.classList.add('hidden');
+  const m = document.getElementById('modal-reasignar');
+  m.classList.remove('hidden'); m.classList.add('flex');
+}
+function cerrarReasignar() {
+  const m = document.getElementById('modal-reasignar');
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+async function confirmarReasignar() {
+  const id          = gv('mr-orden-id');
+  const nuevoTec    = gv('mr-tecnico');
+  const errEl       = document.getElementById('mr-error');
+
+  if (!nuevoTec) { errEl?.classList.remove('hidden'); return; }
+  errEl?.classList.add('hidden');
+
+  const idx = DB.ordenes.findIndex(o => o.id === id);
+  if (idx === -1) return;
+
+  const o           = DB.ordenes[idx];
+  const tecAnterior = o.tecnicoAsignado || '—';
+  const ahora       = new Date().toISOString();
+
+  o.tecnicoAsignado = nuevoTec;
+  o.estado          = 'Reprogramada';
+  o.historial       = o.historial || [];
+  o.historial.push({
+    fecha:          ahora,
+    accion:         'OM Reasignada',
+    usuario:        sesionActual?.nombre || 'Sistema',
+    tecnicoAnterior: tecAnterior,
+    tecnicoNuevo:   nuevoTec,
+    estadoNuevo:    'Reprogramada'
+  });
+
+  cerrarReasignar();
+  try {
+    await db.collection('ordenes').doc(id).update({
+      tecnicoAsignado: nuevoTec,
+      estado:          'Reprogramada',
+      historial:       o.historial
+    });
+  } catch(err) {
+    console.error('Error al reasignar OM:', err);
+    toast('Error al reasignar — verifica la conexión', 'error');
+    return;
+  }
+  renderLista();
+  updateBadges();
+  toast(`OM ${id} reasignada a ${nuevoTec}`, 'success');
+}
+
 async function setEstado(nuevoEstado) {
   if (sesionActual?.rol === 'tecnico') { toast('Sin permiso para cambiar estado', 'error'); closeModal(); return; }
   const id = gv('modal-orden-id');
@@ -3696,13 +4280,13 @@ async function setEstado(nuevoEstado) {
 // ============================================================
 function renderReportes() {
   const o = DB.ordenes;
-  const estados = ['Creada','Pendiente','En Proceso','Completada','Cancelada'];
+  const estados = ['Creada','Programada','Reprogramada','Ejecutada'];
   const zonas   = ['Lima','Huarochirí','Cañete'];
   const sets    = [...new Set(o.map(x=>x.set).filter(Boolean))].slice(0, 10);
 
   mkChart('rep-ch-estado','doughnut', estados,
     estados.map(e => o.filter(x=>x.estado===e).length),
-    ['#0ea5e9','#fbbf24','#3b82f6','#22c55e','#9ca3af']);
+    ['#38bdf8','#8b5cf6','#f59e0b','#22c55e']);
 
   mkChart('rep-ch-prioridad','bar', zonas,
     zonas.map(z => o.filter(x=>x.zona===z).length),
@@ -3751,10 +4335,173 @@ function renderReportes() {
 //  CONFIGURACIÓN
 // ============================================================
 function renderConfig() {
-  renderTags('areas',        'cfg-area-tags',  'cfg-area-input');
-  renderTags('tipos',        'cfg-tipo-tags',  'cfg-tipo-input');
-  renderTags('responsables', 'cfg-resp-tags',  'cfg-resp-input');
-  if (sesionActual?.rol === 'soporte') renderUsuarios();
+  if (!sesionActual) return;
+  const rol = sesionActual.rol || 'tecnico';
+  const cr  = sesionActual.cr  || '';
+  const cont = document.getElementById('cfg-content');
+  if (!cont) return;
+
+  // ---- HTML reutilizable: sección Mi Contraseña ----
+  const htmlMiPass = `
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-blue-100">
+      <p class="font-semibold text-gray-800 mb-1"><i class="fas fa-lock text-blue-500 mr-2"></i>Mi Contraseña</p>
+      <p class="text-sm text-gray-500 mb-5">Actualiza tu PIN de seguridad</p>
+      <div class="space-y-4 max-w-sm">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">PIN actual</label>
+          <input type="password" id="cfg-pin-actual" class="inp" maxlength="4" placeholder="••••"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'');document.getElementById('cfg-pin-actual-err').classList.add('hidden')">
+          <p class="text-xs text-red-500 hidden mt-1" id="cfg-pin-actual-err"><i class="fas fa-exclamation-circle mr-1"></i>PIN incorrecto</p>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Nuevo PIN</label>
+          <input type="password" id="cfg-pin-nuevo" class="inp" maxlength="4" placeholder="••••"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'');document.getElementById('cfg-pin-nuevo-err').classList.add('hidden')">
+          <p class="text-xs text-red-500 hidden mt-1" id="cfg-pin-nuevo-err"><i class="fas fa-exclamation-circle mr-1"></i>Debe tener 4 dígitos numéricos</p>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Confirmar nuevo PIN</label>
+          <input type="password" id="cfg-pin-confirm" class="inp" maxlength="4" placeholder="••••"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'');document.getElementById('cfg-pin-confirm-err').classList.add('hidden')">
+          <p class="text-xs text-red-500 hidden mt-1" id="cfg-pin-confirm-err"><i class="fas fa-exclamation-circle mr-1"></i>Los PINs no coinciden</p>
+        </div>
+        <button onclick="guardarMiPin()" class="w-full px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all">
+          <i class="fas fa-save mr-1.5"></i>Guardar cambio
+        </button>
+      </div>
+    </div>`;
+
+  // ---- TÉCNICO: solo Mi Contraseña ----
+  if (rol === 'tecnico') {
+    cont.innerHTML = htmlMiPass;
+    return;
+  }
+
+  // ---- PROGRAMADOR: Mi Contraseña + Gestión de su CR ----
+  if (rol === 'programador') {
+    cont.innerHTML = htmlMiPass + `
+      <div class="bg-white rounded-xl shadow-sm p-6 border border-amber-100">
+        <div class="flex justify-between items-center mb-5 flex-wrap gap-3">
+          <div>
+            <p class="font-semibold text-gray-800"><i class="fas fa-users-cog text-amber-500 mr-2"></i>Gestión de usuarios &mdash; CR ${esc(cr)}</p>
+            <p class="text-sm text-gray-500 mt-0.5">Administrar cuentas del personal de tu CR</p>
+          </div>
+          <button onclick="abrirModalAgregarUser('${esc(cr)}')"
+            class="px-4 py-2 text-sm font-semibold text-white bg-amber-600 rounded-lg hover:bg-amber-700 flex-shrink-0">
+            <i class="fas fa-user-plus mr-1.5"></i>Agregar persona
+          </button>
+        </div>
+        <div id="cfg-cr-tabla"></div>
+      </div>`;
+    _renderTablaCR(cr, false);
+    return;
+  }
+
+  // ---- SOPORTE: acceso total ----
+  cont.innerHTML = `
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-purple-100">
+      <div class="flex justify-between items-center mb-5 flex-wrap gap-3">
+        <div>
+          <p class="font-semibold text-gray-800"><i class="fas fa-users-cog text-purple-500 mr-2"></i>Gestión global de usuarios</p>
+          <p class="text-sm text-gray-500 mt-0.5">Administrar cuentas de todos los CRs</p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <select id="cfg-cr-filtro" class="inp text-sm" style="width:auto"
+            onchange="_cfgSetCRFilter()">
+            <option value="">— Todos los CRs —</option>
+            <option value="60122">CR 60122</option>
+            <option value="60124">CR 60124</option>
+            <option value="60126">CR 60126</option>
+          </select>
+          <button onclick="abrirModalUsuario()"
+            class="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-700 flex-shrink-0">
+            <i class="fas fa-user-plus mr-1.5"></i>Nuevo Usuario
+          </button>
+        </div>
+      </div>
+      <div id="cfg-usuarios-lista" class="space-y-3"></div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-blue-100">
+      <p class="font-semibold text-gray-800 mb-1"><i class="fas fa-bolt text-blue-500 mr-2"></i>Power Automate &mdash; URL de notificación</p>
+      <p class="text-sm text-gray-500 mb-4">URL del trigger HTTP de tu flujo. Cópiala desde "Cuando se recibe una solicitud HTTP" en Power Automate (debe incluir <code class="bg-gray-100 px-1 rounded text-xs">&amp;sig=...</code>).</p>
+      <textarea id="cfg-pa-url" rows="3" class="inp w-full font-mono text-xs resize-y mb-3"
+        placeholder="https://prod-XX.logic.azure.com/workflows/.../invoke?api-version=2016-06-01&sp=...&sig=..."></textarea>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="guardarPAUrl()" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+          <i class="fas fa-save mr-1.5"></i>Guardar URL
+        </button>
+        <button onclick="probarPAUrl()" class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100">
+          <i class="fas fa-wifi mr-1.5"></i>Probar conexión
+        </button>
+        <button onclick="resetPAUrl()" class="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100">
+          <i class="fas fa-undo mr-1.5"></i>Restaurar predeterminada
+        </button>
+      </div>
+      <p id="cfg-pa-status" class="text-xs mt-2 hidden"></p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <p class="font-semibold text-gray-800 mb-1"><i class="fas fa-building text-blue-500 mr-2"></i>Áreas / Departamentos</p>
+      <p class="text-sm text-gray-500 mb-4">Áreas disponibles en el sistema</p>
+      <div class="flex gap-2 mb-4">
+        <input type="text" id="cfg-area-input" class="inp flex-1" placeholder="Nombre del área..."
+          onkeydown="if(event.key==='Enter'){addCfg('areas','cfg-area-input','cfg-area-tags');event.preventDefault()}">
+        <button onclick="addCfg('areas','cfg-area-input','cfg-area-tags')"
+          class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex-shrink-0">
+          <i class="fas fa-plus mr-1"></i>Agregar
+        </button>
+      </div>
+      <div id="cfg-area-tags" class="min-h-10 flex flex-wrap"></div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <p class="font-semibold text-gray-800 mb-1"><i class="fas fa-tags text-green-500 mr-2"></i>Tipos de Orden</p>
+      <p class="text-sm text-gray-500 mb-4">Categorías de órdenes en el sistema</p>
+      <div class="flex gap-2 mb-4">
+        <input type="text" id="cfg-tipo-input" class="inp flex-1" placeholder="Nombre del tipo..."
+          onkeydown="if(event.key==='Enter'){addCfg('tipos','cfg-tipo-input','cfg-tipo-tags');event.preventDefault()}">
+        <button onclick="addCfg('tipos','cfg-tipo-input','cfg-tipo-tags')"
+          class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 flex-shrink-0">
+          <i class="fas fa-plus mr-1"></i>Agregar
+        </button>
+      </div>
+      <div id="cfg-tipo-tags" class="min-h-10 flex flex-wrap"></div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <p class="font-semibold text-gray-800 mb-1"><i class="fas fa-users text-purple-500 mr-2"></i>Responsables</p>
+      <p class="text-sm text-gray-500 mb-4">Personal asignable a las órdenes</p>
+      <div class="flex gap-2 mb-4">
+        <input type="text" id="cfg-resp-input" class="inp flex-1" placeholder="Nombre completo..."
+          onkeydown="if(event.key==='Enter'){addCfg('responsables','cfg-resp-input','cfg-resp-tags');event.preventDefault()}">
+        <button onclick="addCfg('responsables','cfg-resp-input','cfg-resp-tags')"
+          class="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-700 flex-shrink-0">
+          <i class="fas fa-plus mr-1"></i>Agregar
+        </button>
+      </div>
+      <div id="cfg-resp-tags" class="min-h-10 flex flex-wrap"></div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-red-100">
+      <p class="font-semibold text-red-600 mb-1"><i class="fas fa-exclamation-triangle mr-2"></i>Datos y Respaldo</p>
+      <p class="text-sm text-gray-500 mb-4">Exportar o limpiar los datos del sistema</p>
+      <div class="flex flex-wrap gap-3">
+        <button onclick="exportBackup()"
+          class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100">
+          <i class="fas fa-download mr-1.5"></i>Exportar Backup
+        </button>
+        <button onclick="document.getElementById('import-input').click()"
+          class="px-4 py-2 text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100">
+          <i class="fas fa-upload mr-1.5"></i>Importar Backup
+        </button>
+        <button onclick="clearAll()"
+          class="px-4 py-2 text-sm font-medium text-red-700 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100">
+          <i class="fas fa-trash-alt mr-1.5"></i>Borrar Todo
+        </button>
+      </div>
+      <input type="file" id="import-input" accept=".json" class="hidden" onchange="importBackup(event)">
+    </div>`;
+
+  _renderTablaGlobal('');
+  renderTags('areas',        'cfg-area-tags');
+  renderTags('tipos',        'cfg-tipo-tags');
+  renderTags('responsables', 'cfg-resp-tags');
   const paEl = document.getElementById('cfg-pa-url');
   if (paEl) paEl.value = getPAUrl();
   const st = document.getElementById('cfg-pa-status');
@@ -3819,40 +4566,110 @@ const ROL_LABELS = { tecnico: 'Técnico', programador: 'Programador', soporte: '
 const ROL_COLORS = { tecnico: 'bg-blue-100 text-blue-700', programador: 'bg-amber-100 text-amber-700', soporte: 'bg-purple-100 text-purple-700' };
 
 function renderUsuarios() {
+  // Para soporte delega en la tabla global nueva
+  const f = document.getElementById('cfg-cr-filtro')?.value || '';
+  _renderTablaGlobal(f);
+}
+
+function _renderTablaGlobal(crFiltro) {
   const cont = document.getElementById('cfg-usuarios-lista');
   if (!cont) return;
   const usuarios = DB.usuarios || DEFAULT_USUARIOS;
-  const crs = ['60122','60124','60126'];
+  const todoCRs  = Object.keys(usuarios).sort();
+  const crs      = crFiltro ? [crFiltro] : todoCRs;
+  const miNombre = sesionActual?.nombre || '';
+  const miCR     = sesionActual?.cr     || '';
   let html = '';
+
   crs.forEach(cr => {
-    const data = usuarios[cr] || {};
+    const data  = usuarios[cr] || {};
     const names = Object.keys(data).sort();
-    if (!names.length && cr === '60126') return;
-    html += `<div class="mb-4">
-      <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 pl-1">CR ${cr}</p>
-      <div class="space-y-1.5">`;
+    html += `<div class="mb-5">
+      <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 pl-1">CR ${esc(cr)}</p>`;
     if (names.length === 0) {
-      html += `<p class="text-sm text-gray-400 pl-2">Sin usuarios en este CR.</p>`;
+      html += `<p class="text-sm text-gray-400 pl-2 mb-2">Sin usuarios en este CR.</p>`;
     } else {
       names.forEach(nombre => {
         const u = data[nombre];
-        const rolCls = ROL_COLORS[u.rol] || 'bg-gray-100 text-gray-600';
-        html += `<div class="flex items-center gap-3 bg-gray-50 rounded-lg px-3 py-2.5 border border-gray-100">
+        const rolCls  = ROL_COLORS[u.rol] || 'bg-gray-100 text-gray-600';
+        const esMismo = nombre === miNombre && cr === miCR;
+        const nEsc    = nombre.replace(/'/g, "\\'");
+        const crEsc   = cr.replace(/'/g, "\\'");
+        html += `<div class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2.5 border border-gray-100 flex-wrap mb-1.5">
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-gray-800 truncate">${esc(nombre)}</p>
-            <p class="text-xs text-gray-400 mt-0.5">PIN: ${'•'.repeat(u.pin?.length||4)}</p>
+            <p class="text-sm font-medium text-gray-800 truncate">${esc(nombre)}${esMismo ? ' <span class="text-xs text-blue-500 font-normal">(tú)</span>' : ''}</p>
           </div>
-          <span class="px-2 py-0.5 text-xs font-semibold rounded-full ${rolCls}">${ROL_LABELS[u.rol]||u.rol}</span>
-          <div class="flex gap-1 flex-shrink-0">
-            <button onclick="editarUsuario('${cr}','${nombre.replace(/'/g,"\\'")}')" class="p-1.5 text-amber-500 hover:bg-amber-50 rounded" title="Editar"><i class="fas fa-edit text-xs"></i></button>
-            <button onclick="eliminarUsuario('${cr}','${nombre.replace(/'/g,"\\'")}')" class="p-1.5 text-red-400 hover:bg-red-50 rounded" title="Eliminar"><i class="fas fa-trash text-xs"></i></button>
+          <span class="px-2 py-0.5 text-xs font-semibold rounded-full flex-shrink-0 ${rolCls}">${ROL_LABELS[u.rol]||u.rol}</span>
+          <div class="flex gap-1 flex-shrink-0 flex-wrap">
+            <button onclick="abrirModalCambiarPinUser('${crEsc}','${nEsc}')"
+              class="px-2.5 py-1.5 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded hover:bg-amber-100">
+              <i class="fas fa-key mr-1"></i>PIN
+            </button>
+            ${!esMismo ? `
+            <select onchange="cambiarRolInline('${crEsc}','${nEsc}',this.value)"
+              class="inp text-xs py-1 px-1.5 flex-shrink-0" style="height:auto;font-size:0.7rem;width:auto">
+              <option value="tecnico"${u.rol==='tecnico'?' selected':''}>Técnico</option>
+              <option value="programador"${u.rol==='programador'?' selected':''}>Programador</option>
+              <option value="soporte"${u.rol==='soporte'?' selected':''}>Soporte</option>
+            </select>
+            <button onclick="abrirModalElimUser('${crEsc}','${nEsc}')"
+              class="px-2.5 py-1.5 text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded hover:bg-red-100">
+              <i class="fas fa-trash"></i>
+            </button>` : ''}
           </div>
         </div>`;
       });
     }
-    html += `</div></div>`;
+    html += `</div>`;
   });
   cont.innerHTML = html || '<p class="text-sm text-gray-400">Sin usuarios registrados.</p>';
+}
+
+function _renderTablaCR(cr, allowSoporte) {
+  const cont = document.getElementById('cfg-cr-tabla');
+  if (!cont) return;
+  const data     = (DB.usuarios || DEFAULT_USUARIOS)[cr] || {};
+  const names    = Object.keys(data).sort();
+  const miNombre = sesionActual?.nombre || '';
+
+  if (names.length === 0) {
+    cont.innerHTML = '<p class="text-sm text-gray-400">Sin usuarios en este CR.</p>';
+    return;
+  }
+  let html = '<div class="space-y-1.5">';
+  names.forEach(nombre => {
+    const u = data[nombre];
+    const rolCls  = ROL_COLORS[u.rol] || 'bg-gray-100 text-gray-600';
+    const esMismo = nombre === miNombre;
+    const nEsc    = nombre.replace(/'/g, "\\'");
+    const crEsc   = cr.replace(/'/g, "\\'");
+    const rolOpts = allowSoporte
+      ? `<option value="tecnico"${u.rol==='tecnico'?' selected':''}>Técnico</option><option value="programador"${u.rol==='programador'?' selected':''}>Programador</option><option value="soporte"${u.rol==='soporte'?' selected':''}>Soporte</option>`
+      : `<option value="tecnico"${u.rol==='tecnico'?' selected':''}>Técnico</option><option value="programador"${u.rol==='programador'?' selected':''}>Programador</option>`;
+    html += `<div class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2.5 border border-gray-100 flex-wrap">
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-gray-800 truncate">${esc(nombre)}${esMismo ? ' <span class="text-xs text-blue-500 font-normal">(tú)</span>' : ''}</p>
+      </div>
+      <span class="px-2 py-0.5 text-xs font-semibold rounded-full flex-shrink-0 ${rolCls}">${ROL_LABELS[u.rol]||u.rol}</span>
+      <div class="flex gap-1 flex-shrink-0 flex-wrap">
+        <button onclick="abrirModalCambiarPinUser('${crEsc}','${nEsc}')"
+          class="px-2.5 py-1.5 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded hover:bg-amber-100">
+          <i class="fas fa-key mr-1"></i>PIN
+        </button>
+        ${!esMismo ? `
+        <select onchange="cambiarRolInline('${crEsc}','${nEsc}',this.value)"
+          class="inp text-xs py-1 px-1.5 flex-shrink-0" style="height:auto;font-size:0.7rem;width:auto">
+          ${rolOpts}
+        </select>
+        <button onclick="abrirModalElimUser('${crEsc}','${nEsc}')"
+          class="px-2.5 py-1.5 text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded hover:bg-red-100">
+          <i class="fas fa-trash"></i>
+        </button>` : ''}
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  cont.innerHTML = html;
 }
 
 function abrirModalUsuario(cr, nombre) {
@@ -3896,7 +4713,9 @@ function guardarUsuario() {
   }
   if (!DB.usuarios[cr]) DB.usuarios[cr] = {};
   DB.usuarios[cr][nombre] = { pin, rol };
-  saveUsuariosFirebase(); cerrarModalUsuario(); renderUsuarios();
+  saveUsuariosFirebase(); cerrarModalUsuario();
+  const _filt = document.getElementById('cfg-cr-filtro')?.value || '';
+  _renderTablaGlobal(_filt);
   toast(`Usuario "${nombre}" guardado`, 'success');
 }
 
@@ -3904,10 +4723,182 @@ function editarUsuario(cr, nombre) { abrirModalUsuario(cr, nombre); }
 
 function eliminarUsuario(cr, nombre) {
   if (nombre === 'SOPORTE' && cr === 'SOPORTE') { toast('No se puede eliminar la cuenta SOPORTE', 'error'); return; }
-  if (!confirm(`¿Eliminar usuario "${nombre}"?`)) return;
+  abrirModalElimUser(cr, nombre);
+}
+
+// ============================================================
+//  CONFIGURACIÓN — FUNCIONES DE ROLES
+// ============================================================
+
+async function guardarMiPin() {
+  const cr     = sesionActual?.cr     || '';
+  const nombre = sesionActual?.nombre || '';
+  const actual  = (document.getElementById('cfg-pin-actual')?.value  || '').trim();
+  const nuevo   = (document.getElementById('cfg-pin-nuevo')?.value   || '').trim();
+  const conf    = (document.getElementById('cfg-pin-confirm')?.value || '').trim();
+  const errActual  = document.getElementById('cfg-pin-actual-err');
+  const errNuevo   = document.getElementById('cfg-pin-nuevo-err');
+  const errConfirm = document.getElementById('cfg-pin-confirm-err');
+  let ok = true;
+
+  const storedPin  = (DB.usuarios || DEFAULT_USUARIOS)[cr]?.[nombre]?.pin || '';
+  const actualHash = await hashPin(actual);
+  const storedHash = await hashPin(storedPin);
+
+  if (!actual || actualHash !== storedHash) {
+    if (errActual) errActual.classList.remove('hidden'); ok = false;
+  }
+  if (!nuevo || nuevo.length !== 4 || !/^\d{4}$/.test(nuevo)) {
+    if (errNuevo) errNuevo.classList.remove('hidden'); ok = false;
+  }
+  if (!ok) return;
+  if (nuevo !== conf) {
+    if (errConfirm) errConfirm.classList.remove('hidden'); return;
+  }
+
+  if (!DB.usuarios) DB.usuarios = JSON.parse(JSON.stringify(DEFAULT_USUARIOS));
+  if (!DB.usuarios[cr]) DB.usuarios[cr] = {};
+  if (!DB.usuarios[cr][nombre]) DB.usuarios[cr][nombre] = {};
+  DB.usuarios[cr][nombre].pin = nuevo;
+  await saveUsuariosFirebase();
+  document.getElementById('cfg-pin-actual').value  = '';
+  document.getElementById('cfg-pin-nuevo').value   = '';
+  document.getElementById('cfg-pin-confirm').value = '';
+  toast('Contrasena actualizada correctamente', 'success');
+}
+
+function _cfgSetCRFilter() {
+  const cr = document.getElementById('cfg-cr-filtro')?.value || '';
+  _renderTablaGlobal(cr);
+}
+
+function abrirModalCambiarPinUser(cr, nombre) {
+  document.getElementById('mup-cr').value     = cr;
+  document.getElementById('mup-nombre').value = nombre;
+  document.getElementById('mup-label').textContent = 'Cambiar PIN de: ' + nombre;
+  document.getElementById('mup-pin').value    = '';
+  document.getElementById('mup-pin2').value   = '';
+  document.getElementById('mup-pin-err').classList.add('hidden');
+  document.getElementById('mup-pin2-err').classList.add('hidden');
+  const m = document.getElementById('modal-usr-pin');
+  m.classList.remove('hidden'); m.classList.add('flex');
+}
+function cerrarModalUsrPin() {
+  const m = document.getElementById('modal-usr-pin');
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+function guardarPinModalUser() {
+  const cr     = document.getElementById('mup-cr').value;
+  const nombre = document.getElementById('mup-nombre').value;
+  const pin    = document.getElementById('mup-pin').value;
+  const pin2   = document.getElementById('mup-pin2').value;
+  let ok = true;
+  if (!pin || pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+    document.getElementById('mup-pin-err').classList.remove('hidden'); ok = false;
+  } else { document.getElementById('mup-pin-err').classList.add('hidden'); }
+  if (pin !== pin2) {
+    document.getElementById('mup-pin2-err').classList.remove('hidden'); ok = false;
+  } else if (pin) { document.getElementById('mup-pin2-err').classList.add('hidden'); }
+  if (!ok) return;
+  if (!DB.usuarios) DB.usuarios = JSON.parse(JSON.stringify(DEFAULT_USUARIOS));
+  if (!DB.usuarios[cr]) DB.usuarios[cr] = {};
+  if (!DB.usuarios[cr][nombre]) DB.usuarios[cr][nombre] = {};
+  DB.usuarios[cr][nombre].pin = pin;
+  saveUsuariosFirebase();
+  cerrarModalUsrPin();
+  toast('PIN de "' + nombre + '" actualizado', 'success');
+  _refreshUserTable(cr);
+}
+
+function cambiarRolInline(cr, nombre, nuevoRol) {
+  if (!DB.usuarios) DB.usuarios = JSON.parse(JSON.stringify(DEFAULT_USUARIOS));
+  if (!DB.usuarios[cr]) DB.usuarios[cr] = {};
+  if (!DB.usuarios[cr][nombre]) DB.usuarios[cr][nombre] = {};
+  DB.usuarios[cr][nombre].rol = nuevoRol;
+  saveUsuariosFirebase();
+  toast('Rol de "' + nombre + '" actualizado a ' + (ROL_LABELS[nuevoRol] || nuevoRol), 'success');
+  _refreshUserTable(cr);
+}
+
+function abrirModalAgregarUser(cr) {
+  const crFinal = cr || sesionActual?.cr || '';
+  document.getElementById('mua-cr').value     = crFinal;
+  document.getElementById('mua-nombre').value = '';
+  document.getElementById('mua-pin').value    = '';
+  document.getElementById('mua-rol').value    = 'tecnico';
+  document.getElementById('mua-nombre-err').classList.add('hidden');
+  document.getElementById('mua-pin-err').classList.add('hidden');
+  const rolSel = document.getElementById('mua-rol');
+  if (sesionActual?.rol === 'soporte') {
+    if (!rolSel.querySelector('option[value="soporte"]')) {
+      rolSel.innerHTML += '<option value="soporte">Soporte</option>';
+    }
+  } else {
+    const sOpt = rolSel.querySelector('option[value="soporte"]');
+    if (sOpt) sOpt.remove();
+  }
+  const m = document.getElementById('modal-usr-add');
+  m.classList.remove('hidden'); m.classList.add('flex');
+}
+function cerrarModalUsrAdd() {
+  const m = document.getElementById('modal-usr-add');
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+function guardarAgregarUser() {
+  const cr     = document.getElementById('mua-cr').value;
+  const nombre = document.getElementById('mua-nombre').value.trim().toUpperCase();
+  const pin    = document.getElementById('mua-pin').value.trim();
+  const rol    = document.getElementById('mua-rol').value;
+  let ok = true;
+  if (!nombre) { document.getElementById('mua-nombre-err').classList.remove('hidden'); ok = false; }
+  else          { document.getElementById('mua-nombre-err').classList.add('hidden'); }
+  if (!pin || pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+    document.getElementById('mua-pin-err').classList.remove('hidden'); ok = false;
+  } else { document.getElementById('mua-pin-err').classList.add('hidden'); }
+  if (!ok) return;
+  if (!DB.usuarios) DB.usuarios = JSON.parse(JSON.stringify(DEFAULT_USUARIOS));
+  if (!DB.usuarios[cr]) DB.usuarios[cr] = {};
+  if (DB.usuarios[cr][nombre]) { toast('"' + nombre + '" ya existe en este CR', 'error'); return; }
+  DB.usuarios[cr][nombre] = { pin, rol };
+  saveUsuariosFirebase();
+  cerrarModalUsrAdd();
+  toast('"' + nombre + '" agregado correctamente', 'success');
+  _refreshUserTable(cr);
+}
+
+function abrirModalElimUser(cr, nombre) {
+  document.getElementById('mue-cr').value     = cr;
+  document.getElementById('mue-nombre').value = nombre;
+  document.getElementById('mue-msg').textContent =
+    'Eliminar a "' + nombre + '" del CR ' + cr + '. Esta accion no se puede deshacer.';
+  const m = document.getElementById('modal-usr-elim');
+  m.classList.remove('hidden'); m.classList.add('flex');
+}
+function cerrarModalUsrElim() {
+  const m = document.getElementById('modal-usr-elim');
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+function confirmarElimUser() {
+  const cr     = document.getElementById('mue-cr').value;
+  const nombre = document.getElementById('mue-nombre').value;
+  if (nombre === (sesionActual?.nombre || '') && cr === (sesionActual?.cr || '')) {
+    toast('No puedes eliminar tu propio usuario', 'error');
+    cerrarModalUsrElim(); return;
+  }
   if (DB.usuarios?.[cr]) delete DB.usuarios[cr][nombre];
-  saveUsuariosFirebase(); renderUsuarios();
-  toast(`Usuario eliminado`, 'warning');
+  saveUsuariosFirebase();
+  cerrarModalUsrElim();
+  toast('Usuario "' + nombre + '" eliminado', 'warning');
+  _refreshUserTable(cr);
+}
+
+function _refreshUserTable(cr) {
+  if (sesionActual?.rol === 'programador') {
+    _renderTablaCR(cr, false);
+  } else {
+    const f = document.getElementById('cfg-cr-filtro')?.value || '';
+    _renderTablaGlobal(f);
+  }
 }
 
 function renderTags(campo, containerId) {
@@ -4337,7 +5328,7 @@ function mkChart(id, type, labels, data, colors) {
 //  BADGES / CLASES
 // ============================================================
 function clsEstado(s) {
-  return {Creada:'s-creada',Programada:'s-programada',Pendiente:'s-pendiente','En Proceso':'s-proceso',Completada:'s-completada',Cancelada:'s-cancelada'}[s]||'s-cancelada';
+  return {Creada:'s-creada',Programada:'s-programada',Reprogramada:'s-reprogramada',Ejecutada:'s-ejecutada'}[s]||'s-creada';
 }
 function badgePrior(p) {
   const m={Baja:'p-baja',Media:'p-media',Alta:'p-alta',Urgente:'p-urgente'};
@@ -4457,7 +5448,7 @@ function confirmarProgramar() {
   _commitEdicion(id, 'Programada', { fechaProgramada: fecha });
 }
 
-// ---- Modal "Gestionar" (Programada → Completada / Reprogramada) ----
+// ---- Modal "Gestionar" (Programada → Ejecutada / Reprogramada) ----
 function _abrirModalGestionar(id) {
   sv('mg-orden-id', id);
   document.getElementById('mg-reprog-panel').classList.add('hidden');
@@ -4480,7 +5471,7 @@ function calcMgSemana() {
 }
 function confirmarEjecutado() {
   const id = gv('mg-orden-id');
-  _commitEdicion(id, 'Completada');
+  _commitEdicion(id, 'Ejecutada');
 }
 function confirmarReprogramar() {
   const id     = gv('mg-orden-id');
@@ -5351,6 +6342,12 @@ async function confirmarAsignacion() {
     a.estado !== 'Cancelado' && a.alimentador === alim && a.zona === zona
   );
 
+  const existHistorial = existIdx >= 0 ? (DB.asignaciones[existIdx].historial || []) : [];
+  const historialInicial = existIdx >= 0
+    ? existHistorial
+    : [{ fecha: ahora, tipo: 'Asignado', tecnicoAnterior: null, tecnicoNuevo: tecnico,
+         realizadoPor: sesionActual?.nombre || 'Sistema', motivo: 'Asignación inicial' }];
+
   const obj = {
     id:              existIdx >= 0
       ? DB.asignaciones[existIdx].id
@@ -5363,6 +6360,7 @@ async function confirmarAsignacion() {
     semanaMaxima:    semanaMax,
     estado:          'Asignado',
     fechaAsignacion: ahora,
+    historial:       historialInicial,
     items
   };
 
@@ -5712,13 +6710,17 @@ function renderAsigGantt() {
     const totalItems = (a.items || []).length || 1;
     const zonaLabel  = a.zona || a.zonaTramo || '—';  // zonaTramo fallback for legacy records
     const alimLabel  = a.alimentador || '—';
+    const reasigs    = (a.historial || []).filter(h => h.tipo === 'Reasignado').length;
 
     const weekCells = semanas.map(s => {
       if (a.semanaMaxima === s) {
         const bg = a.estado === 'Completado' ? 'bg-emerald-500' : s === semActual ? 'bg-amber-500' : 'bg-blue-500';
+        const reasigIcon = reasigs > 0
+          ? `<i class="fas fa-exclamation-triangle text-yellow-300 mr-1 text-[9px]" title="Reasignado ${reasigs} vez${reasigs !== 1 ? 'es' : ''}"></i>`
+          : '';
         return `<td class="px-2 py-3 text-center">
-          <div class="${bg} text-white text-xs rounded-lg px-2 py-2 inline-block font-semibold shadow-sm min-w-[60px]" title="${esc(zonaLabel)}">
-            <i class="fas fa-layer-group text-[9px] mr-1"></i>${totalItems} ítem${totalItems !== 1 ? 's' : ''}
+          <div class="${bg} text-white text-xs rounded-lg px-2 py-2 inline-block font-semibold shadow-sm min-w-[60px] cursor-pointer hover:opacity-80 transition-opacity" onclick="abrirGanttPanel('${esc(a.id)}',event)">
+            ${reasigIcon}<i class="fas fa-layer-group text-[9px] mr-1"></i>${totalItems} ítem${totalItems !== 1 ? 's' : ''}
           </div></td>`;
       }
       return '<td class="px-2 py-3"><div class="border-b border-dashed border-gray-200 mx-2 h-px mt-3"></div></td>';
@@ -5792,6 +6794,383 @@ function renderAsigGantt() {
         <tbody class="divide-y divide-gray-100">${rows}</tbody>
       </table>
     </div>`;
+}
+
+// ============================================================
+//  GANTT SLIDE-OVER PANEL
+// ============================================================
+
+function abrirGanttPanel(asigId, event) {
+  if (event) event.stopPropagation();
+  const a = DB.asignaciones.find(x => x.id === asigId);
+  if (!a) return;
+  if (!a.historial) a.historial = [];
+  const panel = document.getElementById('gantt-panel');
+  if (!panel) return;
+  panel.dataset.asigId = asigId;
+  _renderGanttPanelContent(a);
+  panel.classList.remove('panel-hidden');
+  document.getElementById('gantt-panel-overlay')?.classList.remove('hidden');
+}
+
+function cerrarGanttPanel() {
+  document.getElementById('gantt-panel')?.classList.add('panel-hidden');
+  document.getElementById('gantt-panel-overlay')?.classList.add('hidden');
+}
+
+function _renderGanttPanelContent(a) {
+  const rol       = sesionActual?.rol || 'tecnico';
+  const historial = a.historial || [];
+  const zonaLabel = a.zona || a.zonaTramo || '—';
+
+  // Header
+  const tituloEl    = document.getElementById('gp-titulo');
+  const subtituloEl = document.getElementById('gp-subtitulo');
+  if (tituloEl)    tituloEl.textContent    = zonaLabel;
+  if (subtituloEl) subtituloEl.textContent = `${a.alimentador || '—'} · ${a.semanaMaxima || '—'}`;
+
+  // Estado badge
+  const estadoBadge = a.estado === 'Completado'
+    ? '<span class="px-2 py-0.5 text-xs rounded-full bg-emerald-100 text-emerald-700 font-medium">Completado</span>'
+    : '<span class="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-700 font-medium">Asignado</span>';
+
+  // --- Línea de tiempo ---
+  let timelineHTML;
+  if (historial.length === 0) {
+    timelineHTML = '<p class="text-xs text-gray-400 italic">Sin registros anteriores</p>';
+  } else {
+    const entries = [...historial].reverse().map((h, idx, arr) => {
+      const isReasig = h.tipo === 'Reasignado';
+      const iconCls  = isReasig ? 'fa-user-edit text-amber-500' : 'fa-user-plus text-indigo-500';
+      const connector = idx < arr.length - 1
+        ? '<div class="w-px bg-gray-200 h-3 ml-3.5 my-0.5"></div>' : '';
+      return `
+        <div class="flex gap-3">
+          <div class="flex-shrink-0 w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center mt-0.5">
+            <i class="fas ${iconCls} text-[10px]"></i>
+          </div>
+          <div class="flex-1 min-w-0 pb-1">
+            <p class="text-xs font-semibold text-gray-800">${esc(isReasig ? 'Reasignación' : 'Asignación inicial')}</p>
+            <p class="text-[10px] text-gray-400 mt-0.5">${fmtFecha(h.fecha)}</p>
+            ${h.tecnicoNuevo  ? `<p class="text-[11px] text-gray-700 mt-1">→ <span class="font-medium">${esc(h.tecnicoNuevo)}</span></p>` : ''}
+            ${h.tecnicoAnterior ? `<p class="text-[10px] text-gray-400">← anterior: ${esc(h.tecnicoAnterior)}</p>` : ''}
+            <p class="text-[10px] text-gray-400">Por: ${esc(h.realizadoPor || '—')}</p>
+            ${h.motivo ? `<p class="text-[10px] text-gray-500 italic mt-0.5">"${esc(h.motivo)}"</p>` : ''}
+          </div>
+        </div>${connector}`;
+    });
+    timelineHTML = entries.join('');
+  }
+
+  // --- OMs incluidas ---
+  const items = a.items || [];
+  let omsHTML;
+  if (items.length === 0) {
+    omsHTML = '<p class="text-xs text-gray-400 italic">Sin ítems registrados</p>';
+  } else {
+    omsHTML = items.map(item => {
+      const om      = DB.ordenes.find(o => planMatchesOrden(item, o)) || null;
+      const estOM   = om ? om.estado : null;
+      const badgeCls = estOM ? `s-${estOM.toLowerCase()}` : '';
+      const label   = item.alimentador || item.programa || item.planId || '—';
+      return `
+        <div class="flex items-center justify-between gap-2 py-1.5 border-b border-gray-100 last:border-0">
+          <p class="text-xs text-gray-700 min-w-0 truncate">${esc(label)}</p>
+          ${estOM
+            ? `<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0 ${badgeCls}">${esc(estOM)}</span>`
+            : '<span class="text-[10px] text-gray-400 flex-shrink-0">Sin OM</span>'}
+        </div>`;
+    }).join('');
+  }
+
+  // --- Botón Reasignar (solo programador/soporte) ---
+  const canReasignar = rol === 'programador' || rol === 'soporte';
+  const reasignarSection = canReasignar ? `
+    <div class="border-t border-gray-100 pt-4">
+      <button onclick="_toggleGanttReasignarForm()" id="gp-btn-reasignar"
+        class="w-full py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors">
+        <i class="fas fa-user-edit mr-2"></i>Reasignar Trabajo
+      </button>
+      <div id="gp-reasignar-form" class="hidden mt-4 space-y-3 bg-indigo-50 rounded-xl p-4 border border-indigo-100">
+        <p class="text-xs font-semibold text-indigo-800 uppercase tracking-wide">Nueva asignación</p>
+        <div>
+          <label class="text-xs text-gray-600 font-medium block mb-1">Nuevo técnico <span class="text-red-500">*</span></label>
+          <select id="gp-nuevo-tecnico" class="inp"></select>
+          <p id="gp-error-tecnico" class="hidden text-xs text-red-600 mt-1">Selecciona un técnico.</p>
+        </div>
+        <div>
+          <label class="text-xs text-gray-600 font-medium block mb-1">Motivo <span class="text-red-500">*</span></label>
+          <textarea id="gp-motivo" rows="2" class="inp resize-none" placeholder="Describe el motivo de reasignación..."></textarea>
+          <p id="gp-error-motivo" class="hidden text-xs text-red-600 mt-1">El motivo es obligatorio.</p>
+        </div>
+        <div>
+          <label class="text-xs text-gray-600 font-medium block mb-1">Nueva semana máxima (opcional)</label>
+          <input type="week" id="gp-nueva-semana" class="inp">
+        </div>
+        <div class="flex gap-2 pt-1">
+          <button onclick="confirmarGanttReasignar()"
+            class="flex-1 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors">
+            Confirmar reasignación
+          </button>
+          <button onclick="_toggleGanttReasignarForm(false)"
+            class="px-4 py-2 bg-white border border-gray-200 text-gray-600 text-sm rounded-lg hover:bg-gray-50 transition-colors">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>` : '';
+
+  const bodyEl = document.getElementById('gp-body');
+  if (!bodyEl) return;
+  bodyEl.innerHTML = `
+    <!-- Encabezado -->
+    <div class="bg-gray-50 rounded-xl p-4">
+      <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-xs">
+        <div><span class="text-gray-400 block">Zona</span><p class="font-semibold text-gray-800 mt-0.5 leading-tight">${esc(zonaLabel)}</p></div>
+        <div><span class="text-gray-400 block">Alimentador</span><p class="font-semibold text-gray-800 mt-0.5">${esc(a.alimentador || '—')}</p></div>
+        <div><span class="text-gray-400 block">Técnico actual</span><p class="font-semibold text-gray-800 mt-0.5">${esc(a.tecnico || '—')}</p></div>
+        <div><span class="text-gray-400 block">Semana asignada</span><p class="font-semibold text-gray-800 mt-0.5">${esc(a.semanaMaxima || '—')}</p></div>
+        <div><span class="text-gray-400 block">Estado</span><div class="mt-0.5">${estadoBadge}</div></div>
+        <div><span class="text-gray-400 block">F. Máxima</span><p class="font-semibold text-gray-800 mt-0.5">${fmtCorta(a.fechaMaxima)}</p></div>
+      </div>
+    </div>
+
+    <!-- Línea de tiempo -->
+    <div>
+      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+        <i class="fas fa-history mr-1.5 text-gray-400"></i>Línea de Tiempo
+      </p>
+      <div>${timelineHTML}</div>
+    </div>
+
+    <!-- OMs incluidas -->
+    <div>
+      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+        <i class="fas fa-list-check mr-1.5 text-gray-400"></i>OMs Incluidas (${items.length})
+      </p>
+      <div class="bg-gray-50 rounded-lg px-3 py-1">${omsHTML}</div>
+    </div>
+
+    ${reasignarSection}`;
+
+  if (canReasignar) _poblarSelectorTecnicoGP(a);
+}
+
+function _poblarSelectorTecnicoGP(a) {
+  const sel = document.getElementById('gp-nuevo-tecnico');
+  if (!sel) return;
+  const cr     = sesionActual?.cr || '';
+  const crData = (DB.usuarios || DEFAULT_USUARIOS)[cr] || {};
+  const tecs   = Object.keys(crData).filter(n => crData[n]?.rol === 'tecnico');
+  sel.innerHTML = '<option value="">— Selecciona técnico —</option>' +
+    tecs.map(n => `<option value="${esc(n)}"${n === a.tecnico ? ' disabled' : ''}>${esc(n)}</option>`).join('');
+}
+
+function _toggleGanttReasignarForm(show) {
+  const form = document.getElementById('gp-reasignar-form');
+  if (!form) return;
+  const open = show !== undefined ? show : form.classList.contains('hidden');
+  if (open) {
+    form.classList.remove('hidden');
+    document.getElementById('gp-error-motivo')?.classList.add('hidden');
+    document.getElementById('gp-error-tecnico')?.classList.add('hidden');
+    const motEl = document.getElementById('gp-motivo');
+    const semEl = document.getElementById('gp-nueva-semana');
+    if (motEl) motEl.value = '';
+    if (semEl) semEl.value = '';
+  } else {
+    form.classList.add('hidden');
+  }
+}
+
+function _weekInputToLabel(weekVal) {
+  // weekVal: "YYYY-Www"  →  "SNN-YYYY"
+  if (!weekVal) return '';
+  const parts = weekVal.split('-W');
+  if (parts.length !== 2) return weekVal;
+  return `S${String(parts[1]).padStart(2,'0')}-${parts[0]}`;
+}
+
+function _weekInputToFriday(weekVal) {
+  // Returns the ISO date of Friday for the given week input value
+  if (!weekVal) return '';
+  const parts = weekVal.split('-W');
+  if (parts.length !== 2) return '';
+  const year = parseInt(parts[0], 10);
+  const wk   = parseInt(parts[1], 10);
+  const jan4  = new Date(`${year}-01-04T00:00:00`);
+  const dayOfWeek = (jan4.getDay() + 6) % 7; // 0=Mon
+  const monday1 = new Date(jan4);
+  monday1.setDate(jan4.getDate() - dayOfWeek);
+  const monday = new Date(monday1);
+  monday.setDate(monday1.getDate() + (wk - 1) * 7);
+  const friday = new Date(monday);
+  friday.setDate(monday.getDate() + 4);
+  return friday.toISOString().split('T')[0];
+}
+
+async function confirmarGanttReasignar() {
+  const panelEl = document.getElementById('gantt-panel');
+  const asigId  = panelEl?.dataset?.asigId;
+  if (!asigId) return;
+
+  const nuevoTec = document.getElementById('gp-nuevo-tecnico')?.value || '';
+  const motivo   = (document.getElementById('gp-motivo')?.value || '').trim();
+  const nuevaSem = document.getElementById('gp-nueva-semana')?.value || '';
+
+  let hasError = false;
+  const errTec = document.getElementById('gp-error-tecnico');
+  const errMot = document.getElementById('gp-error-motivo');
+  if (!nuevoTec) { errTec?.classList.remove('hidden'); hasError = true; }
+  else           { errTec?.classList.add('hidden'); }
+  if (!motivo)   { errMot?.classList.remove('hidden'); hasError = true; }
+  else           { errMot?.classList.add('hidden'); }
+  if (hasError) return;
+
+  const idx = DB.asignaciones.findIndex(x => x.id === asigId);
+  if (idx === -1) return;
+  const a = DB.asignaciones[idx];
+
+  const tecAnterior = a.tecnico || '—';
+  const ahora       = new Date().toISOString();
+
+  a.historial = a.historial || [];
+  a.historial.push({
+    fecha:           ahora,
+    tipo:            'Reasignado',
+    tecnicoAnterior: tecAnterior,
+    tecnicoNuevo:    nuevoTec,
+    realizadoPor:    sesionActual?.nombre || 'Sistema',
+    motivo
+  });
+  a.tecnico = nuevoTec;
+
+  let nuevaSemLabel = a.semanaMaxima;
+  let nuevaFechaMax = a.fechaMaxima;
+  if (nuevaSem) {
+    nuevaSemLabel = _weekInputToLabel(nuevaSem);
+    nuevaFechaMax = _weekInputToFriday(nuevaSem);
+    a.semanaMaxima = nuevaSemLabel;
+    a.fechaMaxima  = nuevaFechaMax;
+  }
+
+  // Cambiar estado de todas las OMs de la asignación a "Reprogramada"
+  const batch = db.batch();
+  (a.items || []).forEach(item => {
+    const omIdx = DB.ordenes.findIndex(o => planMatchesOrden(item, o));
+    if (omIdx !== -1 && DB.ordenes[omIdx].estado !== 'Ejecutada') {
+      DB.ordenes[omIdx].estado = 'Reprogramada';
+      batch.update(db.collection('ordenes').doc(DB.ordenes[omIdx].id), { estado: 'Reprogramada' });
+    }
+  });
+
+  try {
+    await batch.commit();
+    await db.collection('asignaciones').doc(asigId).update({
+      tecnico:      nuevoTec,
+      semanaMaxima: nuevaSemLabel,
+      fechaMaxima:  nuevaFechaMax,
+      historial:    a.historial
+    });
+  } catch (err) {
+    console.error('Error al reasignar asignación:', err);
+    toast('Error al reasignar — verifica la conexión', 'error');
+    return;
+  }
+
+  _toggleGanttReasignarForm(false);
+  _renderGanttPanelContent(a);   // refresh panel with updated historial
+  renderAsigGantt();
+  toast(`✅ Reasignado a ${nuevoTec.split(' ')[0]}`, 'success');
+}
+
+// ============================================================
+//  PASO 6 — CARGA DE ARCHIVOS
+// ============================================================
+const _ARCHIVO_LABELS = { plano: 'Plano', ire: 'IRE', carta: 'Carta de Exoneración', hoja: 'Hoja de Equipo' };
+
+function _toggleArchivosDropdown(id, event) {
+  event.stopPropagation();
+  const drop = document.getElementById(`arc-drop-${id}`);
+  if (!drop) return;
+  const wasHidden = drop.classList.contains('hidden');
+  document.querySelectorAll('[id^="arc-drop-"]').forEach(el => el.classList.add('hidden'));
+  if (wasHidden) drop.classList.remove('hidden');
+}
+document.addEventListener('click', () => {
+  document.querySelectorAll('[id^="arc-drop-"]').forEach(el => el.classList.add('hidden'));
+});
+
+function _toggleArchivoCard(tipo) {
+  const chk = document.getElementById(`n-chk-${tipo}`);
+  if (!chk) return;
+  chk.checked = !chk.checked;
+  _updateArchivoCard(tipo);
+}
+
+function _updateArchivoCard(tipo) {
+  const chk    = document.getElementById(`n-chk-${tipo}`);
+  const wrap   = document.getElementById(`n-file-wrap-${tipo}`);
+  const card   = document.getElementById(`n-card-${tipo}`);
+  const fi     = document.getElementById(`n-file-${tipo}`);
+  const active = !!chk?.checked;
+  if (wrap) wrap.classList.toggle('hidden', !active);
+  if (card) {
+    if (active) {
+      card.classList.remove('border-gray-200', 'bg-white');
+      card.classList.add('border-blue-500', 'bg-blue-50');
+    } else {
+      card.classList.remove('border-blue-500', 'bg-blue-50');
+      card.classList.add('border-gray-200', 'bg-white');
+      if (fi) fi.value = '';
+      const preview = document.getElementById(`n-file-preview-${tipo}`);
+      const nameEl  = document.getElementById(`n-file-name-${tipo}`);
+      if (preview) preview.classList.add('hidden');
+      if (nameEl)  nameEl.textContent = '';
+    }
+  }
+  _checkArchivosBtnState();
+}
+
+function _checkArchivosBtnState() { /* no-op: archivos se adjuntan al crear la orden */ }
+
+function _mostrarArchivoSeleccionado(tipo) {
+  const fi      = document.getElementById(`n-file-${tipo}`);
+  const preview = document.getElementById(`n-file-preview-${tipo}`);
+  const nameEl  = document.getElementById(`n-file-name-${tipo}`);
+  if (!fi || !preview || !nameEl) return;
+  if (fi.files && fi.files.length > 0) {
+    nameEl.textContent = fi.files[0].name;
+    preview.classList.remove('hidden');
+  } else {
+    preview.classList.add('hidden');
+    nameEl.textContent = '';
+  }
+}
+
+function _limpiarArchivo(tipo, event) {
+  event.stopPropagation();
+  const fi      = document.getElementById(`n-file-${tipo}`);
+  const preview = document.getElementById(`n-file-preview-${tipo}`);
+  const nameEl  = document.getElementById(`n-file-name-${tipo}`);
+  if (fi)      fi.value = '';
+  if (preview) preview.classList.add('hidden');
+  if (nameEl)  nameEl.textContent = '';
+}
+
+// Convierte un File a base64 (igual que el formulario de termografía)
+function _archivoABase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const res    = String(reader.result || '');
+      const comma  = res.indexOf(',');
+      const base64 = comma >= 0 ? res.slice(comma + 1) : res;
+      resolve({ base64, contentType: file.type || 'application/octet-stream' });
+    };
+    reader.onerror = () => reject(reader.error || new Error('No se pudo leer el archivo'));
+    reader.readAsDataURL(file);
+  });
 }
 </script>
 </body>
