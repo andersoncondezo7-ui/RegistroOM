@@ -2156,7 +2156,7 @@ a.bg-blue-600:hover {
                   <th class="px-4 py-3 whitespace-nowrap">Programa</th>
                   <th class="px-4 py-3">Alimentador</th>
                   <th class="px-4 py-3">Zona / Tramo</th>
-                  <th class="px-4 py-3">Elemento</th>
+                  <th class="px-4 py-3">Nombre Programa</th>
                   <th class="px-4 py-3 text-center whitespace-nowrap">Cant. Planif.</th>
                   <th class="px-4 py-3 text-center whitespace-nowrap">Estado de Orden</th>
                   <th class="px-4 py-3 text-center whitespace-nowrap">N° Orden Vinculada</th>
@@ -4707,7 +4707,7 @@ Saludos cordiales.`;
   // Planes de Mantenimiento
   const planesArr = orden.planesMantenimiento || [];
   const planesAplanado = planesArr.length > 0
-    ? planesArr.map(p => `${p.programa} - ${p.zonaTramo} - ${p.elemento} (Plan: ${p.cantidadPlanificada||0}, Atend: ${p.cantidadAtendida||0})`).join(' | ')
+    ? planesArr.map(p => `${p.programa} - ${p.zonaTramo} - ${p.nombrePrograma || p.elemento} (Plan: ${p.cantidadPlanificada||0}, Atend: ${p.cantidadAtendida||0})`).join(' | ')
     : '—';
     
   // Equipos y Transformadores
@@ -5417,7 +5417,7 @@ function loadDetalle(id) {
             <div><span class="text-gray-400">Alimentador:</span> <span class="font-medium text-gray-700">${esc(p.alimentador||'—')}</span></div>
             <div><span class="text-gray-400">Enlace MT:</span> <span class="font-medium text-gray-700">${esc(p.enlaceMT||'—')}</span></div>
             <div><span class="text-gray-400">Zona/Tramo:</span> <span class="font-medium text-gray-700">${esc(p.zonaTramo||'—')}</span></div>
-            <div><span class="text-gray-400">Elemento:</span> <span class="font-medium text-gray-700">${esc(p.elemento||'—')}</span></div>
+            <div><span class="text-gray-400">Nombre Programa:</span> <span class="font-medium text-gray-700">${esc(p.nombrePrograma||p.elemento||'—')}</span></div>
             <div><span class="text-gray-400">Cant. planif.:</span> <span class="font-semibold text-gray-800">${esc(p.cantidadPlanificada||'—')}</span></div>
             <div><span class="text-gray-400">Cant. atendida:</span> <span class="font-semibold text-indigo-700">${esc(p.cantidadAtendida||'—')}</span></div>
           </div>
@@ -6815,7 +6815,7 @@ function renderProgramas() {
         </td>
         <td class="px-4 py-3 text-xs text-gray-700 whitespace-nowrap">${esc(p.alimentador || '—')}</td>
         <td class="px-4 py-3 text-xs text-gray-600 max-w-xs"><span class="line-clamp-2" title="${esc(p.zonaTramo || '')}">${esc(p.zonaTramo || '—')}</span></td>
-        <td class="px-4 py-3 text-xs text-gray-600">${esc(p.elemento || '—')}</td>
+        <td class="px-4 py-3 text-xs text-gray-600">${esc(p.nombrePrograma || p.elemento || '—')}</td>
         <td class="px-4 py-3 text-xs text-center font-semibold text-gray-800">${esc(String(p.cantidadPlanificada !== undefined ? p.cantidadPlanificada : '—'))}</td>
         <td class="px-4 py-3 text-center">${estadoHtml}</td>
         <td class="px-4 py-3 text-center">${omHtml}</td>
@@ -6851,7 +6851,7 @@ function exportarProgramaCSV() {
   if (!planes.length) { toast('No hay datos para exportar con los filtros actuales.', 'warning'); return; }
 
   const encabezado = [
-    'Programa','Descripción del Proyecto','Alimentador','Zona/Tramo','Elemento',
+    'Programa','Descripción del Proyecto','Alimentador','Zona/Tramo','Nombre Programa',
     'Cant. Planificada','Estado de Orden','N° Orden Vinculada','Fecha Programada Propuesta',
     'Semana Programada','CR Plan','Técnico Asignado','F.Máx. Entrega'
   ];
@@ -6866,7 +6866,7 @@ function exportarProgramaCSV() {
       PROGRAMA_DESCRIPCIONES[p.programa] || '',
       p.alimentador || '',
       p.zonaTramo || '',
-      p.elemento || '',
+      p.nombrePrograma || p.elemento || '',
       p.cantidadPlanificada !== undefined ? p.cantidadPlanificada : '',
       estadoTexto,
       omTxt,
@@ -7474,7 +7474,7 @@ function renderPlanesMantenimiento(prefix) {
               <div><span class="text-gray-400">Enlace MT:</span> <span class="font-medium text-gray-700">${esc(p.enlaceMT||'—')}</span></div>
               <div><span class="text-gray-400">Nodo A:</span> <span class="font-medium text-gray-700">${esc(p.nodoA||'—')}</span></div>
               <div><span class="text-gray-400">Nodo B:</span> <span class="font-medium text-gray-700">${esc(p.nodoB||'—')}</span></div>
-              <div><span class="text-gray-400">Elemento:</span> <span class="font-medium text-gray-700">${esc(p.elemento||'—')}</span></div>
+              <div><span class="text-gray-400">Nombre Programa:</span> <span class="font-medium text-gray-700">${esc(p.nombrePrograma||p.elemento||'—')}</span></div>
               <div><span class="text-gray-400">Unidad:</span> <span class="font-medium text-gray-700">${esc(p.unidad||'—')}</span></div>
               <div><span class="text-gray-400">Cant. planif.:</span> <span class="font-semibold text-gray-800">${esc(p.cantidadPlanificada||'—')}</span></div>
               <div><span class="text-gray-400">CR:</span> <span class="font-medium text-gray-700">${esc(p.cr||'—')}</span></div>
@@ -7946,7 +7946,7 @@ function renderAsigResumenBloque(alim, zona) {
         <td class="px-4 py-2.5">
           <span class="font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100 whitespace-nowrap">${esc(p.programa || '—')}</span>
         </td>
-        <td class="px-4 py-2.5 text-gray-600">${esc(p.elemento || '—')}</td>
+        <td class="px-4 py-2.5 text-gray-600">${esc(p.nombrePrograma || p.elemento || '—')}</td>
         <td class="px-4 py-2.5 text-center font-semibold text-gray-800">${esc(String(p.cantidadPlanificada !== undefined ? p.cantidadPlanificada : '—'))}</td>
         <td class="px-4 py-2.5 text-center">${badge}</td>
       </tr>`;
@@ -7993,7 +7993,7 @@ function renderAsigResumenBloque(alim, zona) {
         <thead>
           <tr class="bg-gray-50 border-b border-gray-200 text-left text-xs text-gray-500 uppercase tracking-wide">
             <th class="px-4 py-2.5">Programa</th>
-            <th class="px-4 py-2.5">Elemento</th>
+            <th class="px-4 py-2.5">Nombre Programa</th>
             <th class="px-4 py-2.5 text-center">Cant. Planif.</th>
             <th class="px-4 py-2.5 text-center">Estado</th>
           </tr>
@@ -8055,6 +8055,7 @@ async function confirmarAsignacion() {
     .map(p => ({
       planId:              p.planId              || '',
       programa:            p.programa            || '',
+      nombrePrograma:      p.nombrePrograma      || '',
       alimentador:         p.alimentador         || '',
       zonaTramo:           p.zonaTramo           || '',
       elemento:            p.elemento            || '',
@@ -8317,8 +8318,8 @@ function renderProgAsigResultados() {
             <p class="text-gray-700 font-medium leading-snug" title="${esc(p.zonaTramo || '')}">
               <i class="fas fa-route text-gray-300 mr-1 text-[10px]"></i>${esc(p.zonaTramo || '—')}
             </p>
-            <p class="text-gray-400 mt-0.5 leading-snug line-clamp-1" title="${esc(p.elemento || '')}">
-              ${esc(p.elemento ? (p.elemento.length > 90 ? p.elemento.slice(0, 90) + '…' : p.elemento) : '—')}
+            <p class="text-gray-400 mt-0.5 leading-snug line-clamp-1" title="${esc(p.nombrePrograma || p.elemento || '')}">
+              ${esc((p.nombrePrograma || p.elemento) ? ((p.nombrePrograma || p.elemento).length > 90 ? (p.nombrePrograma || p.elemento).slice(0, 90) + '…' : (p.nombrePrograma || p.elemento)) : '—')}
             </p>
           </div>
           <span class="text-gray-400 whitespace-nowrap flex-shrink-0">Cant: <strong class="text-gray-600">${p.cantidadPlanificada || '—'}</strong></span>
@@ -8372,6 +8373,7 @@ async function confirmarProgAsignacion() {
     .map(p => ({
       planId:              p.planId              || '',
       programa:            p.programa            || '',
+      nombrePrograma:      p.nombrePrograma      || '',
       alimentador:         p.alimentadorZona     || '',
       zonaTramo:           p.zonaTramo           || '',
       elemento:            p.elemento            || '',
@@ -8608,8 +8610,8 @@ function renderProyectosTecnicos() {
               <p class="font-semibold text-gray-800">${esc(item.alimentador || '—')}</p>
             </div>
             <div class="col-span-2">
-              <p class="text-gray-400 mb-0.5">Elemento / Trabajo</p>
-              <p class="font-medium text-gray-700 leading-snug line-clamp-2" title="${esc(item.elemento || '')}">${esc(item.elemento || '—')}</p>
+              <p class="text-gray-400 mb-0.5">Nombre Programa</p>
+              <p class="font-medium text-gray-700 leading-snug line-clamp-2" title="${esc(item.nombrePrograma || item.elemento || '')}">${esc(item.nombrePrograma || item.elemento || '—')}</p>
             </div>
             <div>
               <p class="text-gray-400 mb-0.5">Cant. Planificada</p>
@@ -8678,7 +8680,7 @@ function renderProyectosTecnicos() {
                 <div class="min-w-0 flex-1">
                   <span class="font-bold text-rose-600">${esc(item.programa || '—')}</span>
                   <span class="text-gray-400 mx-1">·</span>
-                  <span class="text-rose-700 truncate">${esc(item.elemento || '—')}</span>
+                  <span class="text-rose-700 truncate">${esc(item.nombrePrograma || item.elemento || '—')}</span>
                   <p class="text-[10px] text-rose-400 mt-0.5 italic">"${esc(item.motivoRechazo || '')}"</p>
                 </div>
                 <span class="text-[10px] bg-rose-200 text-rose-700 px-1.5 py-0.5 rounded font-semibold flex-shrink-0">Rechazado</span>
@@ -8688,7 +8690,7 @@ function renderProyectosTecnicos() {
               <span class="w-1.5 h-1.5 bg-indigo-400 rounded-full flex-shrink-0"></span>
               <span class="font-bold text-indigo-700 flex-shrink-0">${esc(item.programa || '—')}</span>
               <span class="text-gray-300">·</span>
-              <span class="truncate flex-1">${esc(item.elemento || '—')}</span>
+              <span class="truncate flex-1">${esc(item.nombrePrograma || item.elemento || '—')}</span>
               <span class="text-gray-400 flex-shrink-0">Cant: ${item.cantidadPlanificada || '—'}</span>
               <button onclick="rechazarItem('${a.id}', ${idx})"
                 title="Rechazar este ítem"
@@ -8855,7 +8857,7 @@ function rechazarItem(asigId, itemIdx) {
   if (infoEl) {
     infoEl.innerHTML = `
       <p class="font-semibold text-gray-700">${esc(item.programa || '—')}</p>
-      <p class="text-gray-500">${esc(item.elemento || '—')}</p>
+      <p class="text-gray-500">${esc(item.nombrePrograma || item.elemento || '—')}</p>
       <p class="text-gray-400">Zona: ${esc(item.zonaTramo || '—')} · Cant: ${item.cantidadPlanificada || '—'}</p>`;
   }
 
@@ -9037,8 +9039,8 @@ function renderRechazados() {
             <div><p class="text-gray-400 mb-0.5">Técnico Rechazó</p><p class="font-semibold text-gray-700">${esc(a.tecnico || '—')}</p></div>
             <div><p class="text-gray-400 mb-0.5">Zona / Tramo</p><p class="font-semibold text-gray-700">${esc(item.zonaTramo || '—')}</p></div>
             <div><p class="text-gray-400 mb-0.5">Alimentador</p><p class="font-semibold text-gray-700">${esc(item.alimentador || '—')}</p></div>
-            <div class="col-span-2"><p class="text-gray-400 mb-0.5">Elemento / Trabajo</p>
-              <p class="font-medium text-gray-700 line-clamp-2">${esc(item.elemento || '—')}</p></div>
+            <div class="col-span-2"><p class="text-gray-400 mb-0.5">Nombre Programa</p>
+              <p class="font-medium text-gray-700 line-clamp-2">${esc(item.nombrePrograma || item.elemento || '—')}</p></div>
             <div><p class="text-gray-400 mb-0.5">Cantidad</p><p class="font-bold text-gray-800">${item.cantidadPlanificada || '—'}</p></div>
             <div><p class="text-gray-400 mb-0.5">Asignación original</p><p class="font-medium text-gray-600 truncate">${esc(a.id || '—')}</p></div>
           </div>
@@ -9064,7 +9066,7 @@ function abrirModalReasigRechazado(asigId, itemIdx) {
   if (infoEl) {
     infoEl.innerHTML = `
       <p class="font-semibold text-gray-700">${esc(item.programa || '—')}</p>
-      <p class="text-gray-500">${esc(item.elemento || '—')}</p>
+      <p class="text-gray-500">${esc(item.nombrePrograma || item.elemento || '—')}</p>
       <p class="text-gray-400">Zona: ${esc(item.zonaTramo || '—')}</p>
       <p class="text-rose-500 italic text-[11px] mt-1">Motivo rechazo: "${esc(item.motivoRechazo || '—')}"</p>`;
   }
