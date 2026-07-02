@@ -2939,11 +2939,21 @@ a.bg-blue-600:hover {
       </div>
       <div id="rechazo-item-info" class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-xs text-gray-700 space-y-1"></div>
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
           <i class="fas fa-comment-alt text-red-400 mr-1.5"></i>Motivo de Rechazo <span class="text-red-500">*</span>
         </label>
-        <textarea id="rechazo-motivo" rows="3" class="inp resize-none"
-          placeholder="Ej: Imposibilidad de acceso físico al punto, equipo sin tensión, cliente no autoriza, etc."></textarea>
+        <div class="flex gap-2 mb-2">
+          <button type="button" onclick="document.getElementById('rechazo-motivo').value='Realizado'"
+            class="flex-1 px-3 py-2 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition-colors">
+            <i class="fas fa-check-circle mr-1 text-emerald-500"></i>Realizado
+          </button>
+          <button type="button" onclick="document.getElementById('rechazo-motivo').value='No existe'"
+            class="flex-1 px-3 py-2 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors">
+            <i class="fas fa-exclamation-triangle mr-1 text-amber-500"></i>No existe
+          </button>
+        </div>
+        <textarea id="rechazo-motivo" rows="2" class="inp resize-none"
+          placeholder="Seleccione una opción o escriba el motivo..."></textarea>
       </div>
       <div id="rechazo-error" class="hidden flex items-center gap-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
         <i class="fas fa-exclamation-circle text-red-400"></i>
@@ -3020,6 +3030,61 @@ a.bg-blue-600:hover {
       <button type="button" onclick="confirmarReasigRechazado()"
         class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-amber-500 rounded-xl hover:bg-amber-600 transition-colors">
         <i class="fas fa-check mr-1.5"></i>Reasignar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL DESCARTAR PLAN ===== -->
+<div id="modal-descartar-plan" class="fixed inset-0 z-50 hidden items-center justify-center">
+  <div class="modal-bg absolute inset-0" onclick="cerrarModalDescartePlan()"></div>
+  <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 z-10 overflow-hidden">
+    <div class="bg-gradient-to-r from-slate-600 to-gray-700 px-6 py-5 text-white">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-archive text-lg"></i>
+        </div>
+        <div>
+          <p class="font-bold text-base">Descartar Ítem del Plan</p>
+          <p class="text-gray-300 text-xs mt-0.5">Este ítem no se incluirá en asignaciones ni en Proyectos Asignados</p>
+        </div>
+      </div>
+    </div>
+    <div class="p-6 space-y-4">
+      <input type="hidden" id="dp-plan-id">
+      <div id="dp-plan-info" class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-xs text-gray-700 space-y-1"></div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">
+          <i class="fas fa-question-circle text-slate-400 mr-1.5"></i>Motivo del descarte <span class="text-red-500">*</span>
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-emerald-200 bg-emerald-50 cursor-pointer hover:bg-emerald-100 transition-colors has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-100">
+            <input type="radio" name="dp-motivo" value="Realizado" class="sr-only" id="dp-motivo-realizado">
+            <i class="fas fa-check-circle text-2xl text-emerald-500"></i>
+            <span class="text-sm font-bold text-emerald-700">Realizado</span>
+            <span class="text-[10px] text-emerald-600 text-center">Ya fue atendido en campo</span>
+          </label>
+          <label class="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-amber-200 bg-amber-50 cursor-pointer hover:bg-amber-100 transition-colors has-[:checked]:border-amber-500 has-[:checked]:bg-amber-100">
+            <input type="radio" name="dp-motivo" value="No existe" class="sr-only" id="dp-motivo-noexiste">
+            <i class="fas fa-exclamation-triangle text-2xl text-amber-500"></i>
+            <span class="text-sm font-bold text-amber-700">No existe</span>
+            <span class="text-[10px] text-amber-600 text-center">Elemento no encontrado en campo</span>
+          </label>
+        </div>
+      </div>
+      <div id="dp-error" class="hidden flex items-center gap-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+        <i class="fas fa-exclamation-circle text-red-400"></i>
+        <span>Seleccione el motivo del descarte.</span>
+      </div>
+    </div>
+    <div class="flex gap-3 px-6 pb-6">
+      <button type="button" onclick="cerrarModalDescartePlan()"
+        class="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">
+        Cancelar
+      </button>
+      <button type="button" onclick="confirmarDescartePlan()"
+        class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-slate-700 rounded-xl hover:bg-slate-800 transition-colors">
+        <i class="fas fa-archive mr-1.5"></i>Confirmar Descarte
       </button>
     </div>
   </div>
@@ -3775,6 +3840,7 @@ function resetViaRapida(prefix) {
 let DB = {
   ordenes: [],
   asignaciones: [],
+  planesDescartados: [],
   usuarios: null,
   cfg: {
     areas:        ['Mantenimiento','Sistemas (TI)','Infraestructura','Operaciones','Producción','RRHH','Administración'],
@@ -3783,6 +3849,7 @@ let DB = {
   }
 };
 
+let _planesDescartadosSet = new Set();
 let sortField = 'fechaRegistro', sortDir = 'desc';
 let pagActual = 1;
 const POR_PAG = 15;
@@ -3851,6 +3918,28 @@ function setupAsignacionesListener() {
   });
 }
 
+function setupPlanesDescartadosListener() {
+  let primeraVez = true;
+  return new Promise((resolve, reject) => {
+    db.collection('planes_descartados').onSnapshot(snapshot => {
+      DB.planesDescartados = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      _planesDescartadosSet = new Set(DB.planesDescartados.map(d => d.planId).filter(Boolean));
+      if (primeraVez) {
+        primeraVez = false;
+        resolve();
+      } else if (sesionActual) {
+        const alim = document.getElementById('asig-alim')?.value;
+        const zona = document.getElementById('asig-zona')?.value;
+        if (alim && zona) renderAsigResumenBloque(alim, zona);
+        renderProyectosTecnicos();
+      }
+    }, err => {
+      console.error('Error en listener de planes_descartados:', err);
+      if (primeraVez) reject(err);
+    });
+  });
+}
+
 async function saveConfigFirebase() {
   try {
     await db.collection('sistema').doc('configuracion').set(DB.cfg);
@@ -3877,7 +3966,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadSistema();
     await Promise.all([
       setupOrdenesListener(),
-      setupAsignacionesListener()
+      setupAsignacionesListener(),
+      setupPlanesDescartadosListener()
     ]);
   } catch(e) {
     console.error('Error en carga inicial:', e);
@@ -4261,7 +4351,7 @@ function buildTransfHTML(prefix, uid) {
           <label class="text-xs text-gray-500 mb-1 block font-medium">Motivo</label>
           <select id="${prefix}-transf-${uid}-motivo" class="inp" onchange="_onTransfMotivoChange('${prefix}',${uid})">
             <option value="">Seleccione...</option>
-            <option>MANTENIMIENTO</option>
+            <option>MANTENIMIENTO</option><option>NUEVO</option>
           </select>
         </div>
         <div class="sm:col-span-2">
@@ -4809,14 +4899,20 @@ Saludos cordiales.`;
     });
     if (resp.ok) {
       console.log(`Power Automate respondió ${resp.status}. Flujo ejecutado correctamente.`);
-      return 'sent';
+      try {
+        const data = await resp.json();
+        const urlsSharePoint = Array.isArray(data.archivosSharePoint) ? data.archivosSharePoint : [];
+        return { status: 'sent', urlsSharePoint };
+      } catch {
+        return { status: 'sent', urlsSharePoint: [] };
+      }
     } else {
       console.error(`Power Automate respondió con error: ${resp.status} ${resp.statusText}`);
-      return 'error';
+      return { status: 'error', urlsSharePoint: [] };
     }
   } catch (err) {
     console.error("Error de red al notificar a Power Automate:", err);
-    return 'error';
+    return { status: 'error', urlsSharePoint: [] };
   }
 }
 
@@ -4934,11 +5030,30 @@ async function crearOrden(e) {
     return;
   }
   // PA va separado — sus errores nunca afectan el resultado de Firestore
-  const paStatus = await notificarPowerAutomate(orden, archivosBase64, 'om_creada');
+  const paResult = await notificarPowerAutomate(orden, archivosBase64, 'om_creada');
+
+  // Si PA devolvió URLs de SharePoint, actualizar archivosAdjuntos en Firestore
+  if (paResult.urlsSharePoint && paResult.urlsSharePoint.length > 0) {
+    const adjActualizado = (orden.archivosAdjuntos || []).map(a => {
+      const match = paResult.urlsSharePoint.find(u =>
+        u.tipo === a.tipo || u.nombre === a.nombre
+      );
+      return match ? { ...a, urlSharePoint: match.url } : a;
+    });
+    try {
+      await db.collection('ordenes').doc(id).update({ archivosAdjuntos: adjActualizado });
+      const idxOrd = DB.ordenes.findIndex(o => o.id === id);
+      if (idxOrd !== -1) DB.ordenes[idxOrd].archivosAdjuntos = adjActualizado;
+      console.log(`[SharePoint] ${adjActualizado.filter(a => a.urlSharePoint).length} URL(s) guardadas en Firestore.`);
+    } catch (eSP) {
+      console.warn('[SharePoint] No se pudieron guardar las URLs en Firestore:', eSP);
+    }
+  }
+
   updateBadges();
   toast(`Orden ${id} creada`, 'success');
-  if (paStatus === 'sent')  toast('Notificación enviada a Power Automate', 'info');
-  if (paStatus === 'error') toast('Orden guardada, pero no se pudo notificar a Power Automate', 'warning');
+  if (paResult.status === 'sent')  toast('Notificación y archivos enviados a Power Automate', 'info');
+  if (paResult.status === 'error') toast('Orden guardada, pero no se pudo notificar a Power Automate', 'warning');
   ir('lista');
 }
 
@@ -5154,8 +5269,9 @@ function renderLista() {
     : pag.map(o => {
         const archivos  = o.archivosAdjuntos || [];
         const _oIco = { plano:'fa-drafting-compass', ire:'fa-file-alt', carta:'fa-envelope-open-text', hoja:'fa-clipboard-list', expediente:'fa-folder-open' };
+        const conSP = archivos.some(a => a.urlSharePoint);
         const archivosBadge = archivos.length > 0
-          ? `<div class="relative inline-block"><button onclick="_toggleArchivosDropdown('${o.id}',event)" class="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200 hover:bg-blue-100 transition-colors"><i class="fas fa-paperclip text-xs"></i> ${archivos.length}</button><div id="arc-drop-${o.id}" class="hidden absolute right-0 mt-1 w-64 bg-white rounded-xl shadow-lg border border-gray-100 z-50 py-1.5 text-xs overflow-hidden">${archivos.map(a=>`<div class="flex items-center gap-2 px-3 py-2 text-gray-600"><i class="fas ${_oIco[a.tipo]||'fa-file'} text-gray-400 w-3 text-center flex-shrink-0"></i><span class="flex-1 truncate">${esc(a.nombre)}</span><span class="text-[10px] text-blue-400 flex-shrink-0 font-medium">PA</span></div>`).join('')}</div></div>`
+          ? `<div class="relative inline-block"><button onclick="_toggleArchivosDropdown('${o.id}',event)" class="inline-flex items-center gap-1 px-2.5 py-1 ${conSP ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-200'} text-xs font-semibold rounded-full border hover:opacity-80 transition-colors"><i class="fas fa-paperclip text-xs"></i> ${archivos.length}${conSP ? ' <i class="fas fa-cloud text-[9px]"></i>' : ''}</button><div id="arc-drop-${o.id}" class="hidden absolute right-0 mt-1 w-72 bg-white rounded-xl shadow-lg border border-gray-100 z-50 py-1.5 text-xs overflow-hidden">${archivos.map(a => a.urlSharePoint ? `<a href="${esc(a.urlSharePoint)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-emerald-50 group"><i class="fas ${_oIco[a.tipo]||'fa-file'} text-emerald-500 w-3 text-center flex-shrink-0"></i><span class="flex-1 truncate">${esc(a.nombre)}</span><span class="text-[10px] text-emerald-600 flex-shrink-0 font-semibold"><i class="fas fa-external-link-alt text-[8px]"></i> Ver</span></a>` : `<div class="flex items-center gap-2 px-3 py-2 text-gray-600"><i class="fas ${_oIco[a.tipo]||'fa-file'} text-gray-400 w-3 text-center flex-shrink-0"></i><span class="flex-1 truncate">${esc(a.nombre)}</span><span class="text-[10px] text-blue-400 flex-shrink-0 font-medium">PA</span></div>`).join('')}</div></div>`
           : `<span class="text-gray-300">—</span>`;
         const vencida = o.fechaEstimada && new Date(o.fechaEstimada+'T00:00:00') < hoy
                         && o.estado!=='Ejecutada';
@@ -5527,12 +5643,21 @@ function loadDetalle(id) {
   const archivos = o.archivosAdjuntos || [];
   if (archivosList && archivos.length > 0) {
     const _iconMap = { plano: 'fa-drafting-compass', ire: 'fa-file-alt', carta: 'fa-envelope-open-text', hoja: 'fa-clipboard-list', expediente: 'fa-folder-open' };
-    archivosList.innerHTML = archivos.map(a => `
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200">
-        <i class="fas ${_iconMap[a.tipo] || 'fa-file'} text-xs"></i>
-        <span>${esc(a.nombre)}</span>
-        <span class="text-[10px] text-blue-400 font-medium">· PA</span>
-      </span>`).join('');
+    archivosList.innerHTML = archivos.map(a => {
+      const spLink = a.urlSharePoint
+        ? `<a href="${esc(a.urlSharePoint)}" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full hover:bg-emerald-100 transition-colors"
+             title="Ver archivo en SharePoint">
+             <i class="fas fa-external-link-alt text-[8px]"></i>SharePoint
+           </a>`
+        : `<span class="text-[10px] text-blue-400 font-medium">· PA</span>`;
+      return `
+        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200">
+          <i class="fas ${_iconMap[a.tipo] || 'fa-file'} text-xs"></i>
+          <span>${esc(a.nombre)}</span>
+          ${spLink}
+        </div>`;
+    }).join('');
   }
   if (archivosWrap) archivosWrap.classList.toggle('hidden', archivos.length === 0);
   if (archivosPanel) archivosPanel.classList.toggle('hidden', docs.length === 0 && archivos.length === 0);
@@ -7456,13 +7581,43 @@ function renderPlanesMantenimiento(prefix) {
   let html = '';
 
   planes.forEach((p, i) => {
-    const uid = `${prefix}-plan-${i}`;
+    const uid            = `${prefix}-plan-${i}`;
+    const estaDescartado = _planesDescartadosSet.has(p.planId);
+    const descInfo       = estaDescartado ? DB.planesDescartados.find(d => d.planId === p.planId) : null;
+    const cardBorder     = estaDescartado ? 'border-slate-300 bg-slate-50' : 'border-gray-200 bg-white';
+    const labelHover     = estaDescartado ? 'cursor-default bg-slate-50' : 'cursor-pointer hover:bg-indigo-50';
+
+    const descartadoBanner = estaDescartado ? `
+      <div class="flex items-center justify-between gap-3 px-4 py-2 bg-slate-100 border-b border-slate-200">
+        <div class="flex items-center gap-2 text-xs text-slate-600">
+          <i class="fas fa-archive text-slate-400"></i>
+          <span class="font-semibold">Descartado:</span>
+          <span class="${descInfo?.motivo === 'Realizado' ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}">${esc(descInfo?.motivo || 'Descartado')}</span>
+          ${descInfo?.descartadoPor ? `<span class="text-slate-400">· ${esc(descInfo.descartadoPor)}</span>` : ''}
+        </div>
+        <button onclick="restaurarPlanDescartado('${esc(p.planId)}')"
+          class="text-[10px] font-semibold text-slate-500 hover:text-slate-700 border border-slate-300 hover:border-slate-500 bg-white hover:bg-slate-50 px-2 py-0.5 rounded transition-all flex-shrink-0">
+          <i class="fas fa-undo mr-0.5"></i>Restaurar
+        </button>
+      </div>` : '';
+
+    const descartarBtn = !estaDescartado ? `
+      <div class="flex justify-end px-4 pb-3 pt-1 border-t border-gray-100">
+        <button onclick="descartarPlan('${esc(p.planId)}','${esc(p.programa||'')}','${esc((p.nombrePrograma||p.elemento||'').replace(/'/g,''))}','${esc(p.alimentador||'')}','${esc(p.zonaTramo||'')}')"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-400 rounded-lg transition-colors">
+          <i class="fas fa-archive text-slate-400"></i>Descartar
+        </button>
+      </div>` : '';
+
     html += `
-      <div class="plan-card rounded-xl border border-gray-200 bg-white overflow-hidden" id="card-${uid}" data-zona-tramo="${esc(p.zonaTramo||'')}">
-        <label class="flex items-start gap-3 p-4 cursor-pointer hover:bg-indigo-50 transition-colors select-none">
-          <input type="checkbox" class="plan-check mt-0.5 flex-shrink-0 w-4 h-4 accent-indigo-600"
-            id="chk-${uid}" data-plan-idx="${i}" data-prefix="${prefix}"
-            onchange="_onPlanCheck(this)">
+      <div class="plan-card rounded-xl border ${cardBorder} overflow-hidden" id="card-${uid}" data-zona-tramo="${esc(p.zonaTramo||'')}">
+        ${descartadoBanner}
+        <label class="flex items-start gap-3 p-4 ${labelHover} transition-colors select-none ${estaDescartado ? 'opacity-50' : ''}">
+          ${estaDescartado
+            ? `<span class="mt-0.5 flex-shrink-0 w-4 h-4 flex items-center justify-center"><i class="fas fa-archive text-slate-400 text-xs"></i></span>`
+            : `<input type="checkbox" class="plan-check mt-0.5 flex-shrink-0 w-4 h-4 accent-indigo-600"
+                id="chk-${uid}" data-plan-idx="${i}" data-prefix="${prefix}"
+                onchange="_onPlanCheck(this)">`}
           <div class="flex-1 min-w-0">
             <div class="flex flex-wrap gap-2 items-center mb-2">
               <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">${esc(p.programa||'—')}</span>
@@ -7482,6 +7637,7 @@ function renderPlanesMantenimiento(prefix) {
             ${p.detalleAccion ? `<p class="text-xs text-gray-500 italic border-t border-gray-100 pt-2 mt-2">${esc(p.detalleAccion)}</p>` : ''}
           </div>
         </label>
+        ${descartarBtn}
         <div class="plan-card-extra border-t border-indigo-200 bg-indigo-50 px-4 pb-4 pt-3" id="extra-${uid}" style="display:none">
           <p class="text-xs font-semibold text-indigo-700 mb-3 uppercase tracking-wide"><i class="fas fa-edit mr-1.5"></i>Datos de atención</p>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -7922,8 +8078,9 @@ function renderAsigResumenBloque(alim, zona) {
     return;
   }
 
-  const conOrden   = _asigPlanesActuales.filter(p =>  DB.ordenes.some(o => planMatchesOrden(p, o)));
-  const pendientes = _asigPlanesActuales.filter(p => !DB.ordenes.some(o => planMatchesOrden(p, o)));
+  const conOrden      = _asigPlanesActuales.filter(p =>  DB.ordenes.some(o => planMatchesOrden(p, o)));
+  const descartados   = _asigPlanesActuales.filter(p => _planesDescartadosSet.has(p.planId));
+  const pendientes    = _asigPlanesActuales.filter(p => !DB.ordenes.some(o => planMatchesOrden(p, o)) && !_planesDescartadosSet.has(p.planId));
 
   // Bloque activo existente para esta zona
   const bloqueActivo = DB.asignaciones.find(a =>
@@ -7932,23 +8089,45 @@ function renderAsigResumenBloque(alim, zona) {
 
   let rows = '';
   _asigPlanesActuales.forEach(p => {
-    const tieneOrden = DB.ordenes.some(o => planMatchesOrden(p, o));
+    const tieneOrden    = DB.ordenes.some(o => planMatchesOrden(p, o));
+    const estaDescartado = _planesDescartadosSet.has(p.planId);
+    const descInfo       = estaDescartado ? DB.planesDescartados.find(d => d.planId === p.planId) : null;
     let badge = '';
-    if (tieneOrden) {
-      badge = '<span class="px-2 py-0.5 text-xs rounded-full bg-emerald-100 text-emerald-700 font-medium">Con Orden</span>';
+    let accion = '';
+    if (estaDescartado) {
+      const motivoDesc = descInfo?.motivo || 'Descartado';
+      const iconoMotivo = motivoDesc === 'Realizado' ? 'fa-check-circle text-emerald-500' : 'fa-exclamation-triangle text-amber-500';
+      badge = `<span class="px-2 py-0.5 text-xs rounded-full bg-slate-100 text-slate-600 font-medium flex items-center gap-1 justify-center"><i class="fas ${iconoMotivo}"></i>${esc(motivoDesc)}</span>`;
+      accion = `<button onclick="restaurarPlanDescartado('${esc(p.planId)}')"
+        title="Restaurar ítem" class="text-[10px] font-semibold text-slate-500 hover:text-slate-700 border border-slate-200 hover:border-slate-400 bg-slate-50 hover:bg-slate-100 px-2 py-0.5 rounded transition-all">
+        <i class="fas fa-undo mr-0.5"></i>Restaurar
+      </button>`;
+    } else if (tieneOrden) {
+      badge  = '<span class="px-2 py-0.5 text-xs rounded-full bg-emerald-100 text-emerald-700 font-medium">Con Orden</span>';
+      accion = '';
     } else if (bloqueActivo) {
-      badge = `<span class="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-700 font-medium">Asig: ${esc(bloqueActivo.tecnico.split(' ')[0])}</span>`;
+      badge  = `<span class="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-700 font-medium">Asig: ${esc(bloqueActivo.tecnico.split(' ')[0])}</span>`;
+      accion = `<button onclick="descartarPlan('${esc(p.planId)}','${esc(p.programa||'')}','${esc((p.nombrePrograma||p.elemento||'').replace(/'/g,''))}','${esc(p.alimentador||'')}','${esc(p.zonaTramo||'')}')"
+        title="Descartar ítem" class="text-[10px] font-semibold text-slate-500 hover:text-slate-700 border border-slate-200 hover:border-slate-400 bg-slate-50 hover:bg-slate-100 px-2 py-0.5 rounded transition-all">
+        <i class="fas fa-archive mr-0.5"></i>Descartar
+      </button>`;
     } else {
-      badge = '<span class="px-2 py-0.5 text-xs rounded-full bg-amber-100 text-amber-700 font-medium">Pendiente</span>';
+      badge  = '<span class="px-2 py-0.5 text-xs rounded-full bg-amber-100 text-amber-700 font-medium">Pendiente</span>';
+      accion = `<button onclick="descartarPlan('${esc(p.planId)}','${esc(p.programa||'')}','${esc((p.nombrePrograma||p.elemento||'').replace(/'/g,''))}','${esc(p.alimentador||'')}','${esc(p.zonaTramo||'')}')"
+        title="Descartar ítem" class="text-[10px] font-semibold text-slate-500 hover:text-slate-700 border border-slate-200 hover:border-slate-400 bg-slate-50 hover:bg-slate-100 px-2 py-0.5 rounded transition-all">
+        <i class="fas fa-archive mr-0.5"></i>Descartar
+      </button>`;
     }
+    const rowCls = estaDescartado ? 'bg-slate-50 opacity-60' : 'hover:bg-gray-50';
     rows += `
-      <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors text-xs">
+      <tr class="border-b border-gray-100 transition-colors text-xs ${rowCls}">
         <td class="px-4 py-2.5">
           <span class="font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100 whitespace-nowrap">${esc(p.programa || '—')}</span>
         </td>
         <td class="px-4 py-2.5 text-gray-600">${esc(p.nombrePrograma || p.elemento || '—')}</td>
         <td class="px-4 py-2.5 text-center font-semibold text-gray-800">${esc(String(p.cantidadPlanificada !== undefined ? p.cantidadPlanificada : '—'))}</td>
         <td class="px-4 py-2.5 text-center">${badge}</td>
+        <td class="px-4 py-2.5 text-center">${accion}</td>
       </tr>`;
   });
 
@@ -7982,10 +8161,20 @@ function renderAsigResumenBloque(alim, zona) {
             <p class="text-xl font-bold text-emerald-700 leading-tight">${conOrden.length}</p>
           </div>
         </div>
+        ${descartados.length > 0 ? `
+        <div class="flex items-center gap-2 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+          <i class="fas fa-archive text-slate-400"></i>
+          <div>
+            <p class="text-[10px] text-slate-500 font-medium uppercase tracking-wide">Descartados</p>
+            <p class="text-xl font-bold text-slate-600 leading-tight">${descartados.length}</p>
+          </div>
+        </div>` : ''}
       </div>
       ${pendientes.length > 0
-        ? `<p class="text-sm text-gray-600 mt-1">Se encontraron <strong class="text-indigo-700">${pendientes.length} ítem(s) pendientes</strong> para asignar en la zona <strong class="text-gray-800">${esc(zona)}</strong>.</p>`
-        : `<p class="text-sm text-emerald-600 mt-1"><i class="fas fa-check mr-1"></i>Todos los ítems de esta zona ya tienen una Orden de Trabajo generada.</p>`}
+        ? `<p class="text-sm text-gray-600 mt-1">Se encontraron <strong class="text-indigo-700">${pendientes.length} ítem(s) pendientes</strong> para asignar en la zona <strong class="text-gray-800">${esc(zona)}</strong>.${descartados.length > 0 ? ` <span class="text-slate-500 text-xs">(${descartados.length} descartado${descartados.length > 1 ? 's' : ''})</span>` : ''}</p>`
+        : pendientes.length === 0 && descartados.length > 0
+          ? `<p class="text-sm text-slate-600 mt-1"><i class="fas fa-archive mr-1"></i>Todos los ítems pendientes han sido descartados (${descartados.length} descartado${descartados.length > 1 ? 's' : ''}).</p>`
+          : `<p class="text-sm text-emerald-600 mt-1"><i class="fas fa-check mr-1"></i>Todos los ítems de esta zona ya tienen una Orden de Trabajo generada.</p>`}
       ${bloqueInfoHtml}
     </div>
     <div class="overflow-x-auto border-t border-gray-100">
@@ -7996,6 +8185,7 @@ function renderAsigResumenBloque(alim, zona) {
             <th class="px-4 py-2.5">Nombre Programa</th>
             <th class="px-4 py-2.5 text-center">Cant. Planif.</th>
             <th class="px-4 py-2.5 text-center">Estado</th>
+            <th class="px-4 py-2.5 text-center">Acción</th>
           </tr>
         </thead>
         <tbody>${rows}</tbody>
@@ -8049,9 +8239,9 @@ async function confirmarAsignacion() {
     errEl?.classList.remove('hidden'); return;
   }
 
-  // Items = planes de esta zona sin orden de trabajo generada
+  // Items = planes de esta zona sin orden de trabajo generada y no descartados
   const items = _asigPlanesActuales
-    .filter(p => !DB.ordenes.some(o => planMatchesOrden(p, o)))
+    .filter(p => !DB.ordenes.some(o => planMatchesOrden(p, o)) && !_planesDescartadosSet.has(p.planId))
     .map(p => ({
       planId:              p.planId              || '',
       programa:            p.programa            || '',
@@ -8664,16 +8854,29 @@ function renderProyectosTecnicos() {
       </div>`;
     }
 
-    const itemsActivos  = (a.items || []).filter(it => !it.rechazado);
-    const itemsRechazados = (a.items || []).filter(it => it.rechazado);
+    const itemsActivos    = (a.items || []).filter(it => !it.rechazado && !_planesDescartadosSet.has(it.planId));
+    const itemsRechazados = (a.items || []).filter(it =>  it.rechazado && !_planesDescartadosSet.has(it.planId));
+    const itemsDescartadosLocales = (a.items || []).filter(it => _planesDescartadosSet.has(it.planId));
 
     const itemsHtml = totalItems > 0 ? `
       <div class="border-t border-gray-100 pt-3 mt-3">
         <p class="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
-          <i class="fas fa-list-check text-gray-400 mr-1.5"></i>Ítems del bloque (${itemsActivos.length} activos${itemsRechazados.length > 0 ? ` · <span class='text-rose-500'>${itemsRechazados.length} rechazado${itemsRechazados.length > 1 ? 's' : ''}</span>` : ''})
+          <i class="fas fa-list-check text-gray-400 mr-1.5"></i>Ítems del bloque (${itemsActivos.length} activos${itemsRechazados.length > 0 ? ` · <span class='text-rose-500'>${itemsRechazados.length} rechazado${itemsRechazados.length > 1 ? 's' : ''}</span>` : ''}${itemsDescartadosLocales.length > 0 ? ` · <span class='text-slate-400'>${itemsDescartadosLocales.length} descartado${itemsDescartadosLocales.length > 1 ? 's' : ''}</span>` : ''})
         </p>
         <div class="space-y-1.5 max-h-56 overflow-y-auto pr-1">
           ${(a.items).map((item, idx) => {
+            if (_planesDescartadosSet.has(item.planId)) {
+              const dInfo = DB.planesDescartados.find(d => d.planId === item.planId);
+              return `<div class="flex items-start gap-2 text-xs py-1 px-2 rounded-lg bg-slate-50 border border-slate-200 opacity-60">
+                <i class="fas fa-archive text-slate-400 mt-0.5 flex-shrink-0"></i>
+                <div class="min-w-0 flex-1">
+                  <span class="font-bold text-slate-500">${esc(item.programa || '—')}</span>
+                  <span class="text-gray-400 mx-1">·</span>
+                  <span class="text-slate-500 truncate">${esc(item.nombrePrograma || item.elemento || '—')}</span>
+                </div>
+                <span class="text-[10px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-semibold flex-shrink-0">${esc(dInfo?.motivo || 'Descartado')}</span>
+              </div>`;
+            }
             if (item.rechazado) {
               return `<div class="flex items-start gap-2 text-xs py-1 px-2 rounded-lg bg-rose-50 border border-rose-200">
                 <i class="fas fa-ban text-rose-400 mt-0.5 flex-shrink-0"></i>
@@ -8756,8 +8959,9 @@ function renderProyectosTecnicos() {
   for (const a of mis) {
     if (a.tipo === 'programa') {
       // Banner de cabecera del programa (resumen, sin botón OM)
-      const totalItems   = (a.items || []).length;
-      const conOrdenCnt  = (a.items || []).filter(it => DB.ordenes.some(o => planMatchesOrden(it, o))).length;
+      const itemsVisibles = (a.items || []).filter(it => !_planesDescartadosSet.has(it.planId));
+      const totalItems    = itemsVisibles.length;
+      const conOrdenCnt   = itemsVisibles.filter(it => DB.ordenes.some(o => planMatchesOrden(it, o))).length;
       const { vencida, proxima, diff } = _urgencyProps(a.fechaMaxima);
       const bgBanner = vencida ? 'bg-red-50 border-red-300' : proxima ? 'bg-amber-50 border-amber-300' : 'bg-violet-50 border-violet-200';
       allCards.push(`
@@ -8782,9 +8986,11 @@ function renderProyectosTecnicos() {
             </div>
           </div>
         </div>`);
-      // Cajetines individuales por ítem
+      // Cajetines individuales por ítem (se omiten los descartados)
       (a.items || []).forEach((item, idx) => {
-        allCards.push(_renderItemCard(a, item, idx));
+        if (!_planesDescartadosSet.has(item.planId)) {
+          allCards.push(_renderItemCard(a, item, idx));
+        }
       });
     } else {
       allCards.push(_renderZonaCard(a));
@@ -8916,6 +9122,89 @@ async function confirmarRechazo() {
   toast(`Ítem rechazado: "${motivo.substring(0, 40)}${motivo.length > 40 ? '…' : ''}"`, 'warning');
   renderProyectosTecnicos();
   _actualizarBadgeRechazados();
+}
+
+// ============================================================
+//  DESCARTAR / RESTAURAR PLAN
+// ============================================================
+let _dpPlanInfo = null; // info del plan a descartar (almacenado temporalmente)
+
+function descartarPlan(planId, programa, nombrePrograma, alimentador, zonaTramo) {
+  if (!planId) return;
+  if (_planesDescartadosSet.has(planId)) {
+    toast('Este ítem ya está descartado.', 'warning'); return;
+  }
+  _dpPlanInfo = { planId, programa, nombrePrograma, alimentador, zonaTramo };
+
+  const infoEl = document.getElementById('dp-plan-info');
+  if (infoEl) {
+    infoEl.innerHTML = `
+      <p class="font-semibold text-gray-700">${esc(programa || '—')}</p>
+      <p class="text-gray-500">${esc(nombrePrograma || '—')}</p>
+      <p class="text-gray-400">Zona: ${esc(zonaTramo || '—')} · Alim: ${esc(alimentador || '—')}</p>`;
+  }
+  document.getElementById('dp-plan-id').value = planId;
+  // Limpiar selección anterior
+  document.querySelectorAll('input[name="dp-motivo"]').forEach(r => r.checked = false);
+  document.getElementById('dp-error')?.classList.add('hidden');
+
+  const modal = document.getElementById('modal-descartar-plan');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function cerrarModalDescartePlan() {
+  const modal = document.getElementById('modal-descartar-plan');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+  _dpPlanInfo = null;
+}
+
+async function confirmarDescartePlan() {
+  const planId  = document.getElementById('dp-plan-id').value;
+  const motivoR = document.querySelector('input[name="dp-motivo"]:checked');
+  const errEl   = document.getElementById('dp-error');
+
+  if (!motivoR) {
+    errEl?.classList.remove('hidden'); return;
+  }
+  errEl?.classList.add('hidden');
+
+  const motivo = motivoR.value;
+  const ahora  = new Date().toISOString();
+  const doc = {
+    planId,
+    motivo,
+    descartadoPor:  sesionActual?.nombre || 'Sistema',
+    fechaDescarte:  ahora,
+    programa:       _dpPlanInfo?.programa       || '',
+    nombrePrograma: _dpPlanInfo?.nombrePrograma || '',
+    alimentador:    _dpPlanInfo?.alimentador    || '',
+    zonaTramo:      _dpPlanInfo?.zonaTramo      || '',
+    cr:             sesionActual?.cr            || ''
+  };
+
+  try {
+    await db.collection('planes_descartados').doc(planId).set(doc);
+  } catch(e) {
+    console.error('Error al guardar descarte:', e);
+    toast('Error al guardar el descarte', 'error');
+    return;
+  }
+
+  cerrarModalDescartePlan();
+  toast(`Ítem descartado: "${motivo}"`, 'info');
+}
+
+async function restaurarPlanDescartado(planId) {
+  if (!planId) return;
+  try {
+    await db.collection('planes_descartados').doc(planId).delete();
+    toast('Ítem restaurado al plan activo', 'success');
+  } catch(e) {
+    console.error('Error al restaurar plan:', e);
+    toast('Error al restaurar el ítem', 'error');
+  }
 }
 
 function _actualizarBadgeRechazados() {
