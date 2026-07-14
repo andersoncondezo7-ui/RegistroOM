@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OrdenSys — Sistema de Gestión de Órdenes</title>
+<title>OrdenSys \u2014 Sistema de Gestión de Órdenes</title>
 <link rel="icon" href="Logo.jpg" type="image/jpeg">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -147,7 +147,7 @@ select.inp{cursor:pointer}
 .btn-toggle-error { border-color: #f87171 !important; color: #f87171 !important; }
 
 /* ================================================================
-   LUZ DEL SUR — IDENTIDAD CORPORATIVA
+   LUZ DEL SUR \u2014 IDENTIDAD CORPORATIVA
    Azul eléctrico: #003087 / Gradiente: #F5A800 → #E8630A
    ================================================================ */
 :root {
@@ -176,7 +176,7 @@ select.inp{cursor:pointer}
 #sidebar #sb-user-wrap .text-slate-400 { color: rgba(255,255,255,.55) !important; }
 #sidebar .text-slate-500 { color: rgba(255,255,255,.4) !important; }
 
-/* ---- "Nueva Orden" — CTA permanente con degradado ---- */
+/* ---- "Nueva Orden" \u2014 CTA permanente con degradado ---- */
 #nav-nueva {
   background: var(--lds-grad) !important;
   color: #fff !important;
@@ -193,13 +193,13 @@ select.inp{cursor:pointer}
   color: #fff !important;
 }
 
-/* Nav items — inactivos */
+/* Nav items \u2014 inactivos */
 .nav-item { color: rgba(255,255,255,.75) !important; }
 .nav-item:hover {
   background: rgba(255,255,255,.08) !important;
   color: #fff !important;
 }
-/* Ítem activo — translúcido sutil, texto blanco puro */
+/* Ítem activo \u2014 translúcido sutil, texto blanco puro */
 .nav-item.activo {
   background: rgba(255,255,255,.11) !important;
   color: #fff !important;
@@ -313,7 +313,7 @@ select.inp{cursor:pointer}
   box-shadow: 0 0 0 3px rgba(0,48,135,.12) !important;
 }
 
-/* ---- DASHBOARD KPIs — acentos en bordes ---- */
+/* ---- DASHBOARD KPIs \u2014 acentos en bordes ---- */
 /* El KPI "Total" mantiene el azul corporativo */
 .border-blue-500 { border-color: var(--lds-blue) !important; }
 
@@ -384,7 +384,8 @@ a.bg-blue-600:hover {
           <button type="button" onclick="selectCR('60122')" class="cr-btn py-3 rounded-xl border-2 border-gray-200 text-sm font-bold text-gray-600 hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all" data-cr="60122">CR 60122</button>
           <button type="button" onclick="selectCR('60124')" class="cr-btn py-3 rounded-xl border-2 border-gray-200 text-sm font-bold text-gray-600 hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all" data-cr="60124">CR 60124</button>
           <button type="button" onclick="selectCR('60126')" class="cr-btn py-3 rounded-xl border-2 border-gray-200 text-sm font-bold text-gray-600 hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all" data-cr="60126">CR 60126</button>
-          <button type="button" onclick="selectCR('SOPORTE')" class="cr-btn py-3 rounded-xl border-2 border-purple-200 text-sm font-bold text-purple-600 hover:border-purple-500 hover:text-purple-800 hover:bg-purple-50 transition-all" data-cr="SOPORTE"><i class="fas fa-shield-alt mr-1"></i>SOPORTE</button>
+          <button type="button" onclick="selectCR('60110')" class="cr-btn py-3 rounded-xl border-2 border-amber-200 text-sm font-bold text-amber-700 hover:border-amber-500 hover:text-amber-900 hover:bg-amber-50 transition-all" data-cr="60110"><i class="fas fa-exchange-alt mr-1"></i>CR 60110 DRE</button>
+          <button type="button" onclick="selectCR('SOPORTE')" class="cr-btn col-span-2 py-3 rounded-xl border-2 border-purple-200 text-sm font-bold text-purple-600 hover:border-purple-500 hover:text-purple-800 hover:bg-purple-50 transition-all" data-cr="SOPORTE"><i class="fas fa-shield-alt mr-1"></i>SOPORTE</button>
         </div>
         <p id="login-cr-err" class="text-xs text-red-500 mt-1.5 hidden"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione su CR</p>
       </div>
@@ -396,7 +397,7 @@ a.bg-blue-600:hover {
         </label>
         <div class="relative">
           <select id="login-user" class="login-inp pr-10" disabled onchange="onUserSelect()">
-            <option value="">— Seleccione primero un CR —</option>
+            <option value="">\u2014 Seleccione primero un CR \u2014</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
             <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
@@ -428,7 +429,7 @@ a.bg-blue-600:hover {
 
     <div class="flex items-center justify-center gap-2 mt-6">
       <img src="Logo.jpg" alt="LDS" style="height:22px;width:22px;object-fit:cover;border-radius:50%;opacity:.6;">
-      <p class="text-xs text-gray-400">© 2026 Luz del Sur — OrdenSys</p>
+      <p class="text-xs text-gray-400">© 2026 Luz del Sur \u2014 OrdenSys</p>
     </div>
   </div>
 </div>
@@ -473,7 +474,11 @@ a.bg-blue-600:hover {
       </button>
       <button type="button" onclick="irPasoN(6)" id="sb-step-6" class="nav-sub-item">
         <span id="sb-step-ic-6" class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 border border-white/25 text-white/55">6</span>
-        <span class="nav-label" id="sb-step-lbl-6">Archivos</span>
+        <span class="nav-label" id="sb-step-lbl-6">IRE</span>
+      </button>
+      <button type="button" onclick="irPasoN(7)" id="sb-step-7" class="nav-sub-item">
+        <span id="sb-step-ic-7" class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 border border-white/25 text-white/55">7</span>
+        <span class="nav-label" id="sb-step-lbl-7">Archivos</span>
       </button>
       <div class="pl-2 pt-1 pb-1 pr-3">
         <div class="h-0.5 bg-white/10 rounded-full overflow-hidden">
@@ -536,8 +541,8 @@ a.bg-blue-600:hover {
     <div class="flex items-center gap-3" id="sb-user-wrap">
       <div id="sidebar-user-avatar" class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0" style="background:var(--lds-yellow);color:var(--lds-blue);">?</div>
       <div class="flex-1 min-w-0" id="sb-user-text">
-        <p id="sidebar-user-nombre" class="text-sm font-semibold leading-tight text-white truncate">—</p>
-        <p id="sidebar-user-cr" class="text-xs text-slate-400 mt-0.5">—</p>
+        <p id="sidebar-user-nombre" class="text-sm font-semibold leading-tight text-white truncate">\u2014</p>
+        <p id="sidebar-user-cr" class="text-xs text-slate-400 mt-0.5">\u2014</p>
       </div>
       <button id="sb-logout-btn" onclick="cerrarSesion()" title="Cerrar sesión" class="flex-shrink-0 text-slate-500 hover:text-red-400 transition-colors p-1.5 rounded-lg hover:bg-slate-800">
         <i class="fas fa-sign-out-alt text-sm"></i>
@@ -682,6 +687,11 @@ a.bg-blue-600:hover {
               <div class="flex-1 h-0.5 mx-1 bg-gray-200" id="n-sl-5"></div>
               <div class="flex flex-col items-center flex-shrink-0">
                 <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 border-gray-300 bg-gray-50 text-gray-400" id="n-sc-6">6</div>
+                <span class="text-[10px] text-gray-500 mt-1 hidden sm:block text-center leading-tight">IRE</span>
+              </div>
+              <div class="flex-1 h-0.5 mx-1 bg-gray-200" id="n-sl-6"></div>
+              <div class="flex flex-col items-center flex-shrink-0">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 border-gray-300 bg-gray-50 text-gray-400" id="n-sc-7">7</div>
                 <span class="text-[10px] text-gray-500 mt-1 hidden sm:block text-center leading-tight">Archivos</span>
               </div>
             </div>
@@ -701,7 +711,7 @@ a.bg-blue-600:hover {
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Alimentador</label>
                     <select id="n-alimentador" class="inp" disabled onchange="onAlimentadorChange('n');_clrErr('n-alimentador','nerr-alimentador')">
-                      <option value="">— Seleccione SET primero —</option>
+                      <option value="">\u2014 Seleccione SET primero \u2014</option>
                     </select>
                     <p class="text-xs text-red-500 hidden mt-1" id="nerr-alimentador"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione el Alimentador</p>
                   </div>
@@ -932,7 +942,7 @@ a.bg-blue-600:hover {
                 <div class="mb-3">
                   <label class="block text-xs font-medium text-gray-600 mb-1.5"><i class="fas fa-map-marker-alt text-indigo-400 mr-1.5"></i>Filtrar por Zona / Tramo</label>
                   <select id="n-planes-zona-filter" class="inp text-sm" onchange="_applyZonaFilter('n')" disabled>
-                    <option value="">— Seleccione Alimentador primero —</option>
+                    <option value="">\u2014 Seleccione Alimentador primero \u2014</option>
                   </select>
                 </div>
                 <div id="n-planes-container" class="space-y-2 max-h-[420px] overflow-y-auto pr-1">
@@ -1114,8 +1124,173 @@ a.bg-blue-600:hover {
               </div>
             </div>
 
-            <!-- ===== PASO 6: Carga de Archivos ===== -->
-            <div class="form-step space-y-6 hidden" id="n-step-6">
+            <!-- ===== PASO 6: IRE - Inspección de Riesgos Externos ===== -->
+            <div class="form-step space-y-5 hidden" id="n-step-6">
+              <div>
+                <p class="sec-title text-red-700" style="border-color:#dc2626">Inspección de Riesgos Externos (IRE)</p>
+                <p class="text-sm text-gray-500 mb-1">Complete la identificación de riesgos externos. Los datos se enviarán automáticamente al registrar la orden.</p>
+              </div>
+
+              <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                <!-- Logo + campos superiores -->
+                <div class="flex justify-between items-start border-b-2 border-gray-800 pb-3 mb-4">
+                  <div class="font-black text-xl tracking-wide text-gray-800">LUZ DEL <span class="text-blue-700">SUR</span></div>
+                  <div class="space-y-1 text-sm text-right">
+                    <div class="flex items-center gap-2 justify-end">
+                      <span class="font-bold text-gray-700">OM:</span>
+                      <input type="text" id="n-ire-solicitud" class="border-b border-dashed border-blue-600 text-blue-700 font-semibold bg-transparent text-sm w-28 focus:outline-none placeholder-blue-300" placeholder="N° OM">
+                    </div>
+                    <div class="flex items-center gap-2 justify-end">
+                      <span class="font-bold text-gray-700">CR:</span>
+                      <input type="text" id="n-ire-cr" class="border-b border-dashed border-blue-600 text-blue-700 font-semibold bg-transparent text-sm w-28 focus:outline-none" readonly>
+                    </div>
+                  </div>
+                </div>
+
+                <p class="text-center font-black text-lg uppercase text-gray-800 my-4 tracking-wide">Identificación de Riesgos Externos</p>
+
+                <!-- Campos de datos -->
+                <div class="flex flex-wrap gap-x-6 gap-y-2 p-3 mb-5 bg-blue-50 border border-blue-100 rounded-lg text-sm">
+                  <div class="flex items-baseline gap-2 w-full">
+                    <span class="font-bold text-gray-700 whitespace-nowrap">Asunto:</span>
+                    <input type="text" id="n-ire-asunto" class="border-b border-dashed border-blue-600 text-blue-700 font-semibold bg-transparent flex-1 focus:outline-none min-w-0" placeholder="Descripción del trabajo">
+                  </div>
+                  <div class="flex items-baseline gap-2">
+                    <span class="font-bold text-gray-700 whitespace-nowrap">Fecha:</span>
+                    <input type="text" id="n-ire-fecha" class="border-b border-dashed border-blue-600 text-blue-700 font-semibold bg-transparent w-32 focus:outline-none" placeholder="dd/mm/aaaa">
+                  </div>
+                  <div class="flex items-baseline gap-2">
+                    <span class="font-bold text-gray-700 whitespace-nowrap">Dirección:</span>
+                    <input type="text" id="n-ire-direccion" class="border-b border-dashed border-blue-600 text-blue-700 font-semibold bg-transparent w-48 focus:outline-none" placeholder="Ingrese la dirección">
+                  </div>
+                  <div class="flex items-baseline gap-2">
+                    <span class="font-bold text-gray-700 whitespace-nowrap">Responsable:</span>
+                    <input type="text" id="n-ire-responsable" class="border-b border-dashed border-blue-600 text-blue-700 font-semibold bg-transparent w-44 focus:outline-none" placeholder="Nombre y apellido" readonly>
+                  </div>
+                </div>
+
+                <!-- Grid de secciones A, B, C, D -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+                  <!-- A. Condiciones del entorno -->
+                  <div class="border border-gray-400 rounded overflow-hidden">
+                    <div class="bg-gray-800 text-white font-bold text-xs px-3 py-2">A. Condiciones del entorno</div>
+                    <table class="w-full text-xs border-collapse">
+                      <thead><tr class="bg-gray-100">
+                        <th class="text-left px-3 py-1.5 border-b border-gray-300 font-bold">Descripción</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Alto</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Medio</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Bajo</th>
+                      </tr></thead>
+                      <tbody>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">A.1 Terreno con desniveles</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A1-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A1-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A1-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">A.2 Terreno deleznable (arenoso, relleno sanitario)</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A2-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A2-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A2-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">A.3 Ríos, acequias</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A3-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A3-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A3-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">A.4 Parques y jardines (árboles, plantas especiales, etc.)</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A4-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A4-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A4-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">A.5 Clima poco favorable (viento, lluvia, etc.)</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A5-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A5-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A5-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">A.6 Zona de difícil acceso</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A6-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A6-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A6-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">A.7 Zona de alta delincuencia, agresión, vandalismo</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A7-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A7-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A7-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">A.8 Zona comercial</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A8-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A8-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A8-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">A.9 Trabajos paralelos en la zona (Sedapal, LDS, etc.)</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A9-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A9-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A9-bajo"></td></tr>
+                        <tr><td class="px-3 py-1.5">A.10 Piso / fachada de material especial (mármol, etc.)</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A10-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A10-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="A10-bajo"></td></tr>
+                      </tbody>
+                    </table>
+                    <div class="p-2 border-t border-gray-300 bg-gray-50">
+                      <label class="text-xs font-bold text-gray-700 block mb-1">Observaciones y Recomendaciones</label>
+                      <textarea id="n-ire-obsA" rows="2" class="w-full text-xs border-b border-dashed border-blue-500 bg-transparent text-blue-700 font-medium resize-none focus:outline-none placeholder-blue-300" placeholder="Escriba sus observaciones..."></textarea>
+                    </div>
+                  </div>
+
+                  <!-- B. Instalaciones Cercanas -->
+                  <div class="border border-gray-400 rounded overflow-hidden">
+                    <div class="bg-gray-800 text-white font-bold text-xs px-3 py-2">B. Instalaciones Cercanas</div>
+                    <table class="w-full text-xs border-collapse">
+                      <thead><tr class="bg-gray-100">
+                        <th class="text-left px-3 py-1.5 border-b border-gray-300 font-bold">Descripción</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Alto</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Medio</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Bajo</th>
+                      </tr></thead>
+                      <tbody>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">B.1 Redes aéreas de Alta y Media Tensión</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B1-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B1-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B1-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">B.2 Redes subterráneas de Media Tensión</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B2-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B2-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B2-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">B.3 Redes de Baja Tensión desnudas</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B3-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B3-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B3-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">B.4 Cables de empresas de comunicaciones</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B4-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B4-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B4-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">B.5 Acueductos, gasoductos</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B5-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B5-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B5-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">B.6 Mercados, centros comerciales</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B6-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B6-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B6-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">B.7 Colegios, estadios, coliseos, etc.</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B7-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B7-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B7-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">B.8 Grifos</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B8-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B8-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B8-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">B.9 Almacenes con materiales inflamables</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B9-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B9-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B9-bajo"></td></tr>
+                        <tr><td class="px-3 py-1.5">B.10 Muros de contención</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B10-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B10-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="B10-bajo"></td></tr>
+                      </tbody>
+                    </table>
+                    <div class="p-2 border-t border-gray-300 bg-gray-50">
+                      <label class="text-xs font-bold text-gray-700 block mb-1">Observaciones y Recomendaciones</label>
+                      <textarea id="n-ire-obsB" rows="2" class="w-full text-xs border-b border-dashed border-blue-500 bg-transparent text-blue-700 font-medium resize-none focus:outline-none placeholder-blue-300" placeholder="Escriba sus observaciones..."></textarea>
+                    </div>
+                  </div>
+
+                  <!-- C. Vías -->
+                  <div class="border border-gray-400 rounded overflow-hidden">
+                    <div class="bg-gray-800 text-white font-bold text-xs px-3 py-2">C. Vías</div>
+                    <table class="w-full text-xs border-collapse">
+                      <thead><tr class="bg-gray-100">
+                        <th class="text-left px-3 py-1.5 border-b border-gray-300 font-bold">Descripción</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Alto</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Medio</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Bajo</th>
+                      </tr></thead>
+                      <tbody>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">C.1 Cruces de calles o avenidas</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="C1-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="C1-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="C1-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">C.2 Tránsito vehicular intenso</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="C2-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="C2-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="C2-bajo"></td></tr>
+                        <tr><td class="px-3 py-1.5">C.3 Tránsito peatonal intenso</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="C3-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="C3-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="C3-bajo"></td></tr>
+                      </tbody>
+                    </table>
+                    <div class="p-2 border-t border-gray-300 bg-gray-50">
+                      <label class="text-xs font-bold text-gray-700 block mb-1">Observaciones y Recomendaciones</label>
+                      <textarea id="n-ire-obsC" rows="2" class="w-full text-xs border-b border-dashed border-blue-500 bg-transparent text-blue-700 font-medium resize-none focus:outline-none placeholder-blue-300" placeholder="Escriba sus observaciones..."></textarea>
+                    </div>
+                  </div>
+
+                  <!-- D. Otros -->
+                  <div class="border border-gray-400 rounded overflow-hidden">
+                    <div class="bg-gray-800 text-white font-bold text-xs px-3 py-2">D. Otros</div>
+                    <table class="w-full text-xs border-collapse">
+                      <thead><tr class="bg-gray-100">
+                        <th class="text-left px-3 py-1.5 border-b border-gray-300 font-bold">Descripción</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Alto</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Medio</th>
+                        <th class="w-10 text-center py-1.5 border-b border-gray-300 font-bold">Bajo</th>
+                      </tr></thead>
+                      <tbody>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">D.1 Clientes importantes en la zona</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="D1-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="D1-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="D1-bajo"></td></tr>
+                        <tr class="border-b border-gray-100"><td class="px-3 py-1.5">D.2 Horario de trabajo poco favorable</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="D2-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="D2-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="D2-bajo"></td></tr>
+                        <tr><td class="px-3 py-1.5">D.3 Rotulación de circuitos</td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="D3-alto"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="D3-medio"></td><td class="text-center"><input type="checkbox" class="ire-chk w-4 h-4 accent-blue-700" data-ire="D3-bajo"></td></tr>
+                      </tbody>
+                    </table>
+                    <div class="p-2 border-t border-gray-300 bg-gray-50">
+                      <label class="text-xs font-bold text-gray-700 block mb-1">Observaciones y Recomendaciones</label>
+                      <textarea id="n-ire-obsD" rows="2" class="w-full text-xs border-b border-dashed border-blue-500 bg-transparent text-blue-700 font-medium resize-none focus:outline-none placeholder-blue-300" placeholder="Escriba sus observaciones..."></textarea>
+                    </div>
+                  </div>
+
+                </div><!-- /grid secciones -->
+              </div><!-- /card -->
+
+              <div class="flex flex-col sm:flex-row justify-between gap-3 pt-4 border-t border-gray-100">
+                <button type="button" onclick="irPasoN(5)" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                  <i class="fas fa-arrow-left mr-1.5"></i>Anterior
+                </button>
+                <div class="flex gap-3 flex-wrap">
+                  <button type="button" onclick="irPasoN(7)" class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                    Siguiente <i class="fas fa-arrow-right ml-1.5"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== PASO 7: Carga de Archivos ===== -->
+            <div class="form-step space-y-6 hidden" id="n-step-7">
               <div>
                 <p class="sec-title text-blue-700" style="border-color:#2563eb">Documentos y Archivos</p>
                 <p class="text-sm text-gray-500 mb-5">Selecciona los documentos requeridos y adjunta los archivos de esta orden. Ambos pasos son opcionales.</p>
@@ -1160,27 +1335,7 @@ a.bg-blue-600:hover {
                     </div>
                   </div>
 
-                  <!-- Card: IRE -->
-                  <div id="n-card-ire" onclick="_toggleArchivoCard('ire')" class="flex flex-col gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all border-gray-200 bg-white hover:border-gray-300">
-                    <div class="flex items-center gap-3">
-                      <input type="checkbox" id="n-chk-ire" onclick="event.stopPropagation()" onchange="_updateArchivoCard('ire')" class="w-4 h-4 accent-blue-600 flex-shrink-0">
-                      <div class="w-9 h-9 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-file-alt text-violet-600 text-sm"></i>
-                      </div>
-                      <span class="text-sm font-semibold text-gray-700">IRE</span>
-                    </div>
-                    <div id="n-file-wrap-ire" class="hidden">
-                      <input type="file" id="n-file-ire" onclick="event.stopPropagation()" onchange="_mostrarArchivoSeleccionado('ire')" class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100" accept=".pdf,.jpg,.jpeg,.png,.docx">
-                      <p class="text-xs text-red-500 hidden mt-1" id="nerr-ire"><i class="fas fa-exclamation-circle mr-1"></i>Seleccione un archivo para IRE</p>
-                      <div id="n-file-preview-ire" class="hidden flex items-center gap-2 mt-2 px-2.5 py-1.5 bg-white rounded-lg border border-violet-200">
-                        <i class="fas fa-file-alt text-violet-400 text-xs flex-shrink-0"></i>
-                        <span id="n-file-name-ire" class="text-xs text-gray-700 truncate flex-1"></span>
-                        <button type="button" onclick="_limpiarArchivo('ire',event)" class="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full bg-red-100 hover:bg-red-200 text-red-500 transition-colors" title="Quitar archivo">
-                          <i class="fas fa-times text-[10px]"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+
 
                   <!-- Card: Carta de Exoneración -->
                   <div id="n-card-carta" onclick="_toggleArchivoCard('carta')" class="flex flex-col gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all border-gray-200 bg-white hover:border-gray-300">
@@ -1259,7 +1414,7 @@ a.bg-blue-600:hover {
               </div>
 
               <div class="flex flex-col sm:flex-row justify-between gap-3 pt-4 border-t border-gray-100">
-                <button type="button" onclick="irPasoN(5)" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                <button type="button" onclick="irPasoN(6)" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
                   <i class="fas fa-arrow-left mr-1.5"></i>Anterior
                 </button>
                 <div class="flex gap-3">
@@ -1308,7 +1463,7 @@ a.bg-blue-600:hover {
           <div class="flex items-center gap-2">
             <label class="text-sm font-medium text-gray-600 whitespace-nowrap"><i class="fas fa-calendar-week mr-1 text-indigo-500"></i>Semana:</label>
             <select id="f-semana-export" class="inp w-40" onchange="renderLista()">
-              <option value="">— Todas —</option>
+              <option value="">\u2014 Todas \u2014</option>
             </select>
           </div>
           <button onclick="exportReporteSemanal()" class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 flex-shrink-0">
@@ -1341,7 +1496,7 @@ a.bg-blue-600:hover {
           </table>
         </div>
         <div class="p-4 border-t border-gray-100 flex items-center justify-between">
-          <p class="text-xs text-gray-400" id="pag-info">—</p>
+          <p class="text-xs text-gray-400" id="pag-info">\u2014</p>
           <div class="flex gap-1" id="paginacion"></div>
         </div>
       </div>
@@ -1391,31 +1546,31 @@ a.bg-blue-600:hover {
               <dl class="grid grid-cols-2 gap-x-6 gap-y-3">
                 <div>
                   <dt class="text-xs text-gray-400 mb-0.5">SET</dt>
-                  <dd class="font-bold text-emerald-700 text-base" id="det-set">—</dd>
+                  <dd class="font-bold text-emerald-700 text-base" id="det-set">\u2014</dd>
                 </div>
                 <div>
                   <dt class="text-xs text-gray-400 mb-0.5">Alimentador</dt>
-                  <dd class="font-semibold text-gray-800" id="det-alimentador">—</dd>
+                  <dd class="font-semibold text-gray-800" id="det-alimentador">\u2014</dd>
                 </div>
                 <div>
                   <dt class="text-xs text-gray-400 mb-0.5">Circuito a solicitar</dt>
-                  <dd class="font-semibold text-gray-800" id="det-circuito">—</dd>
+                  <dd class="font-semibold text-gray-800" id="det-circuito">\u2014</dd>
                 </div>
                 <div>
                   <dt class="text-xs text-gray-400 mb-0.5">Información Adicional</dt>
-                  <dd id="det-atencion-dre">—</dd>
+                  <dd id="det-atencion-dre">\u2014</dd>
                 </div>
                 <div id="det-spor-wrap" class="hidden">
                   <dt class="text-xs text-gray-400 mb-0.5">N° de SPOR</dt>
-                  <dd class="font-semibold text-violet-700" id="det-spor">—</dd>
+                  <dd class="font-semibold text-violet-700" id="det-spor">\u2014</dd>
                 </div>
                 <div id="det-mant-con-wrap" class="hidden col-span-2">
-                  <dt class="text-xs text-gray-400 mb-1">Mantenimiento a la conexión — Códigos de cliente</dt>
+                  <dt class="text-xs text-gray-400 mb-1">Mantenimiento a la conexión \u2014 Códigos de cliente</dt>
                   <dd id="det-mant-con-body" class="flex flex-wrap gap-1.5 mt-1"></dd>
                 </div>
                 <div id="det-via-rapida-wrap" class="hidden">
                   <dt class="text-xs text-gray-400 mb-0.5">Cruce de vía rápida</dt>
-                  <dd class="font-semibold text-purple-700" id="det-via-rapida-tipo">—</dd>
+                  <dd class="font-semibold text-purple-700" id="det-via-rapida-tipo">\u2014</dd>
                 </div>
               </dl>
             </div>
@@ -1425,27 +1580,27 @@ a.bg-blue-600:hover {
               <dl class="grid grid-cols-2 gap-x-6 gap-y-3">
                 <div>
                   <dt class="text-xs text-gray-400 mb-0.5">Tiempo estimado</dt>
-                  <dd class="font-semibold text-gray-800" id="det-tiempo">—</dd>
+                  <dd class="font-semibold text-gray-800" id="det-tiempo">\u2014</dd>
                 </div>
                 <div>
                   <dt class="text-xs text-gray-400 mb-0.5">Turno</dt>
-                  <dd id="det-turno">—</dd>
+                  <dd id="det-turno">\u2014</dd>
                 </div>
                 <div>
                   <dt class="text-xs text-gray-400 mb-0.5">Requiere traslado</dt>
-                  <dd id="det-traslado">—</dd>
+                  <dd id="det-traslado">\u2014</dd>
                 </div>
                 <div>
                   <dt class="text-xs text-gray-400 mb-0.5">Tipo de corte</dt>
-                  <dd class="text-gray-700" id="det-tipo-corte">—</dd>
+                  <dd class="text-gray-700" id="det-tipo-corte">\u2014</dd>
                 </div>
                 <div>
                   <dt class="text-xs text-gray-400 mb-0.5">Corte en alta</dt>
-                  <dd id="det-cortealta">—</dd>
+                  <dd id="det-cortealta">\u2014</dd>
                 </div>
                 <div class="col-span-2" id="det-compensacion-wrap">
                   <dt class="text-xs text-gray-400 mb-0.5">Compensación actual</dt>
-                  <dd class="text-gray-700" id="det-compensacion">—</dd>
+                  <dd class="text-gray-700" id="det-compensacion">\u2014</dd>
                 </div>
               </dl>
             </div>
@@ -1458,14 +1613,14 @@ a.bg-blue-600:hover {
                   <p class="text-xs text-gray-400 mb-1">Seccionador</p>
                   <div class="flex items-center gap-2">
                     <span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-cyan-100 text-cyan-700">Requerido</span>
-                    <span class="text-sm text-gray-700">Cantidad: <strong id="det-sec-cant">—</strong></span>
+                    <span class="text-sm text-gray-700">Cantidad: <strong id="det-sec-cant">\u2014</strong></span>
                   </div>
                 </div>
                 <div class="hidden" id="det-rec-wrap">
                   <p class="text-xs text-gray-400 mb-1">Recloser</p>
                   <div class="flex items-center gap-2">
                     <span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-cyan-100 text-cyan-700">Requerido</span>
-                    <span class="text-sm text-gray-700">Cantidad: <strong id="det-rec-cant">—</strong></span>
+                    <span class="text-sm text-gray-700">Cantidad: <strong id="det-rec-cant">\u2014</strong></span>
                   </div>
                 </div>
                 <div class="hidden" id="det-transf-wrap">
@@ -1520,7 +1675,7 @@ a.bg-blue-600:hover {
               <p class="text-xs font-semibold text-rose-700 uppercase tracking-wide mb-3">
                 <i class="fas fa-comment-alt mr-1.5"></i>Comentario de Observación
               </p>
-              <p class="text-sm text-rose-900 leading-relaxed" id="det-observacion-comentario">—</p>
+              <p class="text-sm text-rose-900 leading-relaxed" id="det-observacion-comentario">\u2014</p>
               <p class="text-xs text-rose-400 mt-2" id="det-observacion-meta"></p>
             </div>
 
@@ -1588,11 +1743,11 @@ a.bg-blue-600:hover {
                 <i class="fas fa-exclamation-triangle text-rose-600 text-sm"></i>
               </div>
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-bold text-rose-800">OM Observada — Requiere corrección</p>
+                <p class="text-sm font-bold text-rose-800">OM Observada \u2014 Requiere corrección</p>
                 <p class="text-xs text-rose-600 mt-0.5 mb-2">El Planificador ha identificado una deficiencia. Corrige los datos o el archivo y envía la OM corregida.</p>
                 <div class="bg-white border border-rose-200 rounded-lg px-3 py-2">
                   <p class="text-xs font-semibold text-rose-700 mb-0.5"><i class="fas fa-comment-alt mr-1"></i>Comentario del Planificador:</p>
-                  <p class="text-sm text-rose-900 leading-relaxed" id="edit-observada-comentario">—</p>
+                  <p class="text-sm text-rose-900 leading-relaxed" id="edit-observada-comentario">\u2014</p>
                 </div>
               </div>
             </div>
@@ -1610,7 +1765,7 @@ a.bg-blue-600:hover {
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1.5">Alimentador</label>
                   <select id="e-alimentador" class="inp" disabled onchange="onAlimentadorChange('e')">
-                    <option value="">— Seleccione SET primero —</option>
+                    <option value="">\u2014 Seleccione SET primero \u2014</option>
                   </select>
                 </div>
                 <div>
@@ -1810,7 +1965,7 @@ a.bg-blue-600:hover {
               <div class="mb-3">
                 <label class="block text-xs font-medium text-gray-600 mb-1.5"><i class="fas fa-map-marker-alt text-indigo-400 mr-1.5"></i>Filtrar por Zona / Tramo</label>
                 <select id="e-planes-zona-filter" class="inp text-sm" onchange="_applyZonaFilter('e')" disabled>
-                  <option value="">— Seleccione Alimentador primero —</option>
+                  <option value="">\u2014 Seleccione Alimentador primero \u2014</option>
                 </select>
               </div>
               <div id="e-planes-container" class="space-y-2 max-h-[420px] overflow-y-auto pr-1">
@@ -2107,13 +2262,13 @@ a.bg-blue-600:hover {
             <div class="flex-1 min-w-52">
               <label class="block text-xs font-medium text-gray-500 mb-1">Programa</label>
               <select id="fp-programa" class="inp" onchange="renderProgramas()">
-                <option value="">— Todos los programas —</option>
+                <option value="">\u2014 Todos los programas \u2014</option>
               </select>
             </div>
             <div class="min-w-40">
               <label class="block text-xs font-medium text-gray-500 mb-1">CR</label>
               <select id="fp-cr" class="inp" onchange="renderProgramas()">
-                <option value="">— Todos —</option>
+                <option value="">\u2014 Todos \u2014</option>
                 <option value="60122">CR 60122</option>
                 <option value="60124">CR 60124</option>
                 <option value="60126">CR 60126</option>
@@ -2126,19 +2281,19 @@ a.bg-blue-600:hover {
           <!-- KPIs -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div class="bg-gray-50 rounded-lg p-3 text-center border border-gray-100">
-              <p class="text-xl font-bold text-gray-800" id="prog-count">—</p>
+              <p class="text-xl font-bold text-gray-800" id="prog-count">\u2014</p>
               <p class="text-xs text-gray-500 mt-0.5">Total Planes</p>
             </div>
             <div class="bg-emerald-50 rounded-lg p-3 text-center border border-emerald-100">
-              <p class="text-xl font-bold text-emerald-600" id="prog-con-orden">—</p>
+              <p class="text-xl font-bold text-emerald-600" id="prog-con-orden">\u2014</p>
               <p class="text-xs text-gray-500 mt-0.5">Con Orden</p>
             </div>
             <div class="bg-purple-50 rounded-lg p-3 text-center border border-purple-100">
-              <p class="text-xl font-bold text-purple-600" id="prog-asignados">—</p>
+              <p class="text-xl font-bold text-purple-600" id="prog-asignados">\u2014</p>
               <p class="text-xs text-gray-500 mt-0.5">Asignados</p>
             </div>
             <div class="bg-red-50 rounded-lg p-3 text-center border border-red-100">
-              <p class="text-xl font-bold text-red-500" id="prog-sin-orden">—</p>
+              <p class="text-xl font-bold text-red-500" id="prog-sin-orden">\u2014</p>
               <p class="text-xs text-gray-500 mt-0.5">Sin Orden</p>
             </div>
           </div>
@@ -2194,7 +2349,7 @@ a.bg-blue-600:hover {
           </button>
         </div>
 
-        <!-- Panel: Asignación — tabs Por Zona / Por Programa -->
+        <!-- Panel: Asignación \u2014 tabs Por Zona / Por Programa -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
 
           <!-- Tab bar -->
@@ -2223,19 +2378,19 @@ a.bg-blue-600:hover {
                 <div class="flex-1 min-w-[130px]">
                   <label class="block text-xs font-medium text-gray-600 mb-1.5">SET</label>
                   <select id="asig-set" class="inp text-sm" onchange="onAsigSetChange()">
-                    <option value="">— Seleccione SET —</option>
+                    <option value="">\u2014 Seleccione SET \u2014</option>
                   </select>
                 </div>
                 <div class="flex-1 min-w-[150px]">
                   <label class="block text-xs font-medium text-gray-600 mb-1.5">Alimentador</label>
                   <select id="asig-alim" class="inp text-sm" onchange="onAsigAlimChange()" disabled>
-                    <option value="">— Seleccione Alimentador —</option>
+                    <option value="">\u2014 Seleccione Alimentador \u2014</option>
                   </select>
                 </div>
                 <div class="flex-1 min-w-[200px]">
                   <label class="block text-xs font-medium text-gray-600 mb-1.5">Zona / Tramo</label>
                   <select id="asig-zona" class="inp text-sm" onchange="onAsigZonaChange()" disabled>
-                    <option value="">— Seleccione Zona —</option>
+                    <option value="">\u2014 Seleccione Zona \u2014</option>
                   </select>
                 </div>
               </div>
@@ -2278,19 +2433,19 @@ a.bg-blue-600:hover {
             <!-- Filtros: Programa + CR -->
             <div class="p-5 bg-violet-50/60 border-b border-violet-100">
               <p class="text-xs font-semibold text-violet-600 uppercase tracking-wide mb-3">
-                <i class="fas fa-sliders-h text-violet-400 mr-1.5"></i>Filtros Mandatorios — Programa y CR
+                <i class="fas fa-sliders-h text-violet-400 mr-1.5"></i>Filtros Mandatorios \u2014 Programa y CR
               </p>
               <div class="flex flex-wrap gap-4 items-end">
                 <div class="flex-[3] min-w-[260px]">
                   <label class="block text-xs font-medium text-gray-600 mb-1.5">Programa</label>
                   <select id="prog-asig-programa" class="inp text-sm" onchange="onProgAsigChange()">
-                    <option value="">— Seleccione Programa —</option>
+                    <option value="">\u2014 Seleccione Programa \u2014</option>
                   </select>
                 </div>
                 <div class="flex-1 min-w-[160px]">
                   <label class="block text-xs font-medium text-gray-600 mb-1.5">CR (Centro de Responsabilidad)</label>
                   <select id="prog-asig-cr" class="inp text-sm" onchange="onProgAsigChange()">
-                    <option value="">— Seleccione CR —</option>
+                    <option value="">\u2014 Seleccione CR \u2014</option>
                   </select>
                 </div>
               </div>
@@ -2375,14 +2530,14 @@ a.bg-blue-600:hover {
             <h2 class="text-xl font-bold text-gray-800">
               <i class="fas fa-ban text-rose-500 mr-2"></i>Casos Rechazados
             </h2>
-            <p class="text-sm text-gray-500 mt-0.5">Ítems rechazados por técnicos en campo — pendientes de reasignación a CR interno</p>
+            <p class="text-sm text-gray-500 mt-0.5">Ítems rechazados por técnicos en campo \u2014 pendientes de reasignación a CR interno</p>
           </div>
           <div class="flex items-center gap-3">
             <select id="rech-filtro-cr" class="inp text-sm w-48" onchange="renderRechazados()">
               <option value="">Todos los CR</option>
-              <option value="60122">60122 — Lima</option>
-              <option value="60124">60124 — Huarochirí</option>
-              <option value="60126">60126 — Cañete</option>
+              <option value="60122">60122 \u2014 Lima</option>
+              <option value="60124">60124 \u2014 Huarochirí</option>
+              <option value="60126">60126 \u2014 Cañete</option>
             </select>
             <button onclick="renderRechazados()"
               class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg hover:bg-rose-100 transition-colors">
@@ -2394,15 +2549,15 @@ a.bg-blue-600:hover {
         <!-- KPIs -->
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
           <div class="bg-rose-50 rounded-lg p-3 text-center border border-rose-100">
-            <p class="text-xl font-bold text-rose-600" id="rech-kpi-total">—</p>
+            <p class="text-xl font-bold text-rose-600" id="rech-kpi-total">\u2014</p>
             <p class="text-xs text-gray-500 mt-0.5">Total Rechazados</p>
           </div>
           <div class="bg-amber-50 rounded-lg p-3 text-center border border-amber-100">
-            <p class="text-xl font-bold text-amber-500" id="rech-kpi-pendientes">—</p>
+            <p class="text-xl font-bold text-amber-500" id="rech-kpi-pendientes">\u2014</p>
             <p class="text-xs text-gray-500 mt-0.5">Pendientes Reasignación</p>
           </div>
           <div class="bg-emerald-50 rounded-lg p-3 text-center border border-emerald-100">
-            <p class="text-xl font-bold text-emerald-600" id="rech-kpi-reasignados">—</p>
+            <p class="text-xl font-bold text-emerald-600" id="rech-kpi-reasignados">\u2014</p>
             <p class="text-xs text-gray-500 mt-0.5">Reasignados</p>
           </div>
         </div>
@@ -2426,7 +2581,7 @@ a.bg-blue-600:hover {
             <h2 class="text-xl font-bold text-gray-800">
               <i class="fas fa-exclamation-triangle text-pink-500 mr-2"></i>OMs Observadas
             </h2>
-            <p class="text-sm text-gray-500 mt-0.5">OMs devueltas por el Planificador — revisa el comentario, corrige y reenvía</p>
+            <p class="text-sm text-gray-500 mt-0.5">OMs devueltas por el Planificador \u2014 revisa el comentario, corrige y reenvía</p>
           </div>
           <button onclick="renderObservadas()" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-pink-700 bg-pink-50 border border-pink-200 rounded-lg hover:bg-pink-100 transition-colors">
             <i class="fas fa-sync-alt"></i>Actualizar
@@ -2449,7 +2604,7 @@ a.bg-blue-600:hover {
             <h2 class="text-xl font-bold text-gray-800">
               <i class="fas fa-check-double text-violet-500 mr-2"></i>OMs Corregidas
             </h2>
-            <p class="text-sm text-gray-500 mt-0.5">OMs subsanadas por los técnicos — aprueba y programa, o devuelve con nueva observación</p>
+            <p class="text-sm text-gray-500 mt-0.5">OMs subsanadas por los técnicos \u2014 aprueba y programa, o devuelve con nueva observación</p>
           </div>
           <button onclick="renderCorregidas()" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-violet-700 bg-violet-50 border border-violet-200 rounded-lg hover:bg-violet-100 transition-colors">
             <i class="fas fa-sync-alt"></i>Actualizar
@@ -2563,7 +2718,7 @@ a.bg-blue-600:hover {
             Motivo de reprogramación <span class="text-red-500">*</span>
           </label>
           <select id="mg-motivo" class="inp" onchange="document.getElementById('mg-error').classList.add('hidden')">
-            <option value="">— Seleccione un motivo —</option>
+            <option value="">\u2014 Seleccione un motivo \u2014</option>
             <option value="Falta de operadores">Falta de operadores</option>
             <option value="Falta de materiales">Falta de materiales</option>
             <option value="Falta de recursos Tecsur">Falta de recursos Tecsur</option>
@@ -2885,14 +3040,14 @@ a.bg-blue-600:hover {
         <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">
           <i class="fas fa-user-tie text-indigo-500 mr-1"></i>Técnico anterior
         </label>
-        <p class="text-sm font-semibold text-gray-700 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2" id="mr-tecnico-anterior">—</p>
+        <p class="text-sm font-semibold text-gray-700 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2" id="mr-tecnico-anterior">\u2014</p>
       </div>
       <div>
         <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">
           Nuevo técnico asignado <span class="text-red-500">*</span>
         </label>
         <select id="mr-tecnico" class="inp">
-          <option value="">— Seleccione un técnico —</option>
+          <option value="">\u2014 Seleccione un técnico \u2014</option>
         </select>
       </div>
       <div id="mr-error" class="hidden flex items-center gap-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
@@ -2997,10 +3152,10 @@ a.bg-blue-600:hover {
           <i class="fas fa-building text-amber-500 mr-1"></i>Centro de Responsabilidad (CR)
         </label>
         <select id="rrech-cr" class="inp text-sm" onchange="onRrechCrChange()">
-          <option value="">— Seleccione CR —</option>
-          <option value="60122">60122 — Lima</option>
-          <option value="60124">60124 — Huarochirí</option>
-          <option value="60126">60126 — Cañete</option>
+          <option value="">\u2014 Seleccione CR \u2014</option>
+          <option value="60122">60122 \u2014 Lima</option>
+          <option value="60124">60124 \u2014 Huarochirí</option>
+          <option value="60126">60126 \u2014 Cañete</option>
         </select>
       </div>
       <div>
@@ -3008,7 +3163,7 @@ a.bg-blue-600:hover {
           <i class="fas fa-user-tie text-amber-500 mr-1"></i>Técnico Asignado <span class="text-red-500">*</span>
         </label>
         <select id="rrech-tecnico" class="inp text-sm">
-          <option value="">— Seleccione un técnico —</option>
+          <option value="">\u2014 Seleccione un técnico \u2014</option>
         </select>
       </div>
       <div>
@@ -3112,7 +3267,7 @@ a.bg-blue-600:hover {
             <i class="fas fa-layer-group text-teal-500 mr-1"></i>Programa <span class="text-red-500">*</span>
           </label>
           <select id="np-programa" class="inp text-sm">
-            <option value="">— Seleccione Programa —</option>
+            <option value="">\u2014 Seleccione Programa \u2014</option>
           </select>
         </div>
         <div>
@@ -3120,10 +3275,10 @@ a.bg-blue-600:hover {
             <i class="fas fa-building text-teal-500 mr-1"></i>Centro de Responsabilidad (CR) <span class="text-red-500">*</span>
           </label>
           <select id="np-cr" class="inp text-sm">
-            <option value="">— Seleccione CR —</option>
-            <option value="60122">60122 — Lima</option>
-            <option value="60124">60124 — Huarochirí</option>
-            <option value="60126">60126 — Cañete</option>
+            <option value="">\u2014 Seleccione CR \u2014</option>
+            <option value="60122">60122 \u2014 Lima</option>
+            <option value="60124">60124 \u2014 Huarochirí</option>
+            <option value="60126">60126 \u2014 Cañete</option>
           </select>
         </div>
         <div>
@@ -3204,7 +3359,7 @@ a.bg-blue-600:hover {
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-storage-compat.js"></script>
 <script>
 // ============================================================
-//  FIREBASE — CONFIGURACIÓN Y BASE DE DATOS
+//  FIREBASE \u2014 CONFIGURACIÓN Y BASE DE DATOS
 // ============================================================
 const firebaseConfig = {
     apiKey: "AIzaSyCdKO-l_p33elmecIvZH0qTMf7F_YSThws",
@@ -3219,7 +3374,7 @@ const firebaseConfig = {
   const db      = firebase.firestore();
   const storage = firebase.storage();
 
-// URL de Power Automate — editable desde Configuración (se guarda en localStorage)
+// URL de Power Automate \u2014 editable desde Configuración (se guarda en localStorage)
 const PA_OM_CREADA_URL_DEFAULT = "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/b13ee4889e784876b4f1f490caa9d78b/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4za529pVFJBBxL66-xT2IhSXcmOVdmcVhETdTPJyaBA";
 function getPAUrl() { return localStorage.getItem('pa_om_url') || PA_OM_CREADA_URL_DEFAULT; }
 // ============================================================
@@ -3235,7 +3390,7 @@ const DEFAULT_USUARIOS = {
     'AREVALO PAREDES JUAN RICARDO':  { pin: '7929', rol: 'tecnico' },
     'ARTEAGA MELENDEZ JORGE':        { pin: '8181', rol: 'tecnico' },
     'CARDENAS ALVARO EDWIN STUAR':   { pin: '8187', rol: 'tecnico' },
-    'CAYTUIRO PORRAS RICHARD LUCIO': { pin: '8618', rol: 'tecnico' },
+    'CAYTUIRO PORRAS RICHARD LUCIO': { pin: '8618', rol: 'planificador' },
     'CERNA ESPINOZA JHONATAN ALBINO':{ pin: '8733', rol: 'tecnico' },
     'DE LA CRUZ LAZO GEORGE BRAYAN': { pin: '8029', rol: 'tecnico' },
     'JARA POMA ELLISON JUAN':        { pin: '7977', rol: 'tecnico' },
@@ -3258,7 +3413,17 @@ const DEFAULT_USUARIOS = {
     'SALHUANA MALAGA GONZALO ALEXANDER':  { pin: '8321', rol: 'tecnico' },
     'VARGAS MEDINA JUAN':                 { pin: '7866', rol: 'tecnico' }
   },
-  '60126': {}
+  '60126': {},
+  '60110': {
+    'DRE': { pin: '1234', rol: 'tecnico' }
+  }
+};
+
+// Diccionario de firmas en base64 de los técnicos (PNG/JPEG sin cabecera "data:image/png;base64,")
+const FIRMAS_TECNICOS = {
+  'MAZA VILLANUEVA CESAR AUGUSTO': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', // Reemplazar con el base64 real de la firma
+  // Puedes agregar firmas para otros técnicos aquí usando su nombre exacto en mayúsculas:
+  // 'APELLIDOS Y NOMBRES': 'base64...'
 };
 
 let sesionActual = null;
@@ -3281,7 +3446,7 @@ function selectCR(cr) {
   const crData = (DB.usuarios || DEFAULT_USUARIOS)[cr] || {};
   const lista = Object.keys(crData).sort();
   if (lista.length === 0) {
-    sel.innerHTML = '<option value="">— Sin usuarios configurados —</option>';
+    sel.innerHTML = '<option value="">\u2014 Sin usuarios configurados \u2014</option>';
     sel.disabled = true;
   } else {
     sel.innerHTML = '<option value="">Seleccione su nombre...</option>';
@@ -3326,7 +3491,7 @@ async function hacerLogin() {
     return;
   }
 
-  // Comparar hashes — nunca se compara texto plano directamente
+  // Comparar hashes \u2014 nunca se compara texto plano directamente
   const enteredHash = await hashPin(pin);
   const storedHash  = userData?.pin ? await hashPin(userData.pin) : null;
 
@@ -3357,7 +3522,7 @@ function cerrarSesion() {
     b.className = 'cr-btn py-3 rounded-xl border-2 border-gray-200 text-sm font-bold text-gray-600 hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all';
   });
   const sel = document.getElementById('login-user');
-  sel.innerHTML = '<option value="">— Seleccione primero un CR —</option>';
+  sel.innerHTML = '<option value="">\u2014 Seleccione primero un CR \u2014</option>';
   sel.disabled = true;
   document.getElementById('login-pin-wrap')?.classList.add('hidden');
   const pinEl = document.getElementById('login-pin');
@@ -3467,7 +3632,7 @@ function appInit() {
 }
 
 // ============================================================
-//  DATOS TÉCNICOS — SET/ALIMENTADOR y ZONA/DISTRITO
+//  DATOS TÉCNICOS \u2014 SET/ALIMENTADOR y ZONA/DISTRITO
 // ============================================================
 const SET_ALIMENTADORES = {
   'A':  ['A01','A02','A03','A04','A05','A06','A07','A08','A09','A10','A11','A12','A13','A14','A15','A16','A17','A18','A19','A20','A21','A22','A23','A24','A25','A41','A42'],
@@ -3523,7 +3688,7 @@ function fillTecnicosSelects(prefix) {
   }
   if (zonaEl) zonaEl.value = '';
   const alimEl = document.getElementById(`${prefix}-alimentador`);
-  if (alimEl) { alimEl.innerHTML = '<option value="">— Seleccione SET primero —</option>'; alimEl.disabled = true; }
+  if (alimEl) { alimEl.innerHTML = '<option value="">\u2014 Seleccione SET primero \u2014</option>'; alimEl.disabled = true; }
 }
 
 function onSetChange(prefix) {
@@ -3535,7 +3700,7 @@ function onSetChange(prefix) {
     SET_ALIMENTADORES[set].forEach(a => alimEl.innerHTML += `<option value="${a}">${a}</option>`);
     alimEl.disabled = false;
   } else {
-    alimEl.innerHTML = '<option value="">— Seleccione SET primero —</option>';
+    alimEl.innerHTML = '<option value="">\u2014 Seleccione SET primero \u2014</option>';
     alimEl.disabled = true;
     alimEl.value = '';
   }
@@ -3755,7 +3920,7 @@ function resetDREButtons(prefix) {
 }
 
 // ============================================================
-//  MANTENIMIENTO A LA CONEXIÓN — códigos de cliente
+//  MANTENIMIENTO A LA CONEXIÓN \u2014 códigos de cliente
 // ============================================================
 function _onMantConToggle(prefix, val) {
   const wrap = document.getElementById(`${prefix}-mant-con-wrap`);
@@ -3866,6 +4031,10 @@ async function loadSistema() {
     ]);
     if (cfgDoc.exists) DB.cfg     = { ...DB.cfg, ...cfgDoc.data() };
     DB.usuarios = usersDoc.exists ? usersDoc.data() : JSON.parse(JSON.stringify(DEFAULT_USUARIOS));
+    // Garantizar que los CRs transversales siempre existan
+    CRS_TRANSVERSALES.forEach(crT => {
+      if (!DB.usuarios[crT]) DB.usuarios[crT] = JSON.parse(JSON.stringify(DEFAULT_USUARIOS[crT] || {}));
+    });
   } catch(e) {
     console.error('Error cargando datos del sistema:', e);
     toast('Error al conectar con la base de datos', 'error');
@@ -4036,7 +4205,7 @@ function closeSidebar() {
 //  STEP WIZARD (Nueva Orden)
 // ============================================================
 let nStepActual     = 1;
-const N_STEPS       = 6;
+const N_STEPS       = 7;
 // (archivos se leen al crear la orden, no se pre-suben)
 
 function irPasoN(n) {
@@ -4046,10 +4215,12 @@ function irPasoN(n) {
     if (nStepActual === 3 && !_validarPaso3()) return;
     if (nStepActual === 4 && !_validarPaso4()) return;
     if (nStepActual === 5 && !_validarPaso5()) return;
+    if (nStepActual === 6 && !_validarPaso6()) return;
   }
   document.getElementById(`n-step-${nStepActual}`)?.classList.add('hidden');
   nStepActual = n;
   document.getElementById(`n-step-${nStepActual}`)?.classList.remove('hidden');
+  if (nStepActual === 6) _poblarCamposIRE();
   _updateStepBar();
   document.getElementById('pantalla-nueva')?.closest('.flex-1')?.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -4237,6 +4408,69 @@ function _validarPaso5() {
     return false;
   }
   return true;
+}
+
+function _validarPaso6() {
+  let ok = true;
+  
+  // 1. Validar campos de texto del IRE (Excepto observaciones y recomendaciones que son opcionales)
+  const textFields = [
+    { id: 'n-ire-solicitud', label: 'Solicitud' },
+    { id: 'n-ire-direccion', label: 'Dirección' },
+    { id: 'n-ire-asunto', label: 'Asunto' },
+    { id: 'n-ire-cr', label: 'CR' },
+    { id: 'n-ire-fecha', label: 'Fecha' },
+    { id: 'n-ire-responsable', label: 'Responsable' }
+  ];
+  
+  textFields.forEach(f => {
+    const el = document.getElementById(f.id);
+    const valid = el && el.value.trim() !== '';
+    if (el) {
+      el.classList.toggle('error', !valid);
+      // Quitar estilo de error cuando el usuario escriba
+      if (!el.dataset.errBound) {
+        el.dataset.errBound = '1';
+        el.addEventListener('input', () => el.classList.remove('error'));
+      }
+    }
+    if (!valid) ok = false;
+  });
+  
+  // 2. Validar que cada una de las 26 preguntas tenga un checkbox marcado
+  const checks = {};
+  document.querySelectorAll('.ire-chk').forEach(el => { checks[el.dataset.ire] = el.checked; });
+  
+  const validateSection = (prefix, count) => {
+    for (let i = 1; i <= count; i++) {
+      const group = `${prefix}${i}`;
+      const checked = checks[`${group}-alto`] || checks[`${group}-medio`] || checks[`${group}-bajo`];
+      
+      const firstChk = document.querySelector(`[data-ire="${group}-alto"]`);
+      const row = firstChk ? firstChk.closest('tr') : null;
+      
+      if (!checked) {
+        ok = false;
+        if (row) {
+          row.classList.add('bg-red-50', 'border-l-4', 'border-red-500');
+        }
+      } else {
+        if (row) {
+          row.classList.remove('bg-red-50', 'border-l-4', 'border-red-500');
+        }
+      }
+    }
+  };
+  
+  validateSection('A', 10);
+  validateSection('B', 10);
+  validateSection('C', 3);
+  validateSection('D', 3);
+  
+  if (!ok) {
+    toast('Complete la cabecera del IRE y seleccione una opción (Alto, Medio o Bajo) para cada riesgo.', 'error');
+  }
+  return ok;
 }
 
 function selEquiposRespuesta(prefix, val) {
@@ -4479,7 +4713,7 @@ function _poblarSelectMat2(prefix) {
   if (!sel) return;
   sel.innerHTML = '<option value="">Seleccione material...</option>' +
     MATERIALES_TIPO2.map(m =>
-      `<option value="${m.matricula}">${m.matricula} | ${m.matriculaSAP} — ${m.descripcion}</option>`
+      `<option value="${m.matricula}">${m.matricula} | ${m.matriculaSAP} \u2014 ${m.descripcion}</option>`
     ).join('');
 }
 
@@ -4746,7 +4980,7 @@ async function notificarPowerAutomate(orden, archivosBase64 = [], evento = 'om_c
   }
 
   // Formatear OMs con guion de separación
-  const omsFormateadas = omsValidas.map(x => x.om).filter(Boolean).join(' - ') || '—';
+  const omsFormateadas = omsValidas.map(x => x.om).filter(Boolean).join(' - ') || '\u2014';
 
   // Resolver Zona de atención: seleccionada o de los planes designados
   let zonaAtencion = orden.zona || '';
@@ -4756,10 +4990,10 @@ async function notificarPowerAutomate(orden, archivosBase64 = [], evento = 'om_c
       zonaAtencion = zonasPlanes.join(' - ');
     }
   }
-  if (!zonaAtencion) zonaAtencion = '—';
+  if (!zonaAtencion) zonaAtencion = '\u2014';
 
   // Formatear Información Adicional como Sí o No
-  const atencionDREFormateado = (orden.atencionDRE === 'si') ? 'Sí' : (orden.atencionDRE === 'no' ? 'No' : '—');
+  const atencionDREFormateado = (orden.atencionDRE === 'si') ? 'Sí' : (orden.atencionDRE === 'no' ? 'No' : '\u2014');
 
   // Detectar cuáles documentos están adjuntos (usando entidades HTML para máxima compatibilidad)
   const archivos = orden.archivosAdjuntos || [];
@@ -4771,10 +5005,10 @@ async function notificarPowerAutomate(orden, archivosBase64 = [], evento = 'om_c
   // Construir cuerpo del correo usando etiquetas HTML básicas (<br> y <b>) para garantizar el salto de línea en Outlook
   const emailBodyHTML = `<b>NÚMERO DE OM:</b> ${omsFormateadas}<br>
 <b>ZONA DE ATENCION:</b> ${zonaAtencion}<br>
-<b>SET:</b> ${orden.set || '—'}<br>
-<b>ALIMENTADOR:</b> ${orden.alimentador || '—'}<br>
+<b>SET:</b> ${orden.set || '\u2014'}<br>
+<b>ALIMENTADOR:</b> ${orden.alimentador || '\u2014'}<br>
 <b>ATENCION DRE:</b> ${atencionDREFormateado}<br>
-<b>DESCRIPCIÓN DE TRABAJO:</b> ${orden.descripcion || '—'}<br>
+<b>DESCRIPCIÓN DE TRABAJO:</b> ${orden.descripcion || '\u2014'}<br>
 <b>CLIENTES HORA:</b> 0<br>
 <b>COMP. ACTUAL:</b> ${orden.compensacion || '0'}<br>
 <br>
@@ -4792,26 +5026,53 @@ Saludos cordiales.`;
   const trabajosArr = orden.trabajosAdicionales || [];
   const programaAplanado = trabajosArr.length > 0 
     ? trabajosArr.map(t => `${t.programa} (Cant: ${t.cantidadAtendida || 0})`).join(' | ') 
-    : '—';
+    : '\u2014';
     
   // Planes de Mantenimiento
   const planesArr = orden.planesMantenimiento || [];
   const planesAplanado = planesArr.length > 0
     ? planesArr.map(p => `${p.programa} - ${p.zonaTramo} - ${p.nombrePrograma || p.elemento} (Plan: ${p.cantidadPlanificada||0}, Atend: ${p.cantidadAtendida||0})`).join(' | ')
-    : '—';
+    : '\u2014';
     
   // Equipos y Transformadores
   const eq = orden.equipos || {};
   const recloserRequerido = eq.recloser?.requerido === 'si' ? (eq.recloser.cantidad || '1') : 'No';
   const trafosArr = eq.transformadores || [];
-  const trafoAplanado = trafosArr.length > 0 ? trafosArr.map((t, i) => `T${i+1}`).join(' | ') : '—';
-  const potenciaAplanado = trafosArr.length > 0 ? trafosArr.map(t => t.potencia || '—').join(' | ') : '—';
-  const tensionAplanado = trafosArr.length > 0 ? trafosArr.map(t => t.tension || '—').join(' | ') : '—';
-  const tipoAplanado = trafosArr.length > 0 ? trafosArr.map(t => t.tipo || '—').join(' | ') : '—';
+  const trafoAplanado = trafosArr.length > 0 ? trafosArr.map((t, i) => `T${i+1}`).join(' | ') : '\u2014';
+  const potenciaAplanado = trafosArr.length > 0 ? trafosArr.map(t => t.potencia || '\u2014').join(' | ') : '\u2014';
+  const tensionAplanado = trafosArr.length > 0 ? trafosArr.map(t => t.tension || '\u2014').join(' | ') : '\u2014';
+  const tipoAplanado = trafosArr.length > 0 ? trafosArr.map(t => t.tipo || '\u2014').join(' | ') : '\u2014';
   
   // Observaciones (unir historial)
   const historialArr = orden.historial || [];
-  const obsAplanado = orden.observaciones || historialArr.filter(h => h.observacion).map(h => `[${h.fecha.split('T')[0]}] ${h.observacion}`).join(' | ') || '—';
+  const obsAplanado = orden.observaciones || historialArr.filter(h => h.observacion).map(h => `[${h.fecha.split('T')[0]}] ${h.observacion}`).join(' | ') || '\u2014';
+
+  // Construir ire_datos con formato simplificado para Power Automate y Script de Excel
+  const ireDatos = (evento === 'om_creada' && orden.ire) ? {
+    solicitud: orden.ire.solicitud || '',
+    cr: orden.ire.cr || '',
+    asunto: orden.ire.asunto || '',
+    fecha: orden.ire.fecha || '',
+    direccion: orden.ire.direccion || '',
+    responsable: orden.ire.responsable || '',
+    firma_base64: FIRMAS_TECNICOS[String(orden.ire.responsable).trim().toUpperCase()] || '',
+    A: {
+      obs: orden.ire.secciones?.A?.obs || '',
+      items: (orden.ire.secciones?.A?.items || []).map(it => ({ id: it.id, val: it.riesgo || 'Ninguno' }))
+    },
+    B: {
+      obs: orden.ire.secciones?.B?.obs || '',
+      items: (orden.ire.secciones?.B?.items || []).map(it => ({ id: it.id, val: it.riesgo || 'Ninguno' }))
+    },
+    C: {
+      obs: orden.ire.secciones?.C?.obs || '',
+      items: (orden.ire.secciones?.C?.items || []).map(it => ({ id: it.id, val: it.riesgo || 'Ninguno' }))
+    },
+    D: {
+      obs: orden.ire.secciones?.D?.obs || '',
+      items: (orden.ire.secciones?.D?.items || []).map(it => ({ id: it.id, val: it.riesgo || 'Ninguno' }))
+    }
+  } : null;
 
   const payload = {
     // --- CAMPOS ESTÁNDAR PA (triggerBody) ---
@@ -4868,16 +5129,16 @@ Saludos cordiales.`;
     // --- CAMPOS APLANADOS EXCLUSIVOS PARA SHAREPOINT LIST ---
     ID_INTERNO:            idInterno,
     ITEM:                  orden.id               || "",
-    TEC_LDS:               orden.tecnicoAsignado  || "—",
-    SEMANA:                orden.semanaProgramada || "—",
-    FECHA:                 orden.fechaProgramada  || "—",
-    ESTADO:                orden.estado           || "—",
-    TURNO:                 orden.turno            || "—",
+    TEC_LDS:               orden.tecnicoAsignado  || "\u2014",
+    SEMANA:                orden.semanaProgramada || "\u2014",
+    FECHA:                 orden.fechaProgramada  || "\u2014",
+    ESTADO:                orden.estado           || "\u2014",
+    TURNO:                 orden.turno            || "\u2014",
     PROGRAMA:              programaAplanado,
     PLANES_MANTENIMIENTO:  planesAplanado,
-    MOTIVO:                orden.descripcion      || "—",
-    SET_ALIM:              `${orden.set || ''} ${orden.alimentador ? '- ' + orden.alimentador : ''}`.trim() || '—',
-    TIEMPO_EFECTIVO:       orden.tiempo           || "—",
+    MOTIVO:                orden.descripcion      || "\u2014",
+    SET_ALIM:              `${orden.set || ''} ${orden.alimentador ? '- ' + orden.alimentador : ''}`.trim() || '\u2014',
+    TIEMPO_EFECTIVO:       orden.tiempo           || "\u2014",
     RECLOSER:              recloserRequerido,
     TRAFO:                 trafoAplanado,
     POTENCIA:              potenciaAplanado,
@@ -4885,7 +5146,8 @@ Saludos cordiales.`;
     TIPO:                  tipoAplanado,
     OBS_COMENTARIO:        obsAplanado,
     
-    archivos:              archivosBase64
+    archivos:              archivosBase64,
+    ire_datos:             ireDatos
   };
 
   console.log("Enviando notificación OM a Power Automate:", payload);
@@ -4924,7 +5186,7 @@ Saludos cordiales.`;
 async function notificarPAEventoSimple(evento, campos) {
   const url = getPAUrl();
   if (!url || !url.startsWith('https://')) {
-    console.warn(`[PA] URL no configurada — evento "${evento}" omitido.`);
+    console.warn(`[PA] URL no configurada \u2014 evento "${evento}" omitido.`);
     return 'skipped';
   }
   const payload = { evento, fecha: new Date().toISOString(), ...campos };
@@ -4936,13 +5198,13 @@ async function notificarPAEventoSimple(evento, campos) {
       body: JSON.stringify(payload)
     });
     if (resp.ok) {
-      console.log(`[PA] OK — "${evento}" enviado (${resp.status}).`);
+      console.log(`[PA] OK \u2014 "${evento}" enviado (${resp.status}).`);
       return 'sent';
     }
     console.error(`[PA] Error ${resp.status} para "${evento}".`);
     return 'error';
   } catch (err) {
-    console.error(`[PA] Red — error al enviar "${evento}":`, err);
+    console.error(`[PA] Red \u2014 error al enviar "${evento}":`, err);
     return 'error';
   }
 }
@@ -4950,12 +5212,44 @@ async function notificarPAEventoSimple(evento, campos) {
 // ============================================================
 //  CREAR ORDEN
 // ============================================================
+function _getIREDatos() {
+  const checks = {};
+  document.querySelectorAll('.ire-chk').forEach(el => { checks[el.dataset.ire] = el.checked; });
+  const getRiesgo = (prefix, n) => {
+    if (checks[`${prefix}${n}-alto`]) return 'Alto';
+    if (checks[`${prefix}${n}-medio`]) return 'Medio';
+    if (checks[`${prefix}${n}-bajo`]) return 'Bajo';
+    return 'Ninguno';
+  };
+  const mapIt = (items, prefix) => items.map((desc, i) => ({ id: `${prefix}.${i+1}`, descripcion: desc, riesgo: getRiesgo(prefix, i+1) }));
+  
+  const itemsA = ['A.1 Terreno con desniveles','A.2 Terreno deleznable (arenoso, relleno sanitario)','A.3 Ríos, acequias','A.4 Parques y jardines (árboles, plantas especiales, etc.)','A.5 Clima poco favorable (viento, lluvia, etc.)','A.6 Zona de difícil acceso','A.7 Zona de alta delincuencia, agresión, vandalismo','A.8 Zona comercial','A.9 Trabajos paralelos en la zona (Sedapal, LDS, etc.)','A.10 Piso / fachada de material especial (piedra laja, mármol, etc.)'];
+  const itemsB = ['B.1 Redes aéreas de Alta y Media Tensión','B.2 Redes subterráneas de Media Tensión','B.3 Redes de Baja Tensión desnudas','B.4 Cables de empresas de comunicaciones','B.5 Acueductos, gasoductos','B.6 Mercados, centros comerciales','B.7 Colegios, estadios, coliseos, etc.','B.8 Grifos','B.9 Almacenes con materiales inflamables','B.10 Muros de contención'];
+  const itemsC = ['C.1 Cruces de calles o avenidas','C.2 Tránsito vehicular intenso','C.3 Tránsito peatonal intenso'];
+  const itemsD = ['D.1 Clientes importantes en la zona','D.2 Horario de trabajo poco favorable','D.3 Rotulación de circuitos'];
+
+  return {
+    solicitud: document.getElementById('n-ire-solicitud')?.value || '',
+    cr: document.getElementById('n-ire-cr')?.value || '',
+    asunto: document.getElementById('n-ire-asunto')?.value || '',
+    fecha: document.getElementById('n-ire-fecha')?.value || '',
+    direccion: document.getElementById('n-ire-direccion')?.value || '',
+    responsable: document.getElementById('n-ire-responsable')?.value || '',
+    secciones: {
+      A: { obs: document.getElementById('n-ire-obsA')?.value || '', items: mapIt(itemsA, 'A') },
+      B: { obs: document.getElementById('n-ire-obsB')?.value || '', items: mapIt(itemsB, 'B') },
+      C: { obs: document.getElementById('n-ire-obsC')?.value || '', items: mapIt(itemsC, 'C') },
+      D: { obs: document.getElementById('n-ire-obsD')?.value || '', items: mapIt(itemsD, 'D') }
+    }
+  };
+}
+
 async function crearOrden(e) {
   e.preventDefault();
   if (!validarNueva()) return;
 
   // Leer archivos seleccionados como base64 (para enviar a PA)
-  const _tiposArch = ['plano','ire','carta','hoja','expediente'];
+  const _tiposArch = ['plano','carta','hoja','expediente'];
   const archivosBase64   = [];
   const archivosAdjuntos = [];
   for (const tipo of _tiposArch) {
@@ -5018,7 +5312,8 @@ async function crearOrden(e) {
       accion: 'Orden creada',
       usuario: sesionActual ? sesionActual.nombre : 'Sistema',
       estadoNuevo: 'Creada'
-    }]
+    }],
+    ire: _getIREDatos()
   };
   DB.ordenes.push(orden);
   try {
@@ -5029,7 +5324,7 @@ async function crearOrden(e) {
     DB.ordenes.pop();
     return;
   }
-  // PA va separado — sus errores nunca afectan el resultado de Firestore
+  // PA va separado \u2014 sus errores nunca afectan el resultado de Firestore
   const paResult = await notificarPowerAutomate(orden, archivosBase64, 'om_creada');
 
   // Si PA devolvió URLs de SharePoint, actualizar archivosAdjuntos en Firestore
@@ -5082,7 +5377,7 @@ function resetNueva() {
   _bloquearCamposAsignacion(false);
   const _nZonaSel = document.getElementById('n-planes-zona-filter');
   if (_nZonaSel) {
-    _nZonaSel.innerHTML = '<option value="">— Seleccione Alimentador primero —</option>';
+    _nZonaSel.innerHTML = '<option value="">\u2014 Seleccione Alimentador primero \u2014</option>';
     _nZonaSel.disabled = true;
     _nZonaSel.title    = '';
   }
@@ -5090,8 +5385,14 @@ function resetNueva() {
   resetEquipos('n');
   resetPlanesSeleccionados('n');
   resetTrabajosAdicionales('n');
-  // Reset paso 6 — limpiar selección de archivos
-  ['plano','ire','carta','hoja','expediente'].forEach(t => {
+  // Reset paso 6 \u2014 limpiar campos IRE
+  ['n-ire-solicitud','n-ire-asunto','n-ire-fecha','n-ire-direccion','n-ire-responsable','n-ire-obsA','n-ire-obsB','n-ire-obsC','n-ire-obsD'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.querySelectorAll('.ire-chk').forEach(chk => { chk.checked = false; });
+  // Reset paso 7 \u2014 limpiar selección de archivos
+  ['plano','carta','hoja','expediente'].forEach(t => {
     const chk  = document.getElementById(`n-chk-${t}`);
     const wrap = document.getElementById(`n-file-wrap-${t}`);
     const card = document.getElementById(`n-card-${t}`);
@@ -5111,12 +5412,173 @@ function resetNueva() {
 }
 
 // ============================================================
+//  IRE - INSPECCIÓN DE RIESGOS EXTERNOS
+// ============================================================
+function _poblarCamposIRE() {
+  const cr          = sesionActual?.cr || '';
+  const asunto      = document.getElementById('n-descripcion')?.value || '';
+  const responsable = sesionActual?.nombre || '';
+  const hoy         = new Date();
+  const fecha       = `${String(hoy.getDate()).padStart(2,'0')}/${String(hoy.getMonth()+1).padStart(2,'0')}/${hoy.getFullYear()}`;
+  
+  // Obtener los números de OM ingresados en el Paso 4
+  const omsIngresadas = _getOMsIngresadas('n').join(' - ');
+  
+  // Forzar CR y Responsable al usuario logueado actualmente por seguridad
+  const crEl = document.getElementById('n-ire-cr');
+  if (crEl) crEl.value = cr;
+  const respEl = document.getElementById('n-ire-responsable');
+  if (respEl) respEl.value = responsable;
+  
+  const setIf = (id, val) => { const el = document.getElementById(id); if (el && !el.value) el.value = val; };
+  setIf('n-ire-asunto',      asunto);
+  setIf('n-ire-fecha',       fecha);
+  setIf('n-ire-solicitud',   omsIngresadas); // Autocompletar con N° de OM(s)
+  
+  // Inicializar exclusividad de checkboxes
+  _initIRECheckboxes();
+}
+
+function _initIRECheckboxes() {
+  document.querySelectorAll('.ire-chk').forEach(chk => {
+    if (chk.dataset.bound) return;
+    chk.dataset.bound = '1';
+    
+    chk.addEventListener('change', function() {
+      const dataVal = this.dataset.ire; // e.g., "A1-alto"
+      const match = dataVal.match(/^([A-D]\d+)-(alto|medio|bajo)$/);
+      if (!match) return;
+      
+      const group = match[1]; // e.g., "A1"
+      const currentLevel = match[2]; // e.g., "alto"
+      
+      if (this.checked) {
+        // Desmarcar los otros del mismo grupo
+        ['alto', 'medio', 'bajo'].forEach(level => {
+          if (level !== currentLevel) {
+            const other = document.querySelector(`[data-ire="${group}-${level}"]`);
+            if (other) other.checked = false;
+          }
+        });
+        
+        // Quitar resaltado de error de la fila
+        const row = this.closest('tr');
+        if (row) {
+          row.classList.remove('bg-red-50', 'border-l-4', 'border-red-500');
+        }
+      }
+    });
+  });
+}
+
+function exportarIREPdf() {
+  const gv = id => document.getElementById(id)?.value || '';
+  const solicitud   = gv('n-ire-solicitud');
+  const cr          = gv('n-ire-cr');
+  const asunto      = gv('n-ire-asunto');
+  const fecha       = gv('n-ire-fecha');
+  const direccion   = gv('n-ire-direccion');
+  const responsable = gv('n-ire-responsable');
+  const obsA        = gv('n-ire-obsA');
+  const obsB        = gv('n-ire-obsB');
+  const obsC        = gv('n-ire-obsC');
+  const obsD        = gv('n-ire-obsD');
+
+  const checks = {};
+  document.querySelectorAll('.ire-chk').forEach(function(el) { checks[el.dataset.ire] = el.checked; });
+
+  function chkChar(key) { return checks[key] ? '\u2611' : '\u2610'; }
+
+  function buildRows(items, prefix) {
+    var rows = '';
+    for (var i = 0; i < items.length; i++) {
+      var n = i + 1;
+      var cA = chkChar(prefix + n + '-alto');
+      var cM = chkChar(prefix + n + '-medio');
+      var cB = chkChar(prefix + n + '-bajo');
+      rows += '<tr>' +
+        '<td style="padding:3px 10px;border-bottom:1px solid #e4e7eb;font-size:12px">' + items[i] + '</td>' +
+        '<td style="text-align:center;border-bottom:1px solid #e4e7eb;font-size:14px">' + cA + '</td>' +
+        '<td style="text-align:center;border-bottom:1px solid #e4e7eb;font-size:14px">' + cM + '</td>' +
+        '<td style="text-align:center;border-bottom:1px solid #e4e7eb;font-size:14px">' + cB + '</td>' +
+        '</tr>';
+    }
+    return rows;
+  }
+
+  function buildSection(title, items, prefix, obs) {
+    return '<div style="border:1px solid #9aa5b1;border-radius:4px;overflow:hidden;margin-bottom:14px">' +
+      '<div style="background:#2b2f36;color:#fff;font-weight:700;font-size:12.5px;padding:6px 10px">' + title + '</div>' +
+      '<table style="width:100%;border-collapse:collapse">' +
+        '<thead><tr style="background:#f0f2f4">' +
+          '<th style="text-align:left;padding:4px 10px;font-size:11px;font-weight:700;border-bottom:1px solid #9aa5b1">Descripción</th>' +
+          '<th style="width:40px;text-align:center;padding:4px;font-size:11px;font-weight:700;border-bottom:1px solid #9aa5b1">Alto</th>' +
+          '<th style="width:40px;text-align:center;padding:4px;font-size:11px;font-weight:700;border-bottom:1px solid #9aa5b1">Medio</th>' +
+          '<th style="width:40px;text-align:center;padding:4px;font-size:11px;font-weight:700;border-bottom:1px solid #9aa5b1">Bajo</th>' +
+        '</tr></thead>' +
+        '<tbody>' + buildRows(items, prefix) + '</tbody>' +
+      '</table>' +
+      '<div style="padding:6px 10px 8px;border-top:1px solid #9aa5b1;background:#fafbfc">' +
+        '<div style="font-weight:700;font-size:11.5px;margin-bottom:3px">Observaciones y Recomendaciones</div>' +
+        '<div style="font-size:12px;color:#1a4b8c;font-weight:600;min-height:20px;border-bottom:1px solid #c5d5ea">' + (obs || '\u00a0') + '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  var itemsA = ['A.1 Terreno con desniveles','A.2 Terreno deleznable (arenoso, relleno sanitario)','A.3 Ríos, acequias','A.4 Parques y jardines (árboles, plantas especiales, etc.)','A.5 Clima poco favorable (viento, lluvia, etc.)','A.6 Zona de difícil acceso','A.7 Zona de alta delincuencia, agresión, vandalismo','A.8 Zona comercial','A.9 Trabajos paralelos en la zona (Sedapal, LDS, etc.)','A.10 Piso / fachada de material especial (piedra laja, mármol, etc.)'];
+  var itemsB = ['B.1 Redes aéreas de Alta y Media Tensión','B.2 Redes subterráneas de Media Tensión','B.3 Redes de Baja Tensión desnudas','B.4 Cables de empresas de comunicaciones','B.5 Acueductos, gasoductos','B.6 Mercados, centros comerciales','B.7 Colegios, estadios, coliseos, etc.','B.8 Grifos','B.9 Almacenes con materiales inflamables','B.10 Muros de contención'];
+  var itemsC = ['C.1 Cruces de calles o avenidas','C.2 Tránsito vehicular intenso','C.3 Tránsito peatonal intenso'];
+  var itemsD = ['D.1 Clientes importantes en la zona','D.2 Horario de trabajo poco favorable','D.3 Rotulación de circuitos'];
+
+  var headerHtml =
+    '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">' +
+    '<title>IRE - Inspección de Riesgos Externos</title>' +
+    '<style>*{box-sizing:border-box;margin:0;padding:0}' +
+    'body{font-family:Arial,Helvetica,sans-serif;background:#f4f6f8;color:#2b2f36;padding:24px;font-size:13px}' +
+    '.hoja{max-width:1000px;margin:0 auto;background:#fff;border:1px solid #444;padding:20px 28px 32px}' +
+    '@media print{body{background:#fff;padding:0}.hoja{border:none}}' +
+    '</style></head>' +
+    '<body onload="window.print()"><div class="hoja">';
+
+  var metaHtml =
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #2b2f36;padding-bottom:8px;margin-bottom:10px">' +
+      '<div style="font-weight:800;font-size:20px;letter-spacing:.5px">LUZ DEL <span style="color:#1a4b8c">SUR</span></div>' +
+      '<div style="text-align:right;font-size:13px">' +
+        '<div style="display:flex;gap:6px;margin-bottom:3px"><span style="font-weight:700">Solicitud:</span><span style="color:#1a4b8c;font-weight:600">' + (solicitud || '\u2014') + '</span></div>' +
+        '<div style="display:flex;gap:6px"><span style="font-weight:700">CR:</span><span style="color:#1a4b8c;font-weight:600">' + (cr || '\u2014') + '</span></div>' +
+      '</div>' +
+    '</div>' +
+    '<p style="text-align:center;font-weight:900;font-size:22px;margin:16px 0;text-transform:uppercase">Identificación de Riesgos Externos</p>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:10px 30px;padding:10px 12px;background:#eaf1fb;border:1px solid #cdddef;border-radius:4px;margin-bottom:16px">' +
+      '<div style="flex:1 1 100%;display:flex;gap:6px"><span style="font-weight:700">Asunto:</span><span style="color:#1a4b8c;font-weight:600">' + (asunto || '\u2014') + '</span></div>' +
+      '<div style="display:flex;gap:6px"><span style="font-weight:700">Fecha:</span><span style="color:#1a4b8c;font-weight:600">' + (fecha || '\u2014') + '</span></div>' +
+      '<div style="display:flex;gap:6px"><span style="font-weight:700">Dirección:</span><span style="color:#1a4b8c;font-weight:600">' + (direccion || '\u2014') + '</span></div>' +
+      '<div style="display:flex;gap:6px"><span style="font-weight:700">Responsable:</span><span style="color:#1a4b8c;font-weight:600">' + (responsable || '\u2014') + '</span></div>' +
+    '</div>';
+
+  var sectionsHtml =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 18px">' +
+      buildSection('A. Condiciones del entorno', itemsA, 'A', obsA) +
+      buildSection('B. Instalaciones Cercanas',  itemsB, 'B', obsB) +
+      buildSection('C. Vías',               itemsC, 'C', obsC) +
+      buildSection('D. Otros',                   itemsD, 'D', obsD) +
+    '</div>';
+
+  var finalHtml = headerHtml + metaHtml + sectionsHtml + '</div><\/body><\/html>';
+
+  var win = window.open('', '_blank');
+  if (!win) { toast('Permita ventanas emergentes para exportar el PDF', 'error'); return; }
+  win.document.write(finalHtml);
+  win.document.close();
+}
+
+// ============================================================
 //  VALIDACIÓN NUEVA ORDEN
 // ============================================================
 function validarNueva() {
   let ok = true;
-  // Paso 6: si checkbox activo, debe haber archivo seleccionado
-  ['plano','ire','carta','hoja','expediente'].forEach(tipo => {
+  // Paso 7: si checkbox activo, debe haber archivo seleccionado
+  ['plano','carta','hoja','expediente'].forEach(tipo => {
     const chk  = document.getElementById(`n-chk-${tipo}`);
     const fi   = document.getElementById(`n-file-${tipo}`);
     const err  = document.getElementById(`nerr-${tipo}`);
@@ -5163,8 +5625,8 @@ function renderDashboard() {
     : ultimas.map(x => `
       <tr class="fila-tabla border-b border-gray-50" onclick="verDetalle('${x.id}')">
         <td class="px-5 py-3 font-medium text-blue-600">${x.id}</td>
-        <td class="px-5 py-3 text-gray-700">${esc(x.circuito||'—')}</td>
-        <td class="px-5 py-3 text-gray-500 hidden md:table-cell">${esc(x.set||'—')}${x.alimentador?' / '+esc(x.alimentador):''}</td>
+        <td class="px-5 py-3 text-gray-700">${esc(x.circuito||'\u2014')}</td>
+        <td class="px-5 py-3 text-gray-500 hidden md:table-cell">${esc(x.set||'\u2014')}${x.alimentador?' / '+esc(x.alimentador):''}</td>
         <td class="px-5 py-3"><span class="px-2.5 py-1 text-xs font-semibold rounded-full ${clsEstado(x.estado)}">${x.estado}</span></td>
         <td class="px-5 py-3 text-gray-400 text-xs hidden lg:table-cell">${fmtFecha(x.fechaRegistro)}</td>
       </tr>`).join('');
@@ -5224,7 +5686,7 @@ function renderLista() {
   if (semSel && rol === 'planificador') {
     const semanas = [...new Set(DB.ordenes.filter(o=>o.semanaProgramada).map(o=>o.semanaProgramada))].sort();
     const prev = semSel.value;
-    semSel.innerHTML = '<option value="">— Todas —</option>' + semanas.map(s=>`<option value="${esc(s)}"${s===prev?' selected':''}>${esc(s)}</option>`).join('');
+    semSel.innerHTML = '<option value="">\u2014 Todas \u2014</option>' + semanas.map(s=>`<option value="${esc(s)}"${s===prev?' selected':''}>${esc(s)}</option>`).join('');
   }
 
   // Usuarios del mismo CR (para planificador)
@@ -5272,14 +5734,14 @@ function renderLista() {
         const conSP = archivos.some(a => a.urlSharePoint);
         const archivosBadge = archivos.length > 0
           ? `<div class="relative inline-block"><button onclick="_toggleArchivosDropdown('${o.id}',event)" class="inline-flex items-center gap-1 px-2.5 py-1 ${conSP ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-200'} text-xs font-semibold rounded-full border hover:opacity-80 transition-colors"><i class="fas fa-paperclip text-xs"></i> ${archivos.length}${conSP ? ' <i class="fas fa-cloud text-[9px]"></i>' : ''}</button><div id="arc-drop-${o.id}" class="hidden absolute right-0 mt-1 w-72 bg-white rounded-xl shadow-lg border border-gray-100 z-50 py-1.5 text-xs overflow-hidden">${archivos.map(a => a.urlSharePoint ? `<a href="${esc(a.urlSharePoint)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-emerald-50 group"><i class="fas ${_oIco[a.tipo]||'fa-file'} text-emerald-500 w-3 text-center flex-shrink-0"></i><span class="flex-1 truncate">${esc(a.nombre)}</span><span class="text-[10px] text-emerald-600 flex-shrink-0 font-semibold"><i class="fas fa-external-link-alt text-[8px]"></i> Ver</span></a>` : `<div class="flex items-center gap-2 px-3 py-2 text-gray-600"><i class="fas ${_oIco[a.tipo]||'fa-file'} text-gray-400 w-3 text-center flex-shrink-0"></i><span class="flex-1 truncate">${esc(a.nombre)}</span><span class="text-[10px] text-blue-400 flex-shrink-0 font-medium">PA</span></div>`).join('')}</div></div>`
-          : `<span class="text-gray-300">—</span>`;
+          : `<span class="text-gray-300">\u2014</span>`;
         const vencida = o.fechaEstimada && new Date(o.fechaEstimada+'T00:00:00') < hoy
                         && o.estado!=='Ejecutada';
         const dreBadge = o.atencionDRE==='si'
           ? '<span class="ml-1 px-1.5 py-0.5 text-xs font-semibold rounded bg-violet-100 text-violet-700">DRE</span>'
           : '';
         const autorCol = (rol === 'planificador' || rol === 'soporte')
-          ? `<td class="px-5 py-3 text-gray-500 text-xs">${esc(o.usuarioRegistro||'—')}</td>`
+          ? `<td class="px-5 py-3 text-gray-500 text-xs">${esc(o.usuarioRegistro||'\u2014')}</td>`
           : '';
         const btnEstado = rol !== 'tecnico'
           ? `<button onclick="abrirModal('${o.id}')" class="p-1.5 text-green-500 hover:bg-green-50 rounded" title="Estado"><i class="fas fa-exchange-alt text-xs"></i></button>` : '';
@@ -5287,11 +5749,11 @@ function renderLista() {
           ? `<button onclick="abrirReasignar('${o.id}',event)" class="p-1.5 text-indigo-500 hover:bg-indigo-50 rounded" title="Reasignar técnico"><i class="fas fa-user-edit text-xs"></i></button>` : '';
         return `
         <tr class="fila-tabla${vencida?' vencida':''}" onclick="verDetalle('${o.id}')">
-          <td class="px-5 py-3 text-gray-700">${esc(o.alimentador||'—')}</td>
-          <td class="px-5 py-3 text-gray-700">${esc(o.zona||'—')}</td>
-          <td class="px-5 py-3 text-gray-800">${esc(o.circuito||'—')}${dreBadge}</td>
-          <td class="px-5 py-3 text-gray-500 max-w-xs"><span class="line-clamp-2" title="${esc(o.descripcion||'')}">${esc(o.descripcion||'—')}</span></td>
-          <td class="px-5 py-3 whitespace-nowrap"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${clsEstado(o.estado)}">${esc(o.estado||'—')}</span></td>
+          <td class="px-5 py-3 text-gray-700">${esc(o.alimentador||'\u2014')}</td>
+          <td class="px-5 py-3 text-gray-700">${esc(o.zona||'\u2014')}</td>
+          <td class="px-5 py-3 text-gray-800">${esc(o.circuito||'\u2014')}${dreBadge}</td>
+          <td class="px-5 py-3 text-gray-500 max-w-xs"><span class="line-clamp-2" title="${esc(o.descripcion||'')}">${esc(o.descripcion||'\u2014')}</span></td>
+          <td class="px-5 py-3 whitespace-nowrap"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${clsEstado(o.estado)}">${esc(o.estado||'\u2014')}</span></td>
           ${autorCol}
           <td class="px-5 py-3 text-center" onclick="event.stopPropagation()">${archivosBadge}</td>
           <td class="px-5 py-3 text-center" onclick="event.stopPropagation()">
@@ -5338,25 +5800,25 @@ function loadDetalle(id) {
   setText('det-sub', 'Registrada el ' + fmtFecha(o.fechaRegistro));
   setText('det-id', o.id);
   setText('det-fecha-reg', fmtFecha(o.fechaRegistro));
-  setText('det-fecha-est', o.fechaEstimada ? fmtCorta(o.fechaEstimada) : '—');
-  setText('det-usuario-reg', o.usuarioRegistro || (o.historial?.[0]?.usuario) || '—');
-  setText('det-descripcion', o.descripcion || '—');
+  setText('det-fecha-est', o.fechaEstimada ? fmtCorta(o.fechaEstimada) : '\u2014');
+  setText('det-usuario-reg', o.usuarioRegistro || (o.historial?.[0]?.usuario) || '\u2014');
+  setText('det-descripcion', o.descripcion || '\u2014');
   setText('det-observaciones', o.observaciones || 'Sin observaciones');
 
   // Detalles técnicos
-  setText('det-set',         o.set         || '—');
-  setText('det-alimentador', o.alimentador || '—');
-  setText('det-zona',        o.zona        || '—');
-  setText('det-circuito',    o.circuito    || '—');
+  setText('det-set',         o.set         || '\u2014');
+  setText('det-alimentador', o.alimentador || '\u2014');
+  setText('det-zona',        o.zona        || '\u2014');
+  setText('det-circuito',    o.circuito    || '\u2014');
   const dreEl = document.getElementById('det-atencion-dre');
   if (dreEl) {
     if (o.atencionDRE === 'si')      dreEl.innerHTML = '<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">Sí</span>';
     else if (o.atencionDRE === 'no') dreEl.innerHTML = '<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-gray-100 text-gray-500">No</span>';
-    else                             dreEl.textContent = '—';
+    else                             dreEl.textContent = '\u2014';
   }
   const sporWrap = document.getElementById('det-spor-wrap');
   if (sporWrap) sporWrap.classList.toggle('hidden', o.atencionDRE !== 'si');
-  if (o.atencionDRE === 'si') setText('det-spor', o.nSpor || '—');
+  if (o.atencionDRE === 'si') setText('det-spor', o.nSpor || '\u2014');
 
   // Botón Observar OM (Planificador, cuando OM está En Validación o Corregida)
   const rol = sesionActual?.rol || 'tecnico';
@@ -5378,7 +5840,7 @@ function loadDetalle(id) {
       if (obsComentario) obsComentario.textContent = o.comentarioObservacion;
       if (obsMeta) obsMeta.textContent = [
         o.fechaObservacion ? fmtFecha(o.fechaObservacion) : '',
-        o.observadoPor ? '— ' + o.observadoPor : ''
+        o.observadoPor ? '\u2014 ' + o.observadoPor : ''
       ].filter(Boolean).join(' ');
     }
   }
@@ -5399,22 +5861,22 @@ function loadDetalle(id) {
   // Cruce de vía rápida
   const detViaWrap = document.getElementById('det-via-rapida-wrap');
   if (detViaWrap) detViaWrap.classList.toggle('hidden', o.viaRapida !== 'si');
-  if (o.viaRapida === 'si') setText('det-via-rapida-tipo', o.viaRapidaTipo || '—');
+  if (o.viaRapida === 'si') setText('det-via-rapida-tipo', o.viaRapidaTipo || '\u2014');
 
   // Ejecución
-  setText('det-tiempo', o.tiempo || '—');
+  setText('det-tiempo', o.tiempo || '\u2014');
   const detTurno = document.getElementById('det-turno');
   if (detTurno) {
     if (o.turno === 'Diurno')        detTurno.innerHTML = '<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-amber-100 text-amber-700">☀ Diurno</span>';
     else if (o.turno === 'Nocturno') detTurno.innerHTML = '<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-700">🌙 Nocturno</span>';
-    else                             detTurno.textContent = '—';
+    else                             detTurno.textContent = '\u2014';
   }
   const detTraslado = document.getElementById('det-traslado');
   if (detTraslado) detTraslado.innerHTML = siBadge(o.traslado);
-  setText('det-tipo-corte', o.tipoCorte || '—');
+  setText('det-tipo-corte', o.tipoCorte || '\u2014');
   const detCorteAlta = document.getElementById('det-cortealta');
   if (detCorteAlta) detCorteAlta.innerHTML = siBadge(o.corteAlta);
-  setText('det-compensacion', o.compensacion || '—');
+  setText('det-compensacion', o.compensacion || '\u2014');
   const compWrap = document.getElementById('det-compensacion-wrap');
   if (compWrap) compWrap.classList.toggle('hidden', !o.compensacion);
   const ejPanel = document.getElementById('det-ejecucion-panel');
@@ -5445,12 +5907,12 @@ function loadDetalle(id) {
         <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-3">
           <p class="text-xs font-semibold text-cyan-700 mb-2">Transformador #${i+1}</p>
           <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-            <div><span class="text-gray-400">Potencia:</span> <span class="font-medium text-gray-700">${esc(t.potencia||'—')}</span></div>
-            <div><span class="text-gray-400">Tensión:</span> <span class="font-medium text-gray-700">${esc(t.tension||'—')}</span></div>
-            <div><span class="text-gray-400">Tipo:</span> <span class="font-medium text-gray-700">${esc(t.tipo||'—')}</span></div>
-            <div><span class="text-gray-400">Motivo:</span> <span class="font-medium text-gray-700">${esc(t.motivo||'—')}</span></div>
+            <div><span class="text-gray-400">Potencia:</span> <span class="font-medium text-gray-700">${esc(t.potencia||'\u2014')}</span></div>
+            <div><span class="text-gray-400">Tensión:</span> <span class="font-medium text-gray-700">${esc(t.tension||'\u2014')}</span></div>
+            <div><span class="text-gray-400">Tipo:</span> <span class="font-medium text-gray-700">${esc(t.tipo||'\u2014')}</span></div>
+            <div><span class="text-gray-400">Motivo:</span> <span class="font-medium text-gray-700">${esc(t.motivo||'\u2014')}</span></div>
             ${t.causa ? `<div class="col-span-2"><span class="text-gray-400">Causa:</span> <span class="font-semibold text-amber-700"><i class="fas fa-exclamation-triangle mr-1 text-[10px]"></i>${esc(t.causa)}</span></div>` : ''}
-            <div class="col-span-2"><span class="text-gray-400">SED:</span> <span class="font-medium text-gray-700">${esc(t.sed||'—')}</span></div>
+            <div class="col-span-2"><span class="text-gray-400">SED:</span> <span class="font-medium text-gray-700">${esc(t.sed||'\u2014')}</span></div>
           </div>
         </div>`).join('');
       if (transfWrap) transfWrap.classList.remove('hidden');
@@ -5489,8 +5951,8 @@ function loadDetalle(id) {
     if (oms.length > 0) {
       omBody.innerHTML = oms.map(m => `
         <div class="flex flex-col sm:flex-row gap-2 p-3 bg-slate-50 rounded-lg border border-slate-200">
-          <div class="flex-shrink-0"><span class="text-xs text-gray-400">N° OM</span><p class="font-bold text-slate-700 text-sm">${esc(m.om||'—')}</p></div>
-          <div class="flex-1 sm:border-l sm:pl-3"><span class="text-xs text-gray-400">Proyecto</span><p class="text-gray-700 text-xs leading-snug">${esc(m.proyecto||'—')}</p></div>
+          <div class="flex-shrink-0"><span class="text-xs text-gray-400">N° OM</span><p class="font-bold text-slate-700 text-sm">${esc(m.om||'\u2014')}</p></div>
+          <div class="flex-1 sm:border-l sm:pl-3"><span class="text-xs text-gray-400">Proyecto</span><p class="text-gray-700 text-xs leading-snug">${esc(m.proyecto||'\u2014')}</p></div>
         </div>`).join('');
       if (omPanel) omPanel.classList.remove('hidden');
     } else {
@@ -5506,10 +5968,10 @@ function loadDetalle(id) {
     if (trabajosArr.length > 0) {
       trabajosBody.innerHTML = trabajosArr.map(t => `
         <div class="flex flex-wrap items-center gap-3 p-3 bg-purple-50 border border-purple-200 rounded-lg text-xs">
-          <span class="px-2 py-0.5 font-bold rounded bg-purple-100 text-purple-700 whitespace-nowrap">${esc(t.programa || '—')}</span>
+          <span class="px-2 py-0.5 font-bold rounded bg-purple-100 text-purple-700 whitespace-nowrap">${esc(t.programa || '\u2014')}</span>
           ${PROGRAMA_DESCRIPCIONES[t.programa] ? `<span class="text-gray-500 italic flex-1 min-w-0">${esc(PROGRAMA_DESCRIPCIONES[t.programa])}</span>` : ''}
-          <span class="whitespace-nowrap text-gray-500">Cant. atendida: <strong class="text-gray-800">${esc(String(t.cantidadAtendida || '—'))}</strong></span>
-          <span class="whitespace-nowrap text-gray-500">N° equipo: <strong class="text-gray-800">${esc(t.numeroEquipo || '—')}</strong></span>
+          <span class="whitespace-nowrap text-gray-500">Cant. atendida: <strong class="text-gray-800">${esc(String(t.cantidadAtendida || '\u2014'))}</strong></span>
+          <span class="whitespace-nowrap text-gray-500">N° equipo: <strong class="text-gray-800">${esc(t.numeroEquipo || '\u2014')}</strong></span>
         </div>`).join('');
       if (trabajosPanel) trabajosPanel.classList.remove('hidden');
     } else {
@@ -5526,16 +5988,16 @@ function loadDetalle(id) {
       planesBody.innerHTML = planesArr.map((p, i) => `
         <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
           <div class="flex flex-wrap gap-2 items-center mb-2">
-            <span class="text-xs font-bold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded">${esc(p.programa||'—')}</span>
-            <span class="text-xs text-gray-600 font-medium">${esc(p.nombrePrograma||'—')}</span>
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded">${esc(p.programa||'\u2014')}</span>
+            <span class="text-xs text-gray-600 font-medium">${esc(p.nombrePrograma||'\u2014')}</span>
           </div>
           <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1 text-xs mb-2">
-            <div><span class="text-gray-400">Alimentador:</span> <span class="font-medium text-gray-700">${esc(p.alimentador||'—')}</span></div>
-            <div><span class="text-gray-400">Enlace MT:</span> <span class="font-medium text-gray-700">${esc(p.enlaceMT||'—')}</span></div>
-            <div><span class="text-gray-400">Zona/Tramo:</span> <span class="font-medium text-gray-700">${esc(p.zonaTramo||'—')}</span></div>
-            <div><span class="text-gray-400">Nombre Programa:</span> <span class="font-medium text-gray-700">${esc(p.nombrePrograma||p.elemento||'—')}</span></div>
-            <div><span class="text-gray-400">Cant. planif.:</span> <span class="font-semibold text-gray-800">${esc(p.cantidadPlanificada||'—')}</span></div>
-            <div><span class="text-gray-400">Cant. atendida:</span> <span class="font-semibold text-indigo-700">${esc(p.cantidadAtendida||'—')}</span></div>
+            <div><span class="text-gray-400">Alimentador:</span> <span class="font-medium text-gray-700">${esc(p.alimentador||'\u2014')}</span></div>
+            <div><span class="text-gray-400">Enlace MT:</span> <span class="font-medium text-gray-700">${esc(p.enlaceMT||'\u2014')}</span></div>
+            <div><span class="text-gray-400">Zona/Tramo:</span> <span class="font-medium text-gray-700">${esc(p.zonaTramo||'\u2014')}</span></div>
+            <div><span class="text-gray-400">Nombre Programa:</span> <span class="font-medium text-gray-700">${esc(p.nombrePrograma||p.elemento||'\u2014')}</span></div>
+            <div><span class="text-gray-400">Cant. planif.:</span> <span class="font-semibold text-gray-800">${esc(p.cantidadPlanificada||'\u2014')}</span></div>
+            <div><span class="text-gray-400">Cant. atendida:</span> <span class="font-semibold text-indigo-700">${esc(p.cantidadAtendida||'\u2014')}</span></div>
           </div>
           <div class="flex flex-wrap gap-4 text-xs border-t border-indigo-200 pt-2">
             ${p.numeroOM   ? `<div><span class="text-gray-400">N° OM: </span><span class="font-bold text-slate-700">${esc(p.numeroOM)}</span></div>` : ''}
@@ -5679,7 +6141,7 @@ function loadEditar(id) {
   const o = DB.ordenes.find(x => x.id===id);
   if (!o) return;
   const esPlani = sesionActual?.rol === 'planificador';
-  document.getElementById('edit-sub').textContent = esPlani ? `Validación — OM ${o.id}` : `Editando orden ${o.id}`;
+  document.getElementById('edit-sub').textContent = esPlani ? `Validación \u2014 OM ${o.id}` : `Editando orden ${o.id}`;
   const tituloEdit = document.querySelector('#pantalla-editar .text-xl.font-bold');
   if (tituloEdit) tituloEdit.innerHTML = esPlani
     ? '<i class="fas fa-clipboard-check mr-2"></i>Validación de Orden'
@@ -5688,7 +6150,7 @@ function loadEditar(id) {
   sv('e-descripcion', o.descripcion||'');
   sv('e-circuito',    o.circuito||'');
   sv('e-observacion', '');
-  // Detalles técnicos — cascading
+  // Detalles técnicos \u2014 cascading
   fillTecnicosSelects('e');
   if (o.set) {
     sv('e-set', o.set);
@@ -5707,11 +6169,11 @@ function loadEditar(id) {
   resetViaRapida('e');
   if (o.viaRapida === 'si') { selToggle('e','via-rapida','si'); _onViaRapidaToggle('e','si'); if (o.viaRapidaTipo) sv('e-via-rapida-tipo', o.viaRapidaTipo); }
   else if (o.viaRapida === 'no') selToggle('e','via-rapida','no');
-  // Ejecución — selects
+  // Ejecución \u2014 selects
   sv('e-tiempo',       o.tiempo       || '');
   sv('e-tipo-corte',   o.tipoCorte    || '');
   sv('e-compensacion', o.compensacion || '');
-  // Ejecución — toggles
+  // Ejecución \u2014 toggles
   resetToggles('e', ['turno','traslado','cortealta']);
   if (o.turno)     selToggle('e','turno',     o.turno);
   if (o.traslado)  selToggle('e','traslado',  o.traslado);
@@ -6009,7 +6471,7 @@ function abrirReasignar(id, event) {
 
   sv('mr-orden-id', id);
 
-  const tecAnterior = o.tecnicoAsignado || '—';
+  const tecAnterior = o.tecnicoAsignado || '\u2014';
   const el = document.getElementById('mr-tecnico-anterior');
   if (el) el.textContent = tecAnterior;
 
@@ -6021,7 +6483,7 @@ function abrirReasignar(id, event) {
   const crData = (DB.usuarios || DEFAULT_USUARIOS)[cr] || {};
   const sel    = document.getElementById('mr-tecnico');
   if (sel) {
-    sel.innerHTML = '<option value="">— Seleccione un técnico —</option>' +
+    sel.innerHTML = '<option value="">\u2014 Seleccione un técnico \u2014</option>' +
       Object.keys(crData).map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
   }
 
@@ -6045,7 +6507,7 @@ async function confirmarReasignar() {
   if (idx === -1) return;
 
   const o           = DB.ordenes[idx];
-  const tecAnterior = o.tecnicoAsignado || '—';
+  const tecAnterior = o.tecnicoAsignado || '\u2014';
   const ahora       = new Date().toISOString();
 
   o.tecnicoAsignado = nuevoTec;
@@ -6069,7 +6531,7 @@ async function confirmarReasignar() {
     });
   } catch(err) {
     console.error('Error al reasignar OM:', err);
-    toast('Error al reasignar — verifica la conexión', 'error');
+    toast('Error al reasignar \u2014 verifica la conexión', 'error');
     return;
   }
   renderLista();
@@ -6153,10 +6615,10 @@ function renderReportes() {
   tbody.innerHTML = sorted.map(x => `
     <tr class="hover:bg-gray-50">
       <td class="px-4 py-2.5 font-medium text-blue-600 text-xs">${x.id}</td>
-      <td class="px-4 py-2.5 text-xs text-gray-700">${esc(x.set||'—')}</td>
-      <td class="px-4 py-2.5 text-xs text-gray-600">${esc(x.alimentador||'—')}</td>
-      <td class="px-4 py-2.5 text-xs text-gray-500">${esc(x.zona||'—')}</td>
-      <td class="px-4 py-2.5 text-xs text-gray-600">${esc(x.circuito||'—')}</td>
+      <td class="px-4 py-2.5 text-xs text-gray-700">${esc(x.set||'\u2014')}</td>
+      <td class="px-4 py-2.5 text-xs text-gray-600">${esc(x.alimentador||'\u2014')}</td>
+      <td class="px-4 py-2.5 text-xs text-gray-500">${esc(x.zona||'\u2014')}</td>
+      <td class="px-4 py-2.5 text-xs text-gray-600">${esc(x.circuito||'\u2014')}</td>
       <td class="px-4 py-2.5 text-xs">${x.atencionDRE==='si'?'<span class="px-1.5 py-0.5 bg-violet-100 text-violet-700 text-xs rounded font-semibold">Sí</span>':'No'}</td>
       <td class="px-4 py-2.5"><span class="px-2 py-0.5 text-xs font-semibold rounded-full ${clsEstado(x.estado)}">${x.estado}</span></td>
       <td class="px-4 py-2.5 text-xs text-gray-400">${fmtCorta(x.fechaRegistro.split('T')[0])}</td>
@@ -6240,7 +6702,7 @@ function renderConfig() {
         <div class="flex gap-2 flex-wrap">
           <select id="cfg-cr-filtro" class="inp text-sm" style="width:auto"
             onchange="_cfgSetCRFilter()">
-            <option value="">— Todos los CRs —</option>
+            <option value="">\u2014 Todos los CRs \u2014</option>
             <option value="60122">CR 60122</option>
             <option value="60124">CR 60124</option>
             <option value="60126">CR 60126</option>
@@ -6341,7 +6803,7 @@ function renderConfig() {
 }
 
 // ============================================================
-//  POWER AUTOMATE — GESTIÓN DE URL DESDE CONFIG
+//  POWER AUTOMATE \u2014 GESTIÓN DE URL DESDE CONFIG
 // ============================================================
 function guardarPAUrl() {
   const val = (document.getElementById('cfg-pa-url')?.value || '').trim();
@@ -6370,15 +6832,15 @@ async function probarPAUrl() {
       body:    JSON.stringify({ evento: 'ping' })
     });
     if (resp.ok) {
-      if (st) { st.textContent = `Conexión OK — Power Automate respondió ${resp.status}. El flujo está activo.`; st.className = 'text-xs mt-2 text-green-600'; st.classList.remove('hidden'); }
+      if (st) { st.textContent = `Conexión OK \u2014 Power Automate respondió ${resp.status}. El flujo está activo.`; st.className = 'text-xs mt-2 text-green-600'; st.classList.remove('hidden'); }
       toast('Conexión con Power Automate verificada correctamente', 'success');
     } else {
       if (st) { st.textContent = `Power Automate respondió ${resp.status}. Verifica que el flujo esté activo y que su esquema JSON acepte el payload.`; st.className = 'text-xs mt-2 text-red-600'; st.classList.remove('hidden'); }
-      toast(`Power Automate respondió ${resp.status} — revisa la configuración del flujo`, 'warning');
+      toast(`Power Automate respondió ${resp.status} \u2014 revisa la configuración del flujo`, 'warning');
     }
   } catch (err) {
     if (st) { st.textContent = `Error de red: ${err.message}`; st.className = 'text-xs mt-2 text-red-600'; st.classList.remove('hidden'); }
-    toast('No se pudo alcanzar Power Automate — verifica la URL y la red', 'error');
+    toast('No se pudo alcanzar Power Automate \u2014 verifica la URL y la red', 'error');
   }
 }
 
@@ -6559,7 +7021,7 @@ function eliminarUsuario(cr, nombre) {
 }
 
 // ============================================================
-//  CONFIGURACIÓN — FUNCIONES DE ROLES
+//  CONFIGURACIÓN \u2014 FUNCIONES DE ROLES
 // ============================================================
 
 async function guardarMiPin() {
@@ -6858,10 +7320,10 @@ function renderProgramas() {
         .filter(Boolean)
     )].sort();
     const prev = selProg.value;
-    selProg.innerHTML = '<option value="">— Todos los programas —</option>' +
+    selProg.innerHTML = '<option value="">\u2014 Todos los programas \u2014</option>' +
       programas.map(pg => {
         const desc = PROGRAMA_DESCRIPCIONES[pg];
-        const label = desc ? `${pg} — ${desc}` : pg;
+        const label = desc ? `${pg} \u2014 ${desc}` : pg;
         return `<option value="${esc(pg)}"${pg === prev ? ' selected' : ''}>${esc(label)}</option>`;
       }).join('');
   }
@@ -6911,13 +7373,13 @@ function renderProgramas() {
 
     const omTxt  = o ? ((o.ordenesMant || []).map(m => m.om || '').filter(Boolean).join('; ') || o.id) : null;
     const omHtml = sinOrden
-      ? '<span class="text-gray-300 text-xs">—</span>'
+      ? '<span class="text-gray-300 text-xs">\u2014</span>'
       : `<button onclick="verDetalle('${esc(o.id)}')" class="text-blue-600 hover:underline font-semibold text-xs">${esc(omTxt)}</button>`;
     const fechaHtml = o?.fechaProgramada
       ? fmtCorta(o.fechaProgramada)
       : asig
         ? `<span class="text-purple-500 text-xs">${fmtCorta(asig.fechaMaxima)}</span>`
-        : '<span class="text-gray-300">—</span>';
+        : '<span class="text-gray-300">\u2014</span>';
 
     // Técnico asignado cell
     const tecnicoHtml = asig
@@ -6927,21 +7389,21 @@ function renderProgramas() {
            <p class="text-[10px] text-purple-400">${esc(asig.semanaMaxima || '')}</p>
          </div>`
       : o
-        ? `<span class="text-xs text-gray-400">${esc(o.usuarioRegistro || '—')}</span>`
-        : '<span class="text-gray-300 text-xs">—</span>';
+        ? `<span class="text-xs text-gray-400">${esc(o.usuarioRegistro || '\u2014')}</span>`
+        : '<span class="text-gray-300 text-xs">\u2014</span>';
 
     const rowBg = !sinOrden ? ' bg-emerald-50/40' : asig ? ' bg-purple-50/30' : '';
 
     return `
       <tr class="border-b border-gray-50 hover:bg-indigo-50/30 transition-colors${rowBg}">
         <td class="px-4 py-3">
-          <span class="px-2 py-0.5 text-xs font-bold rounded bg-indigo-100 text-indigo-700 whitespace-nowrap">${esc(p.programa || '—')}</span>
+          <span class="px-2 py-0.5 text-xs font-bold rounded bg-indigo-100 text-indigo-700 whitespace-nowrap">${esc(p.programa || '\u2014')}</span>
           ${PROGRAMA_DESCRIPCIONES[p.programa] ? `<p class="text-xs text-gray-400 mt-1 leading-tight max-w-[16rem]">${esc(PROGRAMA_DESCRIPCIONES[p.programa])}</p>` : ''}
         </td>
-        <td class="px-4 py-3 text-xs text-gray-700 whitespace-nowrap">${esc(p.alimentador || '—')}</td>
-        <td class="px-4 py-3 text-xs text-gray-600 max-w-xs"><span class="line-clamp-2" title="${esc(p.zonaTramo || '')}">${esc(p.zonaTramo || '—')}</span></td>
-        <td class="px-4 py-3 text-xs text-gray-600">${esc(p.nombrePrograma || p.elemento || '—')}</td>
-        <td class="px-4 py-3 text-xs text-center font-semibold text-gray-800">${esc(String(p.cantidadPlanificada !== undefined ? p.cantidadPlanificada : '—'))}</td>
+        <td class="px-4 py-3 text-xs text-gray-700 whitespace-nowrap">${esc(p.alimentador || '\u2014')}</td>
+        <td class="px-4 py-3 text-xs text-gray-600 max-w-xs"><span class="line-clamp-2" title="${esc(p.zonaTramo || '')}">${esc(p.zonaTramo || '\u2014')}</span></td>
+        <td class="px-4 py-3 text-xs text-gray-600">${esc(p.nombrePrograma || p.elemento || '\u2014')}</td>
+        <td class="px-4 py-3 text-xs text-center font-semibold text-gray-800">${esc(String(p.cantidadPlanificada !== undefined ? p.cantidadPlanificada : '\u2014'))}</td>
         <td class="px-4 py-3 text-center">${estadoHtml}</td>
         <td class="px-4 py-3 text-center">${omHtml}</td>
         <td class="px-4 py-3 text-xs text-center text-gray-600 whitespace-nowrap">${fechaHtml}</td>
@@ -7170,13 +7632,13 @@ function clsEstado(s) {
 }
 function badgePrior(p) {
   const m={Baja:'p-baja',Media:'p-media',Alta:'p-alta',Urgente:'p-urgente'};
-  return `<span class="px-2.5 py-0.5 text-xs font-semibold rounded-full ${m[p]||''}">${p||'—'}</span>`;
+  return `<span class="px-2.5 py-0.5 text-xs font-semibold rounded-full ${m[p]||''}">${p||'\u2014'}</span>`;
 }
 
 function siBadge(val) {
   if (val === 'si') return '<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">Sí</span>';
   if (val === 'no') return '<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-gray-100 text-gray-500">No</span>';
-  return '—';
+  return '\u2014';
 }
 
 // ============================================================
@@ -7222,11 +7684,11 @@ function esc(s) {
 }
 
 function fmtFecha(iso) {
-  if (!iso) return '—';
+  if (!iso) return '\u2014';
   return new Date(iso).toLocaleString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 }
 function fmtCorta(fecha) {
-  if (!fecha) return '—';
+  if (!fecha) return '\u2014';
   const d = (fecha.includes('T') ? fecha.split('T')[0] : fecha).split('-');
   return `${d[2]}/${d[1]}/${d[0]}`;
 }
@@ -7421,8 +7883,12 @@ const PROGRAMA_DESCRIPCIONES = {
 const CR_NOMBRES_MAP = {
   '60122': ['60122', 'Lima'],
   '60124': ['60124', 'Huarochirí', 'Huarochiri'],
-  '60126': ['60126', 'Cañete', 'Canete']
+  '60126': ['60126', 'Cañete', 'Canete'],
+  '60110': ['60110', 'DRE']
 };
+
+// CRs transversales: sus técnicos pueden recibir asignaciones de cualquier CR
+const CRS_TRANSVERSALES = ['60110'];
 
 let PLANES_MANTENIMIENTO_DATA = [];
 let _planesLoaded = false;
@@ -7540,7 +8006,7 @@ function renderPlanesMantenimiento(prefix) {
         <i class="fas fa-filter text-amber-400 flex-shrink-0"></i>
         <span>Seleccione CR (login), SET y Alimentador para cargar los planes de mantenimiento.</span>
       </div>`;
-    _resetZonaSel('— Seleccione Alimentador primero —');
+    _resetZonaSel('\u2014 Seleccione Alimentador primero \u2014');
     _updatePlanesCount(prefix, 0, 0);
     return;
   }
@@ -7557,7 +8023,7 @@ function renderPlanesMantenimiento(prefix) {
             : '<p class="text-red-600 text-xs mt-1">Verifique que <code class="bg-red-100 px-1 rounded font-mono">planes_mantenimiento.json</code> esté en la misma carpeta que este HTML.</p>'}
         </div>
       </div>`;
-    _resetZonaSel('— Sin datos —');
+    _resetZonaSel('\u2014 Sin datos \u2014');
     _updatePlanesCount(prefix, 0, 0);
     return;
   }
@@ -7570,7 +8036,7 @@ function renderPlanesMantenimiento(prefix) {
         <i class="fas fa-search text-gray-400 flex-shrink-0"></i>
         <span>No se encontraron planes de mantenimiento para los filtros seleccionados (CR: <strong>${esc(cr)}</strong>, Alimentador: <strong>${esc(alimentador)}</strong>).</span>
       </div>`;
-    _resetZonaSel('— Sin resultados —');
+    _resetZonaSel('\u2014 Sin resultados \u2014');
     _updatePlanesCount(prefix, 0, 0);
     return;
   }
@@ -7620,19 +8086,19 @@ function renderPlanesMantenimiento(prefix) {
                 onchange="_onPlanCheck(this)">`}
           <div class="flex-1 min-w-0">
             <div class="flex flex-wrap gap-2 items-center mb-2">
-              <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">${esc(p.programa||'—')}</span>
-              <span class="text-xs text-gray-600 font-medium">${esc(p.nombrePrograma||'—')}</span>
+              <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">${esc(p.programa||'\u2014')}</span>
+              <span class="text-xs text-gray-600 font-medium">${esc(p.nombrePrograma||'\u2014')}</span>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1 text-xs">
-              <div><span class="text-gray-400">Alimentador:</span> <span class="font-medium text-gray-700">${esc(p.alimentador||'—')}</span></div>
-              <div><span class="text-gray-400">Zona/Tramo:</span> <span class="font-medium text-gray-700">${esc(p.zonaTramo||'—')}</span></div>
-              <div><span class="text-gray-400">Enlace MT:</span> <span class="font-medium text-gray-700">${esc(p.enlaceMT||'—')}</span></div>
-              <div><span class="text-gray-400">Nodo A:</span> <span class="font-medium text-gray-700">${esc(p.nodoA||'—')}</span></div>
-              <div><span class="text-gray-400">Nodo B:</span> <span class="font-medium text-gray-700">${esc(p.nodoB||'—')}</span></div>
-              <div><span class="text-gray-400">Nombre Programa:</span> <span class="font-medium text-gray-700">${esc(p.nombrePrograma||p.elemento||'—')}</span></div>
-              <div><span class="text-gray-400">Unidad:</span> <span class="font-medium text-gray-700">${esc(p.unidad||'—')}</span></div>
-              <div><span class="text-gray-400">Cant. planif.:</span> <span class="font-semibold text-gray-800">${esc(p.cantidadPlanificada||'—')}</span></div>
-              <div><span class="text-gray-400">CR:</span> <span class="font-medium text-gray-700">${esc(p.cr||'—')}</span></div>
+              <div><span class="text-gray-400">Alimentador:</span> <span class="font-medium text-gray-700">${esc(p.alimentador||'\u2014')}</span></div>
+              <div><span class="text-gray-400">Zona/Tramo:</span> <span class="font-medium text-gray-700">${esc(p.zonaTramo||'\u2014')}</span></div>
+              <div><span class="text-gray-400">Enlace MT:</span> <span class="font-medium text-gray-700">${esc(p.enlaceMT||'\u2014')}</span></div>
+              <div><span class="text-gray-400">Nodo A:</span> <span class="font-medium text-gray-700">${esc(p.nodoA||'\u2014')}</span></div>
+              <div><span class="text-gray-400">Nodo B:</span> <span class="font-medium text-gray-700">${esc(p.nodoB||'\u2014')}</span></div>
+              <div><span class="text-gray-400">Nombre Programa:</span> <span class="font-medium text-gray-700">${esc(p.nombrePrograma||p.elemento||'\u2014')}</span></div>
+              <div><span class="text-gray-400">Unidad:</span> <span class="font-medium text-gray-700">${esc(p.unidad||'\u2014')}</span></div>
+              <div><span class="text-gray-400">Cant. planif.:</span> <span class="font-semibold text-gray-800">${esc(p.cantidadPlanificada||'\u2014')}</span></div>
+              <div><span class="text-gray-400">CR:</span> <span class="font-medium text-gray-700">${esc(p.cr||'\u2014')}</span></div>
             </div>
             ${p.detalleAccion ? `<p class="text-xs text-gray-500 italic border-t border-gray-100 pt-2 mt-2">${esc(p.detalleAccion)}</p>` : ''}
           </div>
@@ -7644,7 +8110,7 @@ function renderPlanesMantenimiento(prefix) {
             <div>
               <label class="text-xs text-gray-600 font-medium block mb-1">N° OM</label>
               <select id="om-${uid}" class="inp text-sm" ${omOptHtml ? '' : 'disabled'}>
-                <option value="">${omOptHtml ? '— Seleccione N° OM —' : '— Ingrese N° OM primero —'}</option>
+                <option value="">${omOptHtml ? '\u2014 Seleccione N° OM \u2014' : '\u2014 Ingrese N° OM primero \u2014'}</option>
                 ${omOptHtml}
               </select>
             </div>
@@ -7669,7 +8135,7 @@ function renderPlanesMantenimiento(prefix) {
   if (zonaFilterSel) {
     const zonas = [...new Set(planes.map(p => p.zonaTramo || '').filter(Boolean))].sort();
     const prevZona = zonaFilterSel.value;
-    zonaFilterSel.innerHTML = `<option value="">— Todas las zonas (${planes.length}) —</option>`
+    zonaFilterSel.innerHTML = `<option value="">\u2014 Todas las zonas (${planes.length}) \u2014</option>`
       + zonas.map(z => `<option value="${z.replace(/"/g,'&quot;')}"${z === prevZona ? ' selected' : ''}>${z}</option>`).join('');
     zonaFilterSel.disabled = false;
   }
@@ -7748,7 +8214,7 @@ function _applyZonaFilter(prefix) {
     const parts = [];
     if (cr)   parts.push(`CR: ${cr}`);
     if (alim) parts.push(`Alim: ${alim}`);
-    if (zona) parts.push(`Zona: ${zona} — ${visible} resultado${visible !== 1 ? 's' : ''}`);
+    if (zona) parts.push(`Zona: ${zona} \u2014 ${visible} resultado${visible !== 1 ? 's' : ''}`);
     else      parts.push(`${visible} resultado${visible !== 1 ? 's' : ''}`);
     hdrEl.textContent = parts.join(' · ');
   }
@@ -7771,11 +8237,11 @@ function _refreshOMDropdown(sel, prefix) {
   const oms  = _getOMsIngresadas(prefix);
   const prev = sel.value;
   if (!oms.length) {
-    sel.innerHTML = '<option value="">— Ingrese N° OM primero —</option>';
+    sel.innerHTML = '<option value="">\u2014 Ingrese N° OM primero \u2014</option>';
     sel.disabled = true;
     return;
   }
-  sel.innerHTML = '<option value="">— Seleccione N° OM —</option>'
+  sel.innerHTML = '<option value="">\u2014 Seleccione N° OM \u2014</option>'
     + oms.map(om => `<option value="${esc(om)}"${om === prev ? ' selected' : ''}>${esc(om)}</option>`).join('');
   sel.disabled = false;
 }
@@ -7883,10 +8349,10 @@ function onAlimentadorChange(prefix) {
 // ============================================================
 function _getProgramasOptions(selectedVal) {
   const programas = [...new Set(PLANES_MANTENIMIENTO_DATA.map(p => p.programa).filter(Boolean))].sort();
-  let opts = '<option value="">— Seleccione Programa —</option>';
+  let opts = '<option value="">\u2014 Seleccione Programa \u2014</option>';
   programas.forEach(pg => {
     const desc  = PROGRAMA_DESCRIPCIONES[pg];
-    const label = desc ? `${pg} — ${desc}` : pg;
+    const label = desc ? `${pg} \u2014 ${desc}` : pg;
     const sel   = pg === selectedVal ? ' selected' : '';
     opts += `<option value="${esc(pg)}"${sel}>${esc(label)}</option>`;
   });
@@ -7902,7 +8368,7 @@ function addTrabajoAdicional(prefix, data) {
     <select class="inp flex-[2] min-w-[220px] text-xs ta-programa">
       ${_getProgramasOptions(data?.programa)}
     </select>
-    <input type="number" min="0" placeholder="Cant. atendida" value="${esc(String(data?.cantidadAtendida ?? ''))}"
+    <input type="number" min="0" placeholder="Cant. atendida"
       class="inp w-32 text-xs ta-cantidad">
     <input type="text" placeholder="N° de equipo" value="${esc(data?.numeroEquipo || '')}"
       class="inp flex-1 min-w-[130px] text-xs ta-equipo">
@@ -7911,6 +8377,9 @@ function addTrabajoAdicional(prefix, data) {
       <i class="fas fa-trash text-xs"></i>
     </button>`;
   container.appendChild(div);
+  const cantInput = div.querySelector('.ta-cantidad');
+  if (cantInput && data?.cantidadAtendida != null && data.cantidadAtendida !== '')
+    cantInput.value = data.cantidadAtendida;
 }
 
 function removeTrabajoAdicional(btn) {
@@ -7952,8 +8421,8 @@ function renderAsignacion() {
   const zonaSel = document.getElementById('asig-zona');
   const setEl   = document.getElementById('asig-set');
   if (setEl)   setEl.value   = '';
-  if (alimSel) { alimSel.innerHTML = '<option value="">— Seleccione Alimentador —</option>'; alimSel.disabled = true; }
-  if (zonaSel) { zonaSel.innerHTML = '<option value="">— Seleccione Zona —</option>';         zonaSel.disabled = true; }
+  if (alimSel) { alimSel.innerHTML = '<option value="">\u2014 Seleccione Alimentador \u2014</option>'; alimSel.disabled = true; }
+  if (zonaSel) { zonaSel.innerHTML = '<option value="">\u2014 Seleccione Zona \u2014</option>';         zonaSel.disabled = true; }
   document.getElementById('asig-tabla-wrap')?.classList.add('hidden');
   document.getElementById('asig-action-panel')?.classList.add('hidden');
   fillAsigTecnicoSelect();
@@ -7976,30 +8445,45 @@ function fillAsigSetSelect() {
     .filter(set => SET_ALIMENTADORES[set].some(a => alimsCR.has(a)))
     .sort();
   const prev = sel.value;
-  sel.innerHTML = '<option value="">— Seleccione SET —</option>' +
+  sel.innerHTML = '<option value="">\u2014 Seleccione SET \u2014</option>' +
     sets.map(s => `<option value="${s}"${s === prev ? ' selected' : ''}>${s}</option>`).join('');
 }
 
 function fillAsigTecnicoSelect() {
   const sel = document.getElementById('asig-tecnico');
   if (!sel) return;
+  const usersDB = DB.usuarios || DEFAULT_USUARIOS;
   const miCR   = sesionActual?.cr || '';
-  const crData = (DB.usuarios || DEFAULT_USUARIOS)[miCR] || {};
-  const tecnicos = Object.entries(crData)
+  const crData = usersDB[miCR] || {};
+  const propios = Object.entries(crData)
     .filter(([, d]) => d.rol === 'tecnico')
     .map(([name]) => name)
     .sort();
-  sel.innerHTML = '<option value="">— Seleccione Técnico —</option>' +
-    tecnicos.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
+  let transOpts = '';
+  CRS_TRANSVERSALES.forEach(crT => {
+    if (crT === miCR) return;
+    const tecs = Object.entries(usersDB[crT] || {})
+      .filter(([, d]) => d.rol === 'tecnico')
+      .map(([name]) => name)
+      .sort();
+    if (tecs.length) {
+      transOpts += `<optgroup label="CR ${crT} \u2014 Transversal">` +
+        tecs.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('') +
+        '</optgroup>';
+    }
+  });
+  sel.innerHTML = '<option value="">\u2014 Seleccione Técnico \u2014</option>' +
+    propios.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('') +
+    transOpts;
 }
 
 function onAsigSetChange() {
   const set     = document.getElementById('asig-set')?.value;
   const alimSel = document.getElementById('asig-alim');
   const zonaSel = document.getElementById('asig-zona');
-  alimSel.innerHTML = '<option value="">— Seleccione Alimentador —</option>';
+  alimSel.innerHTML = '<option value="">\u2014 Seleccione Alimentador \u2014</option>';
   alimSel.disabled  = !set;
-  zonaSel.innerHTML = '<option value="">— Seleccione Zona —</option>';
+  zonaSel.innerHTML = '<option value="">\u2014 Seleccione Zona \u2014</option>';
   zonaSel.disabled  = true;
   document.getElementById('asig-tabla-wrap')?.classList.add('hidden');
   document.getElementById('asig-action-panel')?.classList.add('hidden');
@@ -8013,14 +8497,14 @@ function onAsigSetChange() {
       return planAlim === alimLower;
     });
   });
-  alimSel.innerHTML = '<option value="">— Seleccione Alimentador —</option>' +
+  alimSel.innerHTML = '<option value="">\u2014 Seleccione Alimentador \u2014</option>' +
     alims.map(a => `<option value="${a}">${a}</option>`).join('');
 }
 
 function onAsigAlimChange() {
   const alim    = document.getElementById('asig-alim')?.value;
   const zonaSel = document.getElementById('asig-zona');
-  zonaSel.innerHTML = '<option value="">— Seleccione Zona —</option>';
+  zonaSel.innerHTML = '<option value="">\u2014 Seleccione Zona \u2014</option>';
   zonaSel.disabled  = !alim;
   document.getElementById('asig-tabla-wrap')?.classList.add('hidden');
   document.getElementById('asig-action-panel')?.classList.add('hidden');
@@ -8037,7 +8521,7 @@ function onAsigAlimChange() {
       .map(p => p.zonaTramo)
       .filter(Boolean)
   )].sort();
-  zonaSel.innerHTML = '<option value="">— Seleccione Zona —</option>' +
+  zonaSel.innerHTML = '<option value="">\u2014 Seleccione Zona \u2014</option>' +
     zonas.map(z => `<option value="${esc(z)}">${esc(z)}</option>`).join('');
   zonaSel.disabled = false;
 }
@@ -8122,10 +8606,10 @@ function renderAsigResumenBloque(alim, zona) {
     rows += `
       <tr class="border-b border-gray-100 transition-colors text-xs ${rowCls}">
         <td class="px-4 py-2.5">
-          <span class="font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100 whitespace-nowrap">${esc(p.programa || '—')}</span>
+          <span class="font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100 whitespace-nowrap">${esc(p.programa || '\u2014')}</span>
         </td>
-        <td class="px-4 py-2.5 text-gray-600">${esc(p.nombrePrograma || p.elemento || '—')}</td>
-        <td class="px-4 py-2.5 text-center font-semibold text-gray-800">${esc(String(p.cantidadPlanificada !== undefined ? p.cantidadPlanificada : '—'))}</td>
+        <td class="px-4 py-2.5 text-gray-600">${esc(p.nombrePrograma || p.elemento || '\u2014')}</td>
+        <td class="px-4 py-2.5 text-center font-semibold text-gray-800">${esc(String(p.cantidadPlanificada !== undefined ? p.cantidadPlanificada : '\u2014'))}</td>
         <td class="px-4 py-2.5 text-center">${badge}</td>
         <td class="px-4 py-2.5 text-center">${accion}</td>
       </tr>`;
@@ -8134,7 +8618,7 @@ function renderAsigResumenBloque(alim, zona) {
   const bloqueInfoHtml = bloqueActivo
     ? `<div class="mt-3 flex items-center gap-2 text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
         <i class="fas fa-info-circle text-blue-400 flex-shrink-0"></i>
-        <span>Bloque ya asignado a <strong>${esc(bloqueActivo.tecnico)}</strong> — F.Máx: <strong>${fmtCorta(bloqueActivo.fechaMaxima)}</strong>. Puedes reasignar o actualizar la fecha.</span>
+        <span>Bloque ya asignado a <strong>${esc(bloqueActivo.tecnico)}</strong> \u2014 F.Máx: <strong>${fmtCorta(bloqueActivo.fechaMaxima)}</strong>. Puedes reasignar o actualizar la fecha.</span>
        </div>` : '';
 
   wrap.innerHTML = `
@@ -8311,7 +8795,7 @@ async function confirmarAsignacion() {
     destinatario:     tecnico,
     asig_tecnico:     tecnico,
     asig_tipo:        'Zona',
-    asig_identificador: zona + (alim ? ' — ' + alim : ''),
+    asig_identificador: zona + (alim ? ' \u2014 ' + alim : ''),
     asig_fecha_maxima: fechaMax  || '',
     asig_semana:      semanaMax  || '',
     asig_por:         sesionActual?.nombre || '',
@@ -8320,7 +8804,7 @@ async function confirmarAsignacion() {
 }
 
 // ============================================================
-//  ASIGNACIÓN POR PROGRAMA — lógica de tabs y nuevo flujo
+//  ASIGNACIÓN POR PROGRAMA \u2014 lógica de tabs y nuevo flujo
 // ============================================================
 let _asigTabActual = 'zona';
 
@@ -8363,10 +8847,10 @@ function fillProgAsigSelects() {
     PLANES_MANTENIMIENTO_DATA.map(p => p.programa).filter(Boolean)
   )].sort();
 
-  progSel.innerHTML = '<option value="">— Seleccione Programa —</option>' +
+  progSel.innerHTML = '<option value="">\u2014 Seleccione Programa \u2014</option>' +
     programas.map(pg => {
       const desc  = PROGRAMA_DESCRIPCIONES[pg];
-      const label = desc ? `${pg} — ${desc}` : pg;
+      const label = desc ? `${pg} \u2014 ${desc}` : pg;
       return `<option value="${esc(pg)}"${pg === prevProg ? ' selected' : ''}>${esc(label)}</option>`;
     }).join('');
 
@@ -8375,21 +8859,36 @@ function fillProgAsigSelects() {
     PLANES_MANTENIMIENTO_DATA.map(p => p.cr).filter(Boolean)
   )].sort();
 
-  crSel.innerHTML = '<option value="">— Seleccione CR —</option>' +
+  crSel.innerHTML = '<option value="">\u2014 Seleccione CR \u2014</option>' +
     crs.map(cr => `<option value="${esc(cr)}"${cr === prevCR ? ' selected' : ''}>${esc(cr)}</option>`).join('');
 }
 
 function fillProgAsigTecnicoSelect() {
   const sel   = document.getElementById('prog-asig-tecnico');
   if (!sel) return;
+  const usersDB = DB.usuarios || DEFAULT_USUARIOS;
   const miCR  = sesionActual?.cr || '';
-  const crData = (DB.usuarios || DEFAULT_USUARIOS)[miCR] || {};
-  const tecnicos = Object.entries(crData)
+  const crData = usersDB[miCR] || {};
+  const propios = Object.entries(crData)
     .filter(([, d]) => d.rol === 'tecnico')
     .map(([name]) => name)
     .sort();
-  sel.innerHTML = '<option value="">— Seleccione Técnico —</option>' +
-    tecnicos.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
+  let transOpts = '';
+  CRS_TRANSVERSALES.forEach(crT => {
+    if (crT === miCR) return;
+    const tecs = Object.entries(usersDB[crT] || {})
+      .filter(([, d]) => d.rol === 'tecnico')
+      .map(([name]) => name)
+      .sort();
+    if (tecs.length) {
+      transOpts += `<optgroup label="CR ${crT} \u2014 Transversal">` +
+        tecs.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('') +
+        '</optgroup>';
+    }
+  });
+  sel.innerHTML = '<option value="">\u2014 Seleccione Técnico \u2014</option>' +
+    propios.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('') +
+    transOpts;
 }
 
 function onProgAsigChange() {
@@ -8471,7 +8970,7 @@ function renderProgAsigResultados() {
   // Agrupar por alimentador
   const byAlim = {};
   planes.forEach(p => {
-    const alim = p.alimentadorZona || '—';
+    const alim = p.alimentadorZona || '\u2014';
     if (!byAlim[alim]) byAlim[alim] = [];
     byAlim[alim].push(p);
   });
@@ -8506,13 +9005,13 @@ function renderProgAsigResultados() {
         <div class="px-5 py-2 flex flex-wrap items-start gap-3 hover:bg-gray-50 text-xs transition-colors border-t border-gray-50">
           <div class="flex-1 min-w-0">
             <p class="text-gray-700 font-medium leading-snug" title="${esc(p.zonaTramo || '')}">
-              <i class="fas fa-route text-gray-300 mr-1 text-[10px]"></i>${esc(p.zonaTramo || '—')}
+              <i class="fas fa-route text-gray-300 mr-1 text-[10px]"></i>${esc(p.zonaTramo || '\u2014')}
             </p>
             <p class="text-gray-400 mt-0.5 leading-snug line-clamp-1" title="${esc(p.nombrePrograma || p.elemento || '')}">
-              ${esc((p.nombrePrograma || p.elemento) ? ((p.nombrePrograma || p.elemento).length > 90 ? (p.nombrePrograma || p.elemento).slice(0, 90) + '…' : (p.nombrePrograma || p.elemento)) : '—')}
+              ${esc((p.nombrePrograma || p.elemento) ? ((p.nombrePrograma || p.elemento).length > 90 ? (p.nombrePrograma || p.elemento).slice(0, 90) + '…' : (p.nombrePrograma || p.elemento)) : '\u2014')}
             </p>
           </div>
-          <span class="text-gray-400 whitespace-nowrap flex-shrink-0">Cant: <strong class="text-gray-600">${p.cantidadPlanificada || '—'}</strong></span>
+          <span class="text-gray-400 whitespace-nowrap flex-shrink-0">Cant: <strong class="text-gray-600">${p.cantidadPlanificada || '\u2014'}</strong></span>
           ${badge}
         </div>`;
     });
@@ -8689,6 +9188,17 @@ function renderProyectosTecnicos() {
   const nombre = sesionActual?.nombre || '';
   const mis    = DB.asignaciones.filter(a => a.tecnico === nombre && a.estado === 'Asignado');
 
+  // DIAGNÓSTICO — abrir consola F12 para ver estos datos
+  console.group('[OrdenSys] renderProyectosTecnicos — diagnóstico');
+  console.log('Técnico logueado (nombre):', JSON.stringify(nombre));
+  console.log('Total asignaciones en DB.asignaciones:', DB.asignaciones.length);
+  console.log('Asignaciones encontradas para este técnico:', mis.length);
+  if (DB.asignaciones.length > 0) {
+    console.log('Nombres de técnico en asignaciones (primeras 10):',
+      DB.asignaciones.slice(0, 10).map(a => ({ tecnico: JSON.stringify(a.tecnico), estado: a.estado, tipo: a.tipo })));
+  }
+  console.groupEnd();
+
   if (mis.length === 0) {
     wrap.innerHTML = `
       <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-10 text-center">
@@ -8719,7 +9229,7 @@ function renderProyectosTecnicos() {
       <i class="fas ${ico} text-sm flex-shrink-0"></i>
       <div>
         <p class="text-[10px] font-semibold uppercase tracking-wide opacity-70">Fecha Máx. de Entrega</p>
-        <p class="text-sm font-bold leading-tight">${fmtCorta(fechaMaxima) || '—'}</p>
+        <p class="text-sm font-bold leading-tight">${fmtCorta(fechaMaxima) || '\u2014'}</p>
       </div>
       ${vencida ? '<span class="ml-1 text-[10px] font-bold bg-red-600 text-white px-1.5 py-0.5 rounded uppercase">VENCIDA</span>' : ''}
       ${proxima && !vencida ? '<span class="ml-1 text-[10px] font-bold bg-amber-500 text-white px-1.5 py-0.5 rounded uppercase">URGENTE</span>' : ''}
@@ -8772,12 +9282,12 @@ function renderProyectosTecnicos() {
                 <span class="text-[10px] font-bold uppercase tracking-widest opacity-75">Programa</span>
                 <span class="text-[10px] font-bold bg-white/20 border border-white/30 px-1.5 py-0.5 rounded uppercase">Ítem ${idx + 1}</span>
               </div>
-              <p class="text-sm font-extrabold leading-snug truncate">${esc(item.programa || '—')}</p>
+              <p class="text-sm font-extrabold leading-snug truncate">${esc(item.programa || '\u2014')}</p>
               ${descPrograma ? `<p class="text-[11px] opacity-75 leading-snug mt-0.5 line-clamp-1">${esc(descPrograma)}</p>` : ''}
             </div>
             <div class="flex-shrink-0 text-right">
               ${estadoBadge}
-              <p class="text-[10px] opacity-70 mt-1">Sem: <strong>${esc(a.semanaMaxima || '—')}</strong></p>
+              <p class="text-[10px] opacity-70 mt-1">Sem: <strong>${esc(a.semanaMaxima || '\u2014')}</strong></p>
             </div>
           </div>
         </div>
@@ -8787,29 +9297,29 @@ function renderProyectosTecnicos() {
             ? `<div class="bg-rose-50 border border-rose-200 rounded-lg px-3 py-2.5 text-xs">
                 <p class="font-semibold text-rose-700 mb-0.5"><i class="fas fa-ban mr-1"></i>Ítem rechazado</p>
                 <p class="text-rose-600 italic">"${esc(item.motivoRechazo || 'Sin motivo registrado')}"</p>
-                <p class="text-rose-400 mt-1">Por: ${esc(item.rechazadoPor || '—')} · ${item.fechaRechazo ? fmtCorta(item.fechaRechazo.split('T')[0]) : '—'}</p>
+                <p class="text-rose-400 mt-1">Por: ${esc(item.rechazadoPor || '\u2014')} · ${item.fechaRechazo ? fmtCorta(item.fechaRechazo.split('T')[0]) : '\u2014'}</p>
               </div>`
             : _fechaBadgeHtml(a.fechaMaxima)}
           <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
             <div>
               <p class="text-gray-400 mb-0.5">Zona / Tramo</p>
-              <p class="font-semibold text-gray-800 leading-snug">${esc(item.zonaTramo || '—')}</p>
+              <p class="font-semibold text-gray-800 leading-snug">${esc(item.zonaTramo || '\u2014')}</p>
             </div>
             <div>
               <p class="text-gray-400 mb-0.5">Alimentador</p>
-              <p class="font-semibold text-gray-800">${esc(item.alimentador || '—')}</p>
+              <p class="font-semibold text-gray-800">${esc(item.alimentador || '\u2014')}</p>
             </div>
             <div class="col-span-2">
               <p class="text-gray-400 mb-0.5">Nombre Programa</p>
-              <p class="font-medium text-gray-700 leading-snug line-clamp-2" title="${esc(item.nombrePrograma || item.elemento || '')}">${esc(item.nombrePrograma || item.elemento || '—')}</p>
+              <p class="font-medium text-gray-700 leading-snug line-clamp-2" title="${esc(item.nombrePrograma || item.elemento || '')}">${esc(item.nombrePrograma || item.elemento || '\u2014')}</p>
             </div>
             <div>
               <p class="text-gray-400 mb-0.5">Cant. Planificada</p>
-              <p class="font-bold text-gray-800">${item.cantidadPlanificada ?? '—'}</p>
+              <p class="font-bold text-gray-800">${item.cantidadPlanificada ?? '\u2014'}</p>
             </div>
             <div>
               <p class="text-gray-400 mb-0.5">Asignado por</p>
-              <p class="font-medium text-gray-700">${esc(a.asignadoPor || '—')}</p>
+              <p class="font-medium text-gray-700">${esc(a.asignadoPor || '\u2014')}</p>
             </div>
           </div>
           <div class="flex justify-end gap-2 border-t border-gray-100 pt-2.5">
@@ -8836,7 +9346,7 @@ function renderProyectosTecnicos() {
   function _renderZonaCard(a) {
     const { diff, vencida, proxima } = _urgencyProps(a.fechaMaxima);
 
-    const zonaLabel  = a.zona || a.zonaTramo || '—';
+    const zonaLabel  = a.zona || a.zonaTramo || '\u2014';
     const totalItems = (a.items || []).length;
     const borderCls  = vencida ? 'border-red-400'   : proxima ? 'border-amber-300' : 'border-gray-200';
     const bgHeader   = vencida ? 'bg-red-600'        : proxima ? 'bg-amber-500'     : 'bg-indigo-600';
@@ -8850,7 +9360,7 @@ function renderProyectosTecnicos() {
     } else if (proxima) {
       urgStrip = `<div class="bg-amber-50 border-b border-amber-200 px-5 py-1.5 flex items-center gap-2">
         <i class="fas fa-clock text-amber-500 text-xs"></i>
-        <span class="text-xs font-semibold text-amber-700">Vence en <strong>${diff} día${diff === 1 ? '' : 's'}</strong> — fecha próxima a cumplirse</span>
+        <span class="text-xs font-semibold text-amber-700">Vence en <strong>${diff} día${diff === 1 ? '' : 's'}</strong> \u2014 fecha próxima a cumplirse</span>
       </div>`;
     }
 
@@ -8870,9 +9380,9 @@ function renderProyectosTecnicos() {
               return `<div class="flex items-start gap-2 text-xs py-1 px-2 rounded-lg bg-slate-50 border border-slate-200 opacity-60">
                 <i class="fas fa-archive text-slate-400 mt-0.5 flex-shrink-0"></i>
                 <div class="min-w-0 flex-1">
-                  <span class="font-bold text-slate-500">${esc(item.programa || '—')}</span>
+                  <span class="font-bold text-slate-500">${esc(item.programa || '\u2014')}</span>
                   <span class="text-gray-400 mx-1">·</span>
-                  <span class="text-slate-500 truncate">${esc(item.nombrePrograma || item.elemento || '—')}</span>
+                  <span class="text-slate-500 truncate">${esc(item.nombrePrograma || item.elemento || '\u2014')}</span>
                 </div>
                 <span class="text-[10px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-semibold flex-shrink-0">${esc(dInfo?.motivo || 'Descartado')}</span>
               </div>`;
@@ -8881,9 +9391,9 @@ function renderProyectosTecnicos() {
               return `<div class="flex items-start gap-2 text-xs py-1 px-2 rounded-lg bg-rose-50 border border-rose-200">
                 <i class="fas fa-ban text-rose-400 mt-0.5 flex-shrink-0"></i>
                 <div class="min-w-0 flex-1">
-                  <span class="font-bold text-rose-600">${esc(item.programa || '—')}</span>
+                  <span class="font-bold text-rose-600">${esc(item.programa || '\u2014')}</span>
                   <span class="text-gray-400 mx-1">·</span>
-                  <span class="text-rose-700 truncate">${esc(item.nombrePrograma || item.elemento || '—')}</span>
+                  <span class="text-rose-700 truncate">${esc(item.nombrePrograma || item.elemento || '\u2014')}</span>
                   <p class="text-[10px] text-rose-400 mt-0.5 italic">"${esc(item.motivoRechazo || '')}"</p>
                 </div>
                 <span class="text-[10px] bg-rose-200 text-rose-700 px-1.5 py-0.5 rounded font-semibold flex-shrink-0">Rechazado</span>
@@ -8891,10 +9401,10 @@ function renderProyectosTecnicos() {
             }
             return `<div class="flex items-center gap-2 text-xs text-gray-600 py-1 px-2 rounded-lg hover:bg-gray-50 group">
               <span class="w-1.5 h-1.5 bg-indigo-400 rounded-full flex-shrink-0"></span>
-              <span class="font-bold text-indigo-700 flex-shrink-0">${esc(item.programa || '—')}</span>
+              <span class="font-bold text-indigo-700 flex-shrink-0">${esc(item.programa || '\u2014')}</span>
               <span class="text-gray-300">·</span>
-              <span class="truncate flex-1">${esc(item.nombrePrograma || item.elemento || '—')}</span>
-              <span class="text-gray-400 flex-shrink-0">Cant: ${item.cantidadPlanificada || '—'}</span>
+              <span class="truncate flex-1">${esc(item.nombrePrograma || item.elemento || '\u2014')}</span>
+              <span class="text-gray-400 flex-shrink-0">Cant: ${item.cantidadPlanificada || '\u2014'}</span>
               <button onclick="rechazarItem('${a.id}', ${idx})"
                 title="Rechazar este ítem"
                 class="opacity-0 group-hover:opacity-100 flex-shrink-0 ml-1 text-[10px] font-semibold text-rose-600 hover:text-rose-800 border border-rose-200 hover:border-rose-400 bg-rose-50 hover:bg-rose-100 px-1.5 py-0.5 rounded transition-all">
@@ -8913,14 +9423,14 @@ function renderProyectosTecnicos() {
               <p class="text-xs font-semibold uppercase tracking-widest opacity-75 mb-0.5">Bloque de Zona</p>
               <h3 class="text-lg font-extrabold leading-tight">${esc(zonaLabel)}</h3>
               <p class="text-sm opacity-80 mt-1">
-                <i class="fas fa-user-tie mr-1.5"></i>Asignado por: <strong>${esc(a.asignadoPor || '—')}</strong>
+                <i class="fas fa-user-tie mr-1.5"></i>Asignado por: <strong>${esc(a.asignadoPor || '\u2014')}</strong>
               </p>
             </div>
             <div class="flex flex-col items-end gap-1.5">
               <span class="inline-flex items-center gap-1.5 text-xs font-semibold bg-white/20 border border-white/30 px-2.5 py-1 rounded-lg">
                 <i class="fas fa-layer-group text-[10px]"></i>${totalItems} ítem${totalItems !== 1 ? 's' : ''}
               </span>
-              <span class="text-xs opacity-70">Sem: <strong>${esc(a.semanaMaxima || '—')}</strong></span>
+              <span class="text-xs opacity-70">Sem: <strong>${esc(a.semanaMaxima || '\u2014')}</strong></span>
             </div>
           </div>
         </div>
@@ -8930,11 +9440,11 @@ function renderProyectosTecnicos() {
           <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
             <div>
               <p class="text-xs text-gray-400 mb-0.5">Alimentador</p>
-              <p class="font-semibold text-gray-800">${esc(a.alimentador || '—')}</p>
+              <p class="font-semibold text-gray-800">${esc(a.alimentador || '\u2014')}</p>
             </div>
             <div>
               <p class="text-xs text-gray-400 mb-0.5">Fecha de Asignación</p>
-              <p class="font-semibold text-gray-800">${fmtCorta(a.fechaAsignacion) || '—'}</p>
+              <p class="font-semibold text-gray-800">${fmtCorta(a.fechaAsignacion) || '\u2014'}</p>
             </div>
           </div>
           ${itemsHtml}
@@ -8973,7 +9483,7 @@ function renderProyectosTecnicos() {
               ${vencida ? '<span class="text-[10px] font-bold bg-red-600 text-white px-1.5 py-0.5 rounded uppercase">VENCIDO</span>' : ''}
               ${proxima && !vencida ? '<span class="text-[10px] font-bold bg-amber-500 text-white px-1.5 py-0.5 rounded uppercase">URGENTE</span>' : ''}
             </div>
-            <p class="text-base font-extrabold text-gray-800">${esc(a.programa || '—')}</p>
+            <p class="text-base font-extrabold text-gray-800">${esc(a.programa || '\u2014')}</p>
             <p class="text-xs text-gray-500 mt-0.5">${esc(PROGRAMA_DESCRIPCIONES[a.programa] || '')}</p>
           </div>
           <div class="flex items-center gap-4 text-xs text-gray-600">
@@ -8981,7 +9491,7 @@ function renderProyectosTecnicos() {
             <div class="text-center"><p class="text-lg font-bold text-emerald-600">${conOrdenCnt}</p><p>Con Orden</p></div>
             <div class="text-center"><p class="text-lg font-bold text-amber-500">${totalItems - conOrdenCnt}</p><p>Pendientes</p></div>
             <div class="text-center border-l border-gray-200 pl-4">
-              <p class="font-semibold text-gray-700">${fmtCorta(a.fechaMaxima) || '—'}</p>
+              <p class="font-semibold text-gray-700">${fmtCorta(a.fechaMaxima) || '\u2014'}</p>
               <p>Fecha máx.</p>
             </div>
           </div>
@@ -9062,9 +9572,9 @@ function rechazarItem(asigId, itemIdx) {
   const infoEl = document.getElementById('rechazo-item-info');
   if (infoEl) {
     infoEl.innerHTML = `
-      <p class="font-semibold text-gray-700">${esc(item.programa || '—')}</p>
-      <p class="text-gray-500">${esc(item.nombrePrograma || item.elemento || '—')}</p>
-      <p class="text-gray-400">Zona: ${esc(item.zonaTramo || '—')} · Cant: ${item.cantidadPlanificada || '—'}</p>`;
+      <p class="font-semibold text-gray-700">${esc(item.programa || '\u2014')}</p>
+      <p class="text-gray-500">${esc(item.nombrePrograma || item.elemento || '\u2014')}</p>
+      <p class="text-gray-400">Zona: ${esc(item.zonaTramo || '\u2014')} · Cant: ${item.cantidadPlanificada || '\u2014'}</p>`;
   }
 
   const subEl = document.getElementById('rechazo-subtitulo');
@@ -9139,9 +9649,9 @@ function descartarPlan(planId, programa, nombrePrograma, alimentador, zonaTramo)
   const infoEl = document.getElementById('dp-plan-info');
   if (infoEl) {
     infoEl.innerHTML = `
-      <p class="font-semibold text-gray-700">${esc(programa || '—')}</p>
-      <p class="text-gray-500">${esc(nombrePrograma || '—')}</p>
-      <p class="text-gray-400">Zona: ${esc(zonaTramo || '—')} · Alim: ${esc(alimentador || '—')}</p>`;
+      <p class="font-semibold text-gray-700">${esc(programa || '\u2014')}</p>
+      <p class="text-gray-500">${esc(nombrePrograma || '\u2014')}</p>
+      <p class="text-gray-400">Zona: ${esc(zonaTramo || '\u2014')} · Alim: ${esc(alimentador || '\u2014')}</p>`;
   }
   document.getElementById('dp-plan-id').value = planId;
   // Limpiar selección anterior
@@ -9278,15 +9788,15 @@ function renderRechazados() {
   }
 
   const cards = rechazados.map(({ a, item, idx }) => {
-    const crLabel = a.cr ? (CR_NOMBRES_MAP[a.cr] ? `${a.cr} — ${CR_NOMBRES_MAP[a.cr][1] || ''}` : a.cr) : '—';
+    const crLabel = a.cr ? (CR_NOMBRES_MAP[a.cr] ? `${a.cr} \u2014 ${CR_NOMBRES_MAP[a.cr][1] || ''}` : a.cr) : '\u2014';
     const reasigBadge = item.reasignado
       ? `<span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-100 text-emerald-700"><i class="fas fa-check mr-0.5"></i>Reasignado a ${esc(item.reasignadoA || '')}</span>`
       : `<span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-amber-100 text-amber-700"><i class="fas fa-clock mr-0.5"></i>Pendiente</span>`;
 
     const accionFooter = item.reasignado
       ? `<div class="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
-           <p class="text-emerald-700 font-semibold"><i class="fas fa-user-check mr-1"></i>Reasignado a: ${esc(item.reasignadoA || '—')}</p>
-           <p class="text-emerald-500 mt-0.5">Fecha: ${item.fechaReasignacion ? fmtCorta(item.fechaReasignacion.split('T')[0]) : '—'}</p>
+           <p class="text-emerald-700 font-semibold"><i class="fas fa-user-check mr-1"></i>Reasignado a: ${esc(item.reasignadoA || '\u2014')}</p>
+           <p class="text-emerald-500 mt-0.5">Fecha: ${item.fechaReasignacion ? fmtCorta(item.fechaReasignacion.split('T')[0]) : '\u2014'}</p>
          </div>`
       : esTecnico
         ? `<div class="flex items-center gap-2 border-t border-gray-100 pt-2.5 text-xs text-gray-400">
@@ -9309,7 +9819,7 @@ function renderRechazados() {
               <span class="text-[10px] font-bold uppercase tracking-widest opacity-75">Ítem Rechazado</span>
               <span class="text-[10px] bg-white/20 border border-white/30 px-1.5 py-0.5 rounded font-bold">Idx ${idx + 1}</span>
             </div>
-            <p class="text-sm font-extrabold leading-snug truncate">${esc(item.programa || '—')}</p>
+            <p class="text-sm font-extrabold leading-snug truncate">${esc(item.programa || '\u2014')}</p>
             <p class="text-[11px] opacity-75 mt-0.5">${esc(PROGRAMA_DESCRIPCIONES[item.programa] || '')}</p>
           </div>
           <div class="flex-shrink-0">${reasigBadge}</div>
@@ -9319,19 +9829,19 @@ function renderRechazados() {
             <p class="font-semibold text-rose-700 mb-0.5"><i class="fas fa-comment-alt mr-1"></i>Motivo del Rechazo</p>
             <p class="text-rose-600 italic">"${esc(item.motivoRechazo || 'Sin motivo registrado')}"</p>
             <p class="text-rose-400 mt-1">
-              Rechazado por: <strong>${esc(item.rechazadoPor || '—')}</strong>
-              · ${item.fechaRechazo ? fmtCorta(item.fechaRechazo.split('T')[0]) : '—'}
+              Rechazado por: <strong>${esc(item.rechazadoPor || '\u2014')}</strong>
+              · ${item.fechaRechazo ? fmtCorta(item.fechaRechazo.split('T')[0]) : '\u2014'}
             </p>
           </div>
           <div class="grid grid-cols-2 gap-x-4 gap-y-1.5">
             <div><p class="text-gray-400 mb-0.5">CR</p><p class="font-semibold text-gray-700">${esc(crLabel)}</p></div>
-            <div><p class="text-gray-400 mb-0.5">Técnico Rechazó</p><p class="font-semibold text-gray-700">${esc(a.tecnico || '—')}</p></div>
-            <div><p class="text-gray-400 mb-0.5">Zona / Tramo</p><p class="font-semibold text-gray-700">${esc(item.zonaTramo || '—')}</p></div>
-            <div><p class="text-gray-400 mb-0.5">Alimentador</p><p class="font-semibold text-gray-700">${esc(item.alimentador || '—')}</p></div>
+            <div><p class="text-gray-400 mb-0.5">Técnico Rechazó</p><p class="font-semibold text-gray-700">${esc(a.tecnico || '\u2014')}</p></div>
+            <div><p class="text-gray-400 mb-0.5">Zona / Tramo</p><p class="font-semibold text-gray-700">${esc(item.zonaTramo || '\u2014')}</p></div>
+            <div><p class="text-gray-400 mb-0.5">Alimentador</p><p class="font-semibold text-gray-700">${esc(item.alimentador || '\u2014')}</p></div>
             <div class="col-span-2"><p class="text-gray-400 mb-0.5">Nombre Programa</p>
-              <p class="font-medium text-gray-700 line-clamp-2">${esc(item.nombrePrograma || item.elemento || '—')}</p></div>
-            <div><p class="text-gray-400 mb-0.5">Cantidad</p><p class="font-bold text-gray-800">${item.cantidadPlanificada || '—'}</p></div>
-            <div><p class="text-gray-400 mb-0.5">Asignación original</p><p class="font-medium text-gray-600 truncate">${esc(a.id || '—')}</p></div>
+              <p class="font-medium text-gray-700 line-clamp-2">${esc(item.nombrePrograma || item.elemento || '\u2014')}</p></div>
+            <div><p class="text-gray-400 mb-0.5">Cantidad</p><p class="font-bold text-gray-800">${item.cantidadPlanificada || '\u2014'}</p></div>
+            <div><p class="text-gray-400 mb-0.5">Asignación original</p><p class="font-medium text-gray-600 truncate">${esc(a.id || '\u2014')}</p></div>
           </div>
           ${accionFooter}
         </div>
@@ -9354,10 +9864,10 @@ function abrirModalReasigRechazado(asigId, itemIdx) {
   const infoEl = document.getElementById('rrech-item-info');
   if (infoEl) {
     infoEl.innerHTML = `
-      <p class="font-semibold text-gray-700">${esc(item.programa || '—')}</p>
-      <p class="text-gray-500">${esc(item.nombrePrograma || item.elemento || '—')}</p>
-      <p class="text-gray-400">Zona: ${esc(item.zonaTramo || '—')}</p>
-      <p class="text-rose-500 italic text-[11px] mt-1">Motivo rechazo: "${esc(item.motivoRechazo || '—')}"</p>`;
+      <p class="font-semibold text-gray-700">${esc(item.programa || '\u2014')}</p>
+      <p class="text-gray-500">${esc(item.nombrePrograma || item.elemento || '\u2014')}</p>
+      <p class="text-gray-400">Zona: ${esc(item.zonaTramo || '\u2014')}</p>
+      <p class="text-rose-500 italic text-[11px] mt-1">Motivo rechazo: "${esc(item.motivoRechazo || '\u2014')}"</p>`;
   }
 
   document.getElementById('rrech-asig-id').value  = asigId;
@@ -9386,7 +9896,7 @@ function onRrechCrChange() {
   if (!sel) return;
   const crAliases = cr ? (CR_NOMBRES_MAP[cr] || [cr]).map(s => s.toLowerCase()) : [];
   const tecnicos = DB.cfg.responsables || [];
-  sel.innerHTML = '<option value="">— Seleccione un técnico —</option>' +
+  sel.innerHTML = '<option value="">\u2014 Seleccione un técnico \u2014</option>' +
     tecnicos.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
 }
 
@@ -9466,9 +9976,9 @@ function abrirModalNuevoPlan() {
   const selProg = document.getElementById('np-programa');
   if (selProg) {
     const progKeys = Object.keys(PROGRAMA_DESCRIPCIONES).sort();
-    selProg.innerHTML = '<option value="">— Seleccione Programa —</option>' +
+    selProg.innerHTML = '<option value="">\u2014 Seleccione Programa \u2014</option>' +
       progKeys.map(k => {
-        const label = `${k} — ${PROGRAMA_DESCRIPCIONES[k]}`;
+        const label = `${k} \u2014 ${PROGRAMA_DESCRIPCIONES[k]}`;
         return `<option value="${esc(k)}">${esc(label)}</option>`;
       }).join('');
   }
@@ -9542,7 +10052,7 @@ async function confirmarNuevoPlan() {
   PLANES_MANTENIMIENTO_DATA.push(nuevoPlan);
 
   cerrarModalNuevoPlan();
-  toast(`Ítem "${elemento}" agregado al plan — disponible para asignaciones`, 'success');
+  toast(`Ítem "${elemento}" agregado al plan \u2014 disponible para asignaciones`, 'success');
 
   // Refrescar pantalla de programas si está activa
   if (document.getElementById('pantalla-programas')?.classList.contains('activa')) {
@@ -9675,7 +10185,7 @@ function generarOrdenDesdeAsignacion(asigId) {
 }
 
 function _bloquearCamposAsignacion(bloquear) {
-  const tooltip = 'Definido por la asignación — no editable';
+  const tooltip = 'Definido por la asignación \u2014 no editable';
   ['n-set', 'n-alimentador'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -9708,7 +10218,7 @@ function _bloquearFiltroZona(prefix, zonaVal) {
   if (!sel) return;
   sel.value    = zonaVal;
   sel.disabled = true;
-  sel.title    = 'Zona fijada por la asignación — no editable';
+  sel.title    = 'Zona fijada por la asignación \u2014 no editable';
   _applyZonaFilter(prefix);
 }
 
@@ -9721,7 +10231,7 @@ function renderAsigGantt() {
     wrap.innerHTML = `
       <div class="p-5 border-b border-gray-100">
         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-          <i class="fas fa-calendar-week text-blue-400 mr-1.5"></i>Control de Asignaciones por Bloque — Gantt Semanal
+          <i class="fas fa-calendar-week text-blue-400 mr-1.5"></i>Control de Asignaciones por Bloque \u2014 Gantt Semanal
         </p>
       </div>
       <div class="p-8 text-center text-sm text-gray-400">
@@ -9744,11 +10254,11 @@ function renderAsigGantt() {
     const totalItems = (a.items || []).length || 1;
     const esProg     = a.tipo === 'programa';
     const zonaLabel  = esProg
-      ? (a.programa || '—')
-      : (a.zona || a.zonaTramo || '—');
+      ? (a.programa || '\u2014')
+      : (a.zona || a.zonaTramo || '\u2014');
     const alimLabel  = esProg
-      ? `CR: ${a.cr || '—'}`
-      : (a.alimentador || '—');
+      ? `CR: ${a.cr || '\u2014'}`
+      : (a.alimentador || '\u2014');
     const reasigs    = (a.historial || []).filter(h => h.tipo === 'Reasignado').length;
 
     const weekCells = semanas.map(s => {
@@ -9791,8 +10301,8 @@ function renderAsigGantt() {
           <p class="text-[10px] ${esProg ? 'text-violet-500' : 'text-indigo-500'} mt-0.5 font-medium">${esc(alimLabel)}</p>
         </td>
         <td class="px-3 py-3 text-xs">
-          <p class="font-medium text-gray-800">${esc(a.tecnico || '—')}</p>
-          <p class="text-[10px] text-gray-400 mt-0.5">por ${esc(a.asignadoPor || '—')}</p>
+          <p class="font-medium text-gray-800">${esc(a.tecnico || '\u2014')}</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">por ${esc(a.asignadoPor || '\u2014')}</p>
         </td>
         <td class="px-3 py-3 text-center">
           <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold">${totalItems}</span>
@@ -9812,7 +10322,7 @@ function renderAsigGantt() {
   wrap.innerHTML = `
     <div class="p-5 border-b border-gray-100 flex items-center justify-between flex-wrap gap-2">
       <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-        <i class="fas fa-calendar-week text-blue-400 mr-1.5"></i>Control de Asignaciones por Bloque — Gantt Semanal
+        <i class="fas fa-calendar-week text-blue-400 mr-1.5"></i>Control de Asignaciones por Bloque \u2014 Gantt Semanal
       </p>
       <div class="flex items-center gap-3 text-xs text-gray-500">
         <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-blue-500 inline-block"></span>Pendiente</span>
@@ -9863,13 +10373,13 @@ function cerrarGanttPanel() {
 function _renderGanttPanelContent(a) {
   const rol       = sesionActual?.rol || 'tecnico';
   const historial = a.historial || [];
-  const zonaLabel = a.zona || a.zonaTramo || '—';
+  const zonaLabel = a.zona || a.zonaTramo || '\u2014';
 
   // Header
   const tituloEl    = document.getElementById('gp-titulo');
   const subtituloEl = document.getElementById('gp-subtitulo');
   if (tituloEl)    tituloEl.textContent    = zonaLabel;
-  if (subtituloEl) subtituloEl.textContent = `${a.alimentador || '—'} · ${a.semanaMaxima || '—'}`;
+  if (subtituloEl) subtituloEl.textContent = `${a.alimentador || '\u2014'} · ${a.semanaMaxima || '\u2014'}`;
 
   // Estado badge
   const estadoBadge = a.estado === 'Completado'
@@ -9896,7 +10406,7 @@ function _renderGanttPanelContent(a) {
             <p class="text-[10px] text-gray-400 mt-0.5">${fmtFecha(h.fecha)}</p>
             ${h.tecnicoNuevo  ? `<p class="text-[11px] text-gray-700 mt-1">→ <span class="font-medium">${esc(h.tecnicoNuevo)}</span></p>` : ''}
             ${h.tecnicoAnterior ? `<p class="text-[10px] text-gray-400">← anterior: ${esc(h.tecnicoAnterior)}</p>` : ''}
-            <p class="text-[10px] text-gray-400">Por: ${esc(h.realizadoPor || '—')}</p>
+            <p class="text-[10px] text-gray-400">Por: ${esc(h.realizadoPor || '\u2014')}</p>
             ${h.motivo ? `<p class="text-[10px] text-gray-500 italic mt-0.5">"${esc(h.motivo)}"</p>` : ''}
           </div>
         </div>${connector}`;
@@ -9914,7 +10424,7 @@ function _renderGanttPanelContent(a) {
       const om      = DB.ordenes.find(o => planMatchesOrden(item, o)) || null;
       const estOM   = om ? om.estado : null;
       const badgeCls = estOM ? `s-${estOM.toLowerCase()}` : '';
-      const label   = item.alimentador || item.programa || item.planId || '—';
+      const label   = item.alimentador || item.programa || item.planId || '\u2014';
       return `
         <div class="flex items-center justify-between gap-2 py-1.5 border-b border-gray-100 last:border-0">
           <p class="text-xs text-gray-700 min-w-0 truncate">${esc(label)}</p>
@@ -9969,9 +10479,9 @@ function _renderGanttPanelContent(a) {
     <div class="bg-gray-50 rounded-xl p-4">
       <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-xs">
         <div><span class="text-gray-400 block">Zona</span><p class="font-semibold text-gray-800 mt-0.5 leading-tight">${esc(zonaLabel)}</p></div>
-        <div><span class="text-gray-400 block">Alimentador</span><p class="font-semibold text-gray-800 mt-0.5">${esc(a.alimentador || '—')}</p></div>
-        <div><span class="text-gray-400 block">Técnico actual</span><p class="font-semibold text-gray-800 mt-0.5">${esc(a.tecnico || '—')}</p></div>
-        <div><span class="text-gray-400 block">Semana asignada</span><p class="font-semibold text-gray-800 mt-0.5">${esc(a.semanaMaxima || '—')}</p></div>
+        <div><span class="text-gray-400 block">Alimentador</span><p class="font-semibold text-gray-800 mt-0.5">${esc(a.alimentador || '\u2014')}</p></div>
+        <div><span class="text-gray-400 block">Técnico actual</span><p class="font-semibold text-gray-800 mt-0.5">${esc(a.tecnico || '\u2014')}</p></div>
+        <div><span class="text-gray-400 block">Semana asignada</span><p class="font-semibold text-gray-800 mt-0.5">${esc(a.semanaMaxima || '\u2014')}</p></div>
         <div><span class="text-gray-400 block">Estado</span><div class="mt-0.5">${estadoBadge}</div></div>
         <div><span class="text-gray-400 block">F. Máxima</span><p class="font-semibold text-gray-800 mt-0.5">${fmtCorta(a.fechaMaxima)}</p></div>
       </div>
@@ -10004,7 +10514,7 @@ function _poblarSelectorTecnicoGP(a) {
   const cr     = sesionActual?.cr || '';
   const crData = (DB.usuarios || DEFAULT_USUARIOS)[cr] || {};
   const tecs   = Object.keys(crData).filter(n => crData[n]?.rol === 'tecnico');
-  sel.innerHTML = '<option value="">— Selecciona técnico —</option>' +
+  sel.innerHTML = '<option value="">\u2014 Selecciona técnico \u2014</option>' +
     tecs.map(n => `<option value="${esc(n)}"${n === a.tecnico ? ' disabled' : ''}>${esc(n)}</option>`).join('');
 }
 
@@ -10073,7 +10583,7 @@ async function confirmarGanttReasignar() {
   if (idx === -1) return;
   const a = DB.asignaciones[idx];
 
-  const tecAnterior = a.tecnico || '—';
+  const tecAnterior = a.tecnico || '\u2014';
   const ahora       = new Date().toISOString();
 
   a.historial = a.historial || [];
@@ -10116,7 +10626,7 @@ async function confirmarGanttReasignar() {
     });
   } catch (err) {
     console.error('Error al reasignar asignación:', err);
-    toast('Error al reasignar — verifica la conexión', 'error');
+    toast('Error al reasignar \u2014 verifica la conexión', 'error');
     return;
   }
 
@@ -10127,7 +10637,7 @@ async function confirmarGanttReasignar() {
 }
 
 // ============================================================
-//  PASO 6 — CARGA DE ARCHIVOS
+//  PASO 6 \u2014 CARGA DE ARCHIVOS
 // ============================================================
 const _ARCHIVO_LABELS = { plano: 'Plano', ire: 'IRE', carta: 'Carta de Exoneración', hoja: 'Hoja de Equipo' };
 
@@ -10201,7 +10711,7 @@ function _limpiarArchivo(tipo, event) {
 }
 
 // ============================================================
-//  WORKFLOW — BADGES
+//  WORKFLOW \u2014 BADGES
 // ============================================================
 function _actualizarBadgeObservadas() {
   const nombre = sesionActual?.nombre || '';
@@ -10228,7 +10738,7 @@ function _actualizarBadgeCorregidas() {
 }
 
 // ============================================================
-//  WORKFLOW — TÉCNICO: enviar a validación
+//  WORKFLOW \u2014 TÉCNICO: enviar a validación
 // ============================================================
 async function enviarAValidacion() {
   const id = gv('e-id');
@@ -10285,7 +10795,7 @@ async function enviarAValidacion() {
 }
 
 // ============================================================
-//  WORKFLOW — TÉCNICO: enviar OM corregida (desde formulario)
+//  WORKFLOW \u2014 TÉCNICO: enviar OM corregida (desde formulario)
 // ============================================================
 async function enviarOMCorregida() {
   const id = gv('e-id');
@@ -10355,7 +10865,7 @@ async function enviarOMCorregida() {
 }
 
 // ============================================================
-//  WORKFLOW — TÉCNICO: enviar corregida directo desde lista
+//  WORKFLOW \u2014 TÉCNICO: enviar corregida directo desde lista
 // ============================================================
 async function enviarOMCorregidaDirecto(id) {
   const o = DB.ordenes.find(x => x.id === id);
@@ -10385,7 +10895,7 @@ async function enviarOMCorregidaDirecto(id) {
 }
 
 // ============================================================
-//  WORKFLOW — PLANIFICADOR: modal Validación (Observada / Programada)
+//  WORKFLOW \u2014 PLANIFICADOR: modal Validación (Observada / Programada)
 // ============================================================
 let _mvOpcion = null;
 
@@ -10404,7 +10914,7 @@ function _abrirModalValidacion(id) {
   // Reset estilos de tarjetas
   _resetMvCards();
   const sub = document.getElementById('mv-subtitulo');
-  if (sub) sub.textContent = 'OM ' + id + ' — Estado: ' + o.estado;
+  if (sub) sub.textContent = 'OM ' + id + ' \u2014 Estado: ' + o.estado;
   const m = document.getElementById('modal-validacion');
   if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
 }
@@ -10478,7 +10988,7 @@ async function confirmarValidacion() {
 }
 
 // ============================================================
-//  WORKFLOW — PLANIFICADOR: modal Observar OM
+//  WORKFLOW \u2014 PLANIFICADOR: modal Observar OM
 // ============================================================
 function observarOM(id) {
   sv('mob-orden-id', id);
@@ -10551,7 +11061,7 @@ async function confirmarObservacion() {
 }
 
 // ============================================================
-//  WORKFLOW — PLANIFICADOR: planificar OM desde pantalla Corregidas
+//  WORKFLOW \u2014 PLANIFICADOR: planificar OM desde pantalla Corregidas
 // ============================================================
 function planificarOMCorregida(id) {
   _abrirModalProgramar(id);
@@ -10583,7 +11093,7 @@ function renderObservadas() {
     // Agrupar por técnico receptor
     const porTecnico = {};
     oms.forEach(o => {
-      const tec = o.usuarioRegistro || '—';
+      const tec = o.usuarioRegistro || '\u2014';
       if (!porTecnico[tec]) porTecnico[tec] = [];
       porTecnico[tec].push(o);
     });
@@ -10598,7 +11108,7 @@ function renderObservadas() {
           <div class="flex items-start justify-between gap-3 flex-wrap">
             <div>
               <span class="text-xs font-mono text-blue-600 font-semibold">${esc(o.id)}</span>
-              <p class="text-sm font-semibold text-gray-800 mt-0.5">${esc(o.descripcion || '—')}</p>
+              <p class="text-sm font-semibold text-gray-800 mt-0.5">${esc(o.descripcion || '\u2014')}</p>
               <p class="text-xs text-gray-400">${esc(o.alimentador || '')}${o.zona ? ' · ' + esc(o.zona) : ''}</p>
             </div>
             <span class="px-2.5 py-1 text-xs font-bold rounded-full s-observada flex-shrink-0">Observada</span>
@@ -10618,7 +11128,7 @@ function renderObservadas() {
     return;
   }
 
-  // ── TÉCNICO: Sus propias OMs Observadas — debe ingresar al formulario para corregir ──
+  // ── TÉCNICO: Sus propias OMs Observadas \u2014 debe ingresar al formulario para corregir ──
   const oms = DB.ordenes.filter(o => o.estado === 'Observada' && o.usuarioRegistro === nombre);
 
   if (oms.length === 0) {
@@ -10636,15 +11146,15 @@ function renderObservadas() {
       <div class="flex items-start justify-between gap-3 flex-wrap">
         <div>
           <span class="text-xs font-mono text-blue-600 font-semibold">${esc(o.id)}</span>
-          <h3 class="text-sm font-bold text-gray-800 mt-0.5">${esc(o.descripcion || '—')}</h3>
+          <h3 class="text-sm font-bold text-gray-800 mt-0.5">${esc(o.descripcion || '\u2014')}</h3>
           <p class="text-xs text-gray-400 mt-0.5">${esc(o.alimentador || '')} ${o.zona ? '· ' + esc(o.zona) : ''}</p>
         </div>
         <span class="px-2.5 py-1 text-xs font-bold rounded-full s-observada flex-shrink-0">Observada</span>
       </div>
       <div class="bg-rose-50 border border-rose-200 rounded-lg px-3 py-2.5">
         <p class="text-xs font-semibold text-rose-700 mb-1"><i class="fas fa-comment-alt mr-1"></i>Comentario del Planificador:</p>
-        <p class="text-sm text-rose-900 leading-relaxed">${esc(o.comentarioObservacion || '—')}</p>
-        ${o.fechaObservacion ? `<p class="text-xs text-rose-400 mt-1.5">${fmtFecha(o.fechaObservacion)}${o.observadoPor ? ' — ' + esc(o.observadoPor) : ''}</p>` : ''}
+        <p class="text-sm text-rose-900 leading-relaxed">${esc(o.comentarioObservacion || '\u2014')}</p>
+        ${o.fechaObservacion ? `<p class="text-xs text-rose-400 mt-1.5">${fmtFecha(o.fechaObservacion)}${o.observadoPor ? ' \u2014 ' + esc(o.observadoPor) : ''}</p>` : ''}
       </div>
       <p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
         <i class="fas fa-info-circle mr-1"></i>Ingresa al formulario, revisa los campos y usa el botón <strong>"Enviar Corrección"</strong> al finalizar.
@@ -10673,7 +11183,7 @@ function renderCorregidas() {
 
   _actualizarBadgeCorregidas();
 
-  // ── TÉCNICO: Solo sus propias OMs Corregidas — vista solo lectura ──
+  // ── TÉCNICO: Solo sus propias OMs Corregidas \u2014 vista solo lectura ──
   if (rol === 'tecnico') {
     const oms = DB.ordenes.filter(o => o.estado === 'Corregida' && o.usuarioRegistro === nombre);
     if (oms.length === 0) {
@@ -10690,7 +11200,7 @@ function renderCorregidas() {
         <div class="flex items-start justify-between gap-3 flex-wrap">
           <div>
             <span class="text-xs font-mono text-blue-600 font-semibold">${esc(o.id)}</span>
-            <h3 class="text-sm font-bold text-gray-800 mt-0.5">${esc(o.descripcion || '—')}</h3>
+            <h3 class="text-sm font-bold text-gray-800 mt-0.5">${esc(o.descripcion || '\u2014')}</h3>
             <p class="text-xs text-gray-400 mt-0.5">${esc(o.alimentador || '')} ${o.zona ? '· ' + esc(o.zona) : ''}</p>
           </div>
           <span class="px-2.5 py-1 text-xs font-bold rounded-full s-corregida flex-shrink-0">Corregida</span>
@@ -10698,7 +11208,7 @@ function renderCorregidas() {
         <div class="bg-violet-50 border border-violet-200 rounded-lg px-3 py-2.5">
           <p class="text-xs font-semibold text-violet-700 mb-1"><i class="fas fa-clock mr-1"></i>En revisión por el Planificador</p>
           <p class="text-xs text-violet-600">Esta OM fue enviada con tus correcciones y está pendiente de aprobación o nueva programación.</p>
-          ${o.fechaObservacion ? `<p class="text-xs text-violet-400 mt-1">${fmtFecha(o.fechaObservacion)} — ${esc(o.observadoPor || 'Planificador')}</p>` : ''}
+          ${o.fechaObservacion ? `<p class="text-xs text-violet-400 mt-1">${fmtFecha(o.fechaObservacion)} \u2014 ${esc(o.observadoPor || 'Planificador')}</p>` : ''}
         </div>
         <div class="flex gap-2 flex-wrap pt-1">
           <button onclick="verDetalle('${esc(o.id)}')"
@@ -10710,7 +11220,7 @@ function renderCorregidas() {
     return;
   }
 
-  // ── PLANIFICADOR: Todas las OMs Corregidas — con acciones de aprobación ──
+  // ── PLANIFICADOR: Todas las OMs Corregidas \u2014 con acciones de aprobación ──
   const oms = DB.ordenes.filter(o => o.estado === 'Corregida');
 
   if (oms.length === 0) {
@@ -10728,8 +11238,8 @@ function renderCorregidas() {
       <div class="flex items-start justify-between gap-3 flex-wrap">
         <div>
           <span class="text-xs font-mono text-blue-600 font-semibold">${esc(o.id)}</span>
-          <h3 class="text-sm font-bold text-gray-800 mt-0.5">${esc(o.descripcion || '—')}</h3>
-          <p class="text-xs text-gray-400 mt-0.5">${esc(o.usuarioRegistro || '—')} ${o.alimentador ? '· ' + esc(o.alimentador) : ''} ${o.zona ? '· ' + esc(o.zona) : ''}</p>
+          <h3 class="text-sm font-bold text-gray-800 mt-0.5">${esc(o.descripcion || '\u2014')}</h3>
+          <p class="text-xs text-gray-400 mt-0.5">${esc(o.usuarioRegistro || '\u2014')} ${o.alimentador ? '· ' + esc(o.alimentador) : ''} ${o.zona ? '· ' + esc(o.zona) : ''}</p>
         </div>
         <span class="px-2.5 py-1 text-xs font-bold rounded-full s-corregida flex-shrink-0">Corregida</span>
       </div>
