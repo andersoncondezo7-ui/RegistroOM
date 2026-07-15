@@ -3419,12 +3419,21 @@ const DEFAULT_USUARIOS = {
   }
 };
 
-// Diccionario de firmas en base64 de los técnicos (PNG/JPEG sin cabecera "data:image/png;base64,")
-const FIRMAS_TECNICOS = {
-  'MAZA VILLANUEVA CESAR AUGUSTO': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', // Reemplazar con el base64 real de la firma
-  // Puedes agregar firmas para otros técnicos aquí usando su nombre exacto en mayúsculas:
-  // 'APELLIDOS Y NOMBRES': 'base64...'
-};
+let FIRMAS_BASE64_DATA = {};
+fetch('./firmas_base64.json')
+  .then(r => r.json())
+  .then(data => { FIRMAS_BASE64_DATA = data; })
+  .catch(e => console.warn('firmas_base64.json no cargado:', e));
+
+// Regla de clave: primer apellido con primera letra mayúscula + ".png"
+// Ej: "AGUIRRE GARBOZO ALDO EDUARDO" → "Aguirre.png"
+function _getFirmaBase64(responsable) {
+  if (!responsable || !Object.keys(FIRMAS_BASE64_DATA).length) return '';
+  const primerApellido = String(responsable).trim().split(/\s+/)[0];
+  if (!primerApellido) return '';
+  const key = primerApellido.charAt(0).toUpperCase() + primerApellido.slice(1).toLowerCase() + '.png';
+  return FIRMAS_BASE64_DATA[key] || '';
+}
 
 let sesionActual = null;
 let crSeleccionado = '';
@@ -5055,7 +5064,7 @@ Saludos cordiales.`;
     fecha: orden.ire.fecha || '',
     direccion: orden.ire.direccion || '',
     responsable: orden.ire.responsable || '',
-    firma_base64: FIRMAS_TECNICOS[String(orden.ire.responsable).trim().toUpperCase()] || '',
+    firma_base64: _getFirmaBase64(orden.ire.responsable),
     A: {
       obs: orden.ire.secciones?.A?.obs || '',
       items: (orden.ire.secciones?.A?.items || []).map(it => ({ id: it.id, val: it.riesgo || 'Ninguno' }))
@@ -5163,18 +5172,18 @@ Saludos cordiales.`;
       console.log(`Power Automate respondió ${resp.status}. Flujo ejecutado correctamente.`);
       try {
         const data = await resp.json();
-        const urlsSharePoint = Array.isArray(data.archivosSharePoint) ? data.archivosSharePoint : [];
-        return { status: 'sent', urlsSharePoint };
+        const carpetaSharePoint = data.carpetaSharePoint || '';
+        return { status: 'sent', carpetaSharePoint };
       } catch {
-        return { status: 'sent', urlsSharePoint: [] };
+        return { status: 'sent', carpetaSharePoint: '' };
       }
     } else {
       console.error(`Power Automate respondió con error: ${resp.status} ${resp.statusText}`);
-      return { status: 'error', urlsSharePoint: [] };
+      return { status: 'error', carpetaSharePoint: '' };
     }
   } catch (err) {
     console.error("Error de red al notificar a Power Automate:", err);
-    return { status: 'error', urlsSharePoint: [] };
+    return { status: 'error', carpetaSharePoint: '' };
   }
 }
 
@@ -5327,21 +5336,18 @@ async function crearOrden(e) {
   // PA va separado \u2014 sus errores nunca afectan el resultado de Firestore
   const paResult = await notificarPowerAutomate(orden, archivosBase64, 'om_creada');
 
-  // Si PA devolvió URLs de SharePoint, actualizar archivosAdjuntos en Firestore
-  if (paResult.urlsSharePoint && paResult.urlsSharePoint.length > 0) {
-    const adjActualizado = (orden.archivosAdjuntos || []).map(a => {
-      const match = paResult.urlsSharePoint.find(u =>
-        u.tipo === a.tipo || u.nombre === a.nombre
-      );
-      return match ? { ...a, urlSharePoint: match.url } : a;
-    });
+  // Si PA devolvió carpeta SharePoint, aplicar ese link a todos los archivos adjuntos
+  if (paResult.carpetaSharePoint && (orden.archivosAdjuntos || []).length > 0) {
+    const adjActualizado = (orden.archivosAdjuntos || []).map(a => ({
+      ...a, urlSharePoint: paResult.carpetaSharePoint
+    }));
     try {
       await db.collection('ordenes').doc(id).update({ archivosAdjuntos: adjActualizado });
       const idxOrd = DB.ordenes.findIndex(o => o.id === id);
       if (idxOrd !== -1) DB.ordenes[idxOrd].archivosAdjuntos = adjActualizado;
-      console.log(`[SharePoint] ${adjActualizado.filter(a => a.urlSharePoint).length} URL(s) guardadas en Firestore.`);
+      console.log(`[SharePoint] Carpeta guardada en ${adjActualizado.length} archivo(s).`);
     } catch (eSP) {
-      console.warn('[SharePoint] No se pudieron guardar las URLs en Firestore:', eSP);
+      console.warn('[SharePoint] No se pudo guardar la carpeta en Firestore:', eSP);
     }
   }
 
