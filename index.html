@@ -5336,16 +5336,17 @@ async function crearOrden(e) {
   // PA va separado \u2014 sus errores nunca afectan el resultado de Firestore
   const paResult = await notificarPowerAutomate(orden, archivosBase64, 'om_creada');
 
-  // Si PA devolvió carpeta SharePoint, aplicar ese link a todos los archivos adjuntos
-  if (paResult.carpetaSharePoint && (orden.archivosAdjuntos || []).length > 0) {
+  // Construir URL de carpeta SharePoint directamente (patrón conocido, no depende de respuesta PA)
+  if ((orden.archivosAdjuntos || []).length > 0) {
+    const carpetaSharePoint = `https://luzdelsurlds.sharepoint.com/sites/Evaluacionobjetivos2023WVE/BDOrdenes/${id}`;
     const adjActualizado = (orden.archivosAdjuntos || []).map(a => ({
-      ...a, urlSharePoint: paResult.carpetaSharePoint
+      ...a, urlSharePoint: carpetaSharePoint
     }));
     try {
       await db.collection('ordenes').doc(id).update({ archivosAdjuntos: adjActualizado });
       const idxOrd = DB.ordenes.findIndex(o => o.id === id);
       if (idxOrd !== -1) DB.ordenes[idxOrd].archivosAdjuntos = adjActualizado;
-      console.log(`[SharePoint] Carpeta guardada en ${adjActualizado.length} archivo(s).`);
+      console.log(`[SharePoint] Carpeta asignada: ${carpetaSharePoint}`);
     } catch (eSP) {
       console.warn('[SharePoint] No se pudo guardar la carpeta en Firestore:', eSP);
     }
