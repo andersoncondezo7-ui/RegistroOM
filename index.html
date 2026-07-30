@@ -4961,9 +4961,18 @@ function fillSelects() {
 // ============================================================
 function genCodigo() {
   const year = new Date().getFullYear();
-  let n = DB.ordenes.length + 1;
+  const prefix = `OT-${year}-`;
+  // Parte del máximo número existente este año para nunca reutilizar IDs borrados
+  let maxN = 0;
+  DB.ordenes.forEach(o => {
+    if (o.id && o.id.startsWith(prefix)) {
+      const num = parseInt(o.id.slice(prefix.length), 10);
+      if (!isNaN(num) && num > maxN) maxN = num;
+    }
+  });
+  let n = maxN + 1;
   let cod;
-  do { cod = `OT-${year}-${String(n).padStart(4,'0')}`; n++; }
+  do { cod = `${prefix}${String(n).padStart(4,'0')}`; n++; }
   while (DB.ordenes.find(o => o.id === cod));
   return cod;
 }
@@ -5060,30 +5069,24 @@ Saludos cordiales.`;
   const obsAplanado = orden.observaciones || historialArr.filter(h => h.observacion).map(h => `[${h.fecha.split('T')[0]}] ${h.observacion}`).join(' | ') || '\u2014';
 
   // Construir ire_datos con formato simplificado para Power Automate y Script de Excel
+  // Las secciones A/B/C/D se serializan como JSON strings porque el script de Excel
+  // las recibe como parámetro string y necesita hacer JSON.parse() sobre ellas.
+  const _secIRE = (sec) => JSON.stringify({
+    obs: sec?.obs || '',
+    items: (sec?.items || []).map(it => ({ id: it.id, val: it.riesgo || 'Ninguno' }))
+  });
   const ireDatos = (evento === 'om_creada' && orden.ire) ? {
-    solicitud: orden.ire.solicitud || '',
-    cr: orden.ire.cr || '',
-    asunto: orden.ire.asunto || '',
-    fecha: orden.ire.fecha || '',
-    direccion: orden.ire.direccion || '',
+    solicitud:   orden.ire.solicitud   || '',
+    cr:          orden.ire.cr          || '',
+    asunto:      orden.ire.asunto      || '',
+    fecha:       orden.ire.fecha       || '',
+    direccion:   orden.ire.direccion   || '',
     responsable: orden.ire.responsable || '',
-    firma_base64: _getFirmaBase64(orden.ire.responsable),
-    A: {
-      obs: orden.ire.secciones?.A?.obs || '',
-      items: (orden.ire.secciones?.A?.items || []).map(it => ({ id: it.id, val: it.riesgo || 'Ninguno' }))
-    },
-    B: {
-      obs: orden.ire.secciones?.B?.obs || '',
-      items: (orden.ire.secciones?.B?.items || []).map(it => ({ id: it.id, val: it.riesgo || 'Ninguno' }))
-    },
-    C: {
-      obs: orden.ire.secciones?.C?.obs || '',
-      items: (orden.ire.secciones?.C?.items || []).map(it => ({ id: it.id, val: it.riesgo || 'Ninguno' }))
-    },
-    D: {
-      obs: orden.ire.secciones?.D?.obs || '',
-      items: (orden.ire.secciones?.D?.items || []).map(it => ({ id: it.id, val: it.riesgo || 'Ninguno' }))
-    }
+    firma_base64: (_getFirmaBase64(orden.ire.responsable) || '').replace(/^data:[^;]+;base64,/, ''),
+    A: _secIRE(orden.ire.secciones?.A),
+    B: _secIRE(orden.ire.secciones?.B),
+    C: _secIRE(orden.ire.secciones?.C),
+    D: _secIRE(orden.ire.secciones?.D)
   } : null;
 
   const payload = {
@@ -5159,7 +5162,7 @@ Saludos cordiales.`;
     OBS_COMENTARIO:        obsAplanado,
     
     archivos:              archivosBase64,
-    ire_datos:             ireDatos
+    ...(ireDatos ? { ire_datos: ireDatos } : {})
   };
 
   console.log("Enviando notificación OM a Power Automate:", payload);
@@ -5181,7 +5184,9 @@ Saludos cordiales.`;
         return { status: 'sent', carpetaSharePoint: '' };
       }
     } else {
-      console.error(`Power Automate respondió con error: ${resp.status} ${resp.statusText}`);
+      let errBody = '';
+      try { errBody = await resp.text(); } catch {}
+      console.error(`Power Automate respondió con error: ${resp.status} ${resp.statusText}`, errBody || '(sin cuerpo)');
       return { status: 'error', carpetaSharePoint: '' };
     }
   } catch (err) {
@@ -5256,9 +5261,20 @@ function _getIREDatos() {
   };
 }
 
+let _creandoOrden = false;
+
 async function crearOrden(e) {
   e.preventDefault();
+  if (_creandoOrden) return;           // Bloquea doble-clic mientras se procesa
   if (!validarNueva()) return;
+
+  _creandoOrden = true;
+  const _btnSubmit = document.querySelector('#pantalla-nueva button[type="submit"]');
+  const _btnHtml   = _btnSubmit?.innerHTML || '';
+  if (_btnSubmit) {
+    _btnSubmit.disabled  = true;
+    _btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i>Enviando...';
+  }
 
   // Leer archivos seleccionados como base64 (para enviar a PA)
   const _tiposArch = ['plano','carta','hoja','expediente'];
@@ -5334,6 +5350,8 @@ async function crearOrden(e) {
     console.error('Error al crear orden en Firestore:', e);
     toast(`Error al guardar la orden (${e.code || e.message || 'sin conexión'})`, 'error');
     DB.ordenes.pop();
+    _creandoOrden = false;
+    if (_btnSubmit) { _btnSubmit.disabled = false; _btnSubmit.innerHTML = _btnHtml; }
     return;
   }
   // PA va separado \u2014 sus errores nunca afectan el resultado de Firestore
@@ -5359,8 +5377,11 @@ async function crearOrden(e) {
   toast(`Orden ${id} creada`, 'success');
   if (paResult.status === 'sent')  toast('Notificación y archivos enviados a Power Automate', 'info');
   if (paResult.status === 'error') toast('Orden guardada, pero no se pudo notificar a Power Automate', 'warning');
+  _creandoOrden = false;
   ir('lista');
 }
+// Nota: _creandoOrden también se libera aquí porque cualquier error en Firestore ya tiene su propio return.
+// En caso de error inesperado, el flag queda bloqueado hasta que el usuario refresque — comportamiento seguro.
 
 function resetNueva() {
   document.getElementById('form-nueva').reset();
