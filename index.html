@@ -4215,6 +4215,7 @@ function closeSidebar() {
 // ============================================================
 let nStepActual     = 1;
 const N_STEPS       = 7;
+let _ireDataSnapshot = null; // Captura los datos del IRE al salir del paso 6
 // (archivos se leen al crear la orden, no se pre-suben)
 
 function irPasoN(n) {
@@ -4226,6 +4227,8 @@ function irPasoN(n) {
     if (nStepActual === 5 && !_validarPaso5()) return;
     if (nStepActual === 6 && !_validarPaso6()) return;
   }
+  // Capturar datos del IRE exactamente al salir del paso 6 (antes de avanzar)
+  if (nStepActual === 6 && n > 6) _ireDataSnapshot = _getIREDatos();
   document.getElementById(`n-step-${nStepActual}`)?.classList.add('hidden');
   nStepActual = n;
   document.getElementById(`n-step-${nStepActual}`)?.classList.remove('hidden');
@@ -5322,7 +5325,7 @@ async function crearOrden(e) {
       usuario: sesionActual ? sesionActual.nombre : 'Sistema',
       estadoNuevo: 'Creada'
     }],
-    ire: _getIREDatos()
+    ire: _ireDataSnapshot || _getIREDatos()
   };
   DB.ordenes.push(orden);
   try {
@@ -5393,21 +5396,30 @@ function resetNueva() {
   resetPlanesSeleccionados('n');
   resetTrabajosAdicionales('n');
   // Reset paso 6 \u2014 limpiar campos IRE
-  ['n-ire-solicitud','n-ire-asunto','n-ire-fecha','n-ire-direccion','n-ire-responsable','n-ire-obsA','n-ire-obsB','n-ire-obsC','n-ire-obsD'].forEach(id => {
+  _ireDataSnapshot = null;
+  ['n-ire-solicitud','n-ire-asunto','n-ire-fecha','n-ire-cr','n-ire-direccion','n-ire-responsable','n-ire-obsA','n-ire-obsB','n-ire-obsC','n-ire-obsD'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
-  document.querySelectorAll('.ire-chk').forEach(chk => { chk.checked = false; });
+  document.querySelectorAll('.ire-chk').forEach(chk => {
+    chk.checked = false;
+    const row = chk.closest('tr');
+    if (row) row.classList.remove('bg-red-50', 'border-l-4', 'border-red-500');
+  });
   // Reset paso 7 \u2014 limpiar selección de archivos
   ['plano','carta','hoja','expediente'].forEach(t => {
-    const chk  = document.getElementById(`n-chk-${t}`);
-    const wrap = document.getElementById(`n-file-wrap-${t}`);
-    const card = document.getElementById(`n-card-${t}`);
-    const fi   = document.getElementById(`n-file-${t}`);
-    if (chk)  chk.checked = false;
-    if (wrap) wrap.classList.add('hidden');
-    if (fi)   fi.value = '';
-    if (card) { card.classList.remove('border-blue-500','bg-blue-50'); card.classList.add('border-gray-200','bg-white'); }
+    const chk     = document.getElementById(`n-chk-${t}`);
+    const wrap    = document.getElementById(`n-file-wrap-${t}`);
+    const card    = document.getElementById(`n-card-${t}`);
+    const fi      = document.getElementById(`n-file-${t}`);
+    const preview = document.getElementById(`n-file-preview-${t}`);
+    const nameEl  = document.getElementById(`n-file-name-${t}`);
+    if (chk)     chk.checked = false;
+    if (wrap)    wrap.classList.add('hidden');
+    if (fi)      fi.value = '';
+    if (preview) preview.classList.add('hidden');
+    if (nameEl)  nameEl.textContent = '';
+    if (card)    { card.classList.remove('border-blue-500','bg-blue-50'); card.classList.add('border-gray-200','bg-white'); }
   });
   // Reset wizard to step 1
   for (let i = 1; i <= N_STEPS; i++) {
@@ -5478,7 +5490,7 @@ function _initIRECheckboxes() {
   });
 }
 
-function exportarIREPdf() {
+function _buildIREHtml(autoprint) {
   const gv = id => document.getElementById(id)?.value || '';
   const solicitud   = gv('n-ire-solicitud');
   const cr          = gv('n-ire-cr');
@@ -5545,7 +5557,7 @@ function exportarIREPdf() {
     '.hoja{max-width:1000px;margin:0 auto;background:#fff;border:1px solid #444;padding:20px 28px 32px}' +
     '@media print{body{background:#fff;padding:0}.hoja{border:none}}' +
     '</style></head>' +
-    '<body onload="window.print()"><div class="hoja">';
+    (autoprint ? '<body onload="window.print()">' : '<body>') + '<div class="hoja">';
 
   var metaHtml =
     '<div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #2b2f36;padding-bottom:8px;margin-bottom:10px">' +
@@ -5571,11 +5583,13 @@ function exportarIREPdf() {
       buildSection('D. Otros',                   itemsD, 'D', obsD) +
     '</div>';
 
-  var finalHtml = headerHtml + metaHtml + sectionsHtml + '</div><\/body><\/html>';
+  return headerHtml + metaHtml + sectionsHtml + '</div><\/body><\/html>';
+}
 
+function exportarIREPdf() {
   var win = window.open('', '_blank');
   if (!win) { toast('Permita ventanas emergentes para exportar el PDF', 'error'); return; }
-  win.document.write(finalHtml);
+  win.document.write(_buildIREHtml(true));
   win.document.close();
 }
 
@@ -11268,7 +11282,7 @@ function renderCorregidas() {
           class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-gray-600 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors">
           <i class="fas fa-eye"></i>Ver Detalle
         </button>
-      </div>
+      </div> c     
     </div>`).join('');
 }
 
