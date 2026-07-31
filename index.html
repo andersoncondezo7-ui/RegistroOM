@@ -3420,7 +3420,7 @@ const DEFAULT_USUARIOS = {
 };
 
 let FIRMAS_BASE64_DATA = {};
-fetch('./firmas_base64.json')
+const _firmasPromise = fetch('./firmas_base64.json')
   .then(r => r.json())
   .then(data => { FIRMAS_BASE64_DATA = data; })
   .catch(e => console.warn('firmas_base64.json no cargado:', e));
@@ -5067,6 +5067,9 @@ Saludos cordiales.`;
   // Observaciones (unir historial)
   const historialArr = orden.historial || [];
   const obsAplanado = orden.observaciones || historialArr.filter(h => h.observacion).map(h => `[${h.fecha.split('T')[0]}] ${h.observacion}`).join(' | ') || '\u2014';
+
+  // Garantizar que el JSON de firmas esté cargado antes de construir el payload
+  await _firmasPromise;
 
   // Construir ire_datos con formato simplificado para Power Automate y Script de Excel
   // Las secciones A/B/C/D se serializan como JSON strings porque el script de Excel
