@@ -655,7 +655,7 @@ a.bg-blue-600:hover {
             <p class="text-xl font-bold"><i class="fas fa-plus-circle mr-2"></i>Registrar Nueva Orden</p>
             <p class="text-blue-100 text-sm mt-1">Los campos marcados con * son obligatorios</p>
           </div>
-          <form id="form-nueva" onsubmit="crearOrden(event)" novalidate class="p-6">
+          <form id="form-nueva" novalidate class="p-6" onkeydown="if(event.key==='Enter'&&event.target.tagName!=='TEXTAREA'){event.preventDefault();}">
             <input type="hidden" id="n-zona" value="">
 
             <!-- Step indicator (móvil) -->
@@ -1421,7 +1421,7 @@ a.bg-blue-600:hover {
                   <button type="button" onclick="resetNueva()" class="px-5 py-2.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">
                     <i class="fas fa-redo mr-1.5"></i>Limpiar
                   </button>
-                  <button type="submit" class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+                  <button type="button" id="btn-crear-orden" onclick="crearOrden(event)" class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
                     <i class="fas fa-save mr-1.5"></i>Crear Orden y Finalizar
                   </button>
                 </div>
@@ -2622,6 +2622,31 @@ a.bg-blue-600:hover {
   </div><!-- end content area -->
 </main>
 
+<!-- ===== OVERLAY PROGRESO CREAR ORDEN ===== -->
+<div id="overlay-progreso" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/60">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
+    <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-5 text-white text-center">
+      <div id="op-icono" class="text-4xl mb-2">⏳</div>
+      <h3 id="op-titulo" class="text-base font-bold">Registrando orden...</h3>
+      <p id="op-subtitulo" class="text-xs text-blue-200 mt-1">Por favor espere</p>
+    </div>
+    <div class="p-5 space-y-3">
+      <div id="op-paso-1" class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 transition-colors">
+        <span id="op-ic-1"><i class="fas fa-circle text-xs text-gray-300"></i></span>
+        <span class="text-sm text-gray-700">Guardando en base de datos</span>
+      </div>
+      <div id="op-paso-2" class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 transition-colors">
+        <span id="op-ic-2"><i class="fas fa-circle text-xs text-gray-300"></i></span>
+        <span class="text-sm text-gray-700">Enviando correo y datos IRE</span>
+      </div>
+      <div id="op-paso-3" class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 transition-colors">
+        <span id="op-ic-3"><i class="fas fa-circle text-xs text-gray-300"></i></span>
+        <span class="text-sm text-gray-700">Finalizando registro</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== MODAL PROGRAMAR (Creada → Programada) ===== -->
 <div id="modal-programar" class="fixed inset-0 z-50 hidden items-center justify-center">
   <div class="modal-bg absolute inset-0" onclick="_cerrarModalesFlujo()"></div>
@@ -3422,17 +3447,21 @@ const DEFAULT_USUARIOS = {
 let FIRMAS_BASE64_DATA = {};
 const _firmasPromise = fetch('./firmas_base64.json')
   .then(r => r.json())
-  .then(data => { FIRMAS_BASE64_DATA = data; })
-  .catch(e => console.warn('firmas_base64.json no cargado:', e));
+  .then(data => {
+    FIRMAS_BASE64_DATA = data;
+    console.log(`[FIRMAS] JSON cargado. Claves disponibles: ${Object.keys(data).join(', ')}`);
+  })
+  .catch(e => console.error('[FIRMAS] ERROR cargando firmas_base64.json:', e));
 
-// Regla de clave: primer apellido con primera letra mayúscula + ".png"
-// Ej: "AGUIRRE GARBOZO ALDO EDUARDO" → "Aguirre.png"
 function _getFirmaBase64(responsable) {
-  if (!responsable || !Object.keys(FIRMAS_BASE64_DATA).length) return '';
+  const totalClaves = Object.keys(FIRMAS_BASE64_DATA).length;
+  if (!responsable)  { console.warn('[FIRMAS] responsable vacío'); return ''; }
+  if (!totalClaves)  { console.warn('[FIRMAS] FIRMAS_BASE64_DATA vacío — JSON no cargado aún'); return ''; }
   const primerApellido = String(responsable).trim().split(/\s+/)[0];
-  if (!primerApellido) return '';
   const key = primerApellido.charAt(0).toUpperCase() + primerApellido.slice(1).toLowerCase() + '.png';
-  return FIRMAS_BASE64_DATA[key] || '';
+  const resultado = FIRMAS_BASE64_DATA[key] || '';
+  console.log(`[FIRMAS] responsable="${responsable}" → clave="${key}" → ${resultado ? 'ENCONTRADA (' + resultado.length + ' chars)' : 'NO ENCONTRADA (claves: ' + Object.keys(FIRMAS_BASE64_DATA).join(', ') + ')'}`);
+  return resultado;
 }
 
 let sesionActual = null;
@@ -5070,6 +5099,7 @@ Saludos cordiales.`;
 
   // Garantizar que el JSON de firmas esté cargado antes de construir el payload
   await _firmasPromise;
+  console.log(`[FIRMAS] Claves en dict tras await: ${Object.keys(FIRMAS_BASE64_DATA).length}`);
 
   // Construir ire_datos con formato simplificado para Power Automate y Script de Excel
   // Las secciones A/B/C/D se serializan como JSON strings porque el script de Excel
@@ -5078,6 +5108,9 @@ Saludos cordiales.`;
     obs: sec?.obs || '',
     items: (sec?.items || []).map(it => ({ id: it.id, val: it.riesgo || 'Ninguno' }))
   });
+  const _firmaRaw    = _getFirmaBase64(orden.ire?.responsable);
+  const _firmaLimpia = (_firmaRaw || '').replace(/^data:[^;]+;base64,/, '');
+  console.log(`[FIRMAS] firma_base64 resultado: ${_firmaLimpia ? _firmaLimpia.length + ' chars (OK)' : 'VACÍO'}`);
   const ireDatos = (evento === 'om_creada' && orden.ire) ? {
     solicitud:   orden.ire.solicitud   || '',
     cr:          orden.ire.cr          || '',
@@ -5085,7 +5118,7 @@ Saludos cordiales.`;
     fecha:       orden.ire.fecha       || '',
     direccion:   orden.ire.direccion   || '',
     responsable: orden.ire.responsable || '',
-    firma_base64: (_getFirmaBase64(orden.ire.responsable) || '').replace(/^data:[^;]+;base64,/, ''),
+    firma_base64: _firmaLimpia,
     A: _secIRE(orden.ire.secciones?.A),
     B: _secIRE(orden.ire.secciones?.B),
     C: _secIRE(orden.ire.secciones?.C),
@@ -5266,18 +5299,53 @@ function _getIREDatos() {
 
 let _creandoOrden = false;
 
+// ── Helpers overlay de progreso ─────────────────────────────
+function _opMostrar() {
+  const el = document.getElementById('overlay-progreso');
+  if (!el) return;
+  [1,2,3].forEach(i => {
+    document.getElementById(`op-ic-${i}`).innerHTML = '<i class="fas fa-circle text-xs text-gray-300"></i>';
+    const p = document.getElementById(`op-paso-${i}`);
+    p.classList.remove('bg-blue-50','bg-green-50','bg-yellow-50');
+    p.classList.add('bg-gray-50');
+  });
+  document.getElementById('op-icono').textContent     = '⏳';
+  document.getElementById('op-titulo').textContent    = 'Registrando orden...';
+  document.getElementById('op-subtitulo').textContent = 'Por favor espere';
+  el.classList.remove('hidden');
+  el.classList.add('flex');
+}
+function _opPaso(n, estado) {
+  const ic   = document.getElementById(`op-ic-${n}`);
+  const paso = document.getElementById(`op-paso-${n}`);
+  if (!ic || !paso) return;
+  paso.classList.remove('bg-gray-50','bg-blue-50','bg-green-50','bg-yellow-50');
+  if (estado === 'activo') {
+    ic.innerHTML = '<i class="fas fa-spinner fa-spin text-blue-500"></i>';
+    paso.classList.add('bg-blue-50');
+  } else if (estado === 'ok') {
+    ic.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
+    paso.classList.add('bg-green-50');
+  } else if (estado === 'error') {
+    ic.innerHTML = '<i class="fas fa-exclamation-circle text-yellow-500"></i>';
+    paso.classList.add('bg-yellow-50');
+  }
+}
+function _opOcultar() {
+  const el = document.getElementById('overlay-progreso');
+  if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
+}
+
 async function crearOrden(e) {
-  e.preventDefault();
-  if (_creandoOrden) return;           // Bloquea doble-clic mientras se procesa
+  e?.preventDefault();
+  if (_creandoOrden) return;
   if (!validarNueva()) return;
 
   _creandoOrden = true;
-  const _btnSubmit = document.querySelector('#pantalla-nueva button[type="submit"]');
-  const _btnHtml   = _btnSubmit?.innerHTML || '';
-  if (_btnSubmit) {
-    _btnSubmit.disabled  = true;
-    _btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i>Enviando...';
-  }
+  const _btnCrear = document.getElementById('btn-crear-orden');
+  if (_btnCrear) _btnCrear.disabled = true;
+  _opMostrar();
+  _opPaso(1, 'activo');
 
   // Leer archivos seleccionados como base64 (para enviar a PA)
   const _tiposArch = ['plano','carta','hoja','expediente'];
@@ -5349,39 +5417,55 @@ async function crearOrden(e) {
   DB.ordenes.push(orden);
   try {
     await db.collection('ordenes').doc(id).set(orden);
-  } catch(e) {
-    console.error('Error al crear orden en Firestore:', e);
-    toast(`Error al guardar la orden (${e.code || e.message || 'sin conexión'})`, 'error');
+    _opPaso(1, 'ok');
+  } catch(fsErr) {
+    console.error('Error al crear orden en Firestore:', fsErr);
+    _opPaso(1, 'error');
+    _opOcultar();
+    toast(`Error al guardar la orden (${fsErr.code || fsErr.message || 'sin conexión'})`, 'error');
     DB.ordenes.pop();
     _creandoOrden = false;
-    if (_btnSubmit) { _btnSubmit.disabled = false; _btnSubmit.innerHTML = _btnHtml; }
+    if (_btnCrear) _btnCrear.disabled = false;
     return;
   }
-  // PA va separado \u2014 sus errores nunca afectan el resultado de Firestore
+  // Paso 2: Notificar Power Automate
+  _opPaso(2, 'activo');
   const paResult = await notificarPowerAutomate(orden, archivosBase64, 'om_creada');
+  _opPaso(2, paResult === 'error' ? 'error' : 'ok');
 
+  // Paso 3: Finalizar
+  _opPaso(3, 'activo');
   // Construir URL de carpeta SharePoint directamente (patrón conocido, no depende de respuesta PA)
   if ((orden.archivosAdjuntos || []).length > 0) {
     const carpetaSharePoint = `https://luzdelsurlds.sharepoint.com/sites/Evaluacionobjetivos2023WVE/BDOrdenes/${id}`;
-    const adjActualizado = (orden.archivosAdjuntos || []).map(a => ({
-      ...a, urlSharePoint: carpetaSharePoint
-    }));
+    const adjActualizado = (orden.archivosAdjuntos || []).map(a => ({ ...a, urlSharePoint: carpetaSharePoint }));
     try {
       await db.collection('ordenes').doc(id).update({ archivosAdjuntos: adjActualizado });
       const idxOrd = DB.ordenes.findIndex(o => o.id === id);
       if (idxOrd !== -1) DB.ordenes[idxOrd].archivosAdjuntos = adjActualizado;
-      console.log(`[SharePoint] Carpeta asignada: ${carpetaSharePoint}`);
     } catch (eSP) {
       console.warn('[SharePoint] No se pudo guardar la carpeta en Firestore:', eSP);
     }
   }
+  _opPaso(3, 'ok');
+
+  // Mostrar resultado final en el overlay y redirigir tras 2.5 s
+  document.getElementById('op-icono').textContent = '✅';
+  document.getElementById('op-titulo').textContent = `Orden ${id} creada`;
+  document.getElementById('op-subtitulo').textContent =
+    paResult === 'sent'    ? 'Correo e IRE enviados correctamente' :
+    paResult === 'skipped' ? 'Sin notificación (Power Automate no configurado)' :
+                             'Orden guardada — no se pudo enviar el correo';
 
   updateBadges();
-  toast(`Orden ${id} creada`, 'success');
-  if (paResult.status === 'sent')  toast('Notificación y archivos enviados a Power Automate', 'info');
-  if (paResult.status === 'error') toast('Orden guardada, pero no se pudo notificar a Power Automate', 'warning');
-  _creandoOrden = false;
-  ir('lista');
+  if (paResult === 'error') toast('Orden guardada, pero no se pudo enviar el correo', 'warning');
+
+  setTimeout(() => {
+    _opOcultar();
+    _creandoOrden = false;
+    if (_btnCrear) _btnCrear.disabled = false;
+    ir('lista');
+  }, 2500);
 }
 // Nota: _creandoOrden también se libera aquí porque cualquier error en Firestore ya tiene su propio return.
 // En caso de error inesperado, el flag queda bloqueado hasta que el usuario refresque — comportamiento seguro.
